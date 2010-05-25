@@ -1,0 +1,146 @@
+(
+	{
+		title = "Anthem - Rand Ayn";
+		properties = {
+            publisher = "Standard Publications";
+			author = "Rand Ayn";
+			published = 2007;
+			genre = "Dystopian Fiction";
+		};
+	},
+	{
+		title = "Vile Bodies - Evelyn Waugh";
+		properties = {
+            publisher = "Penguin Modern Classics";
+			author = "Evelyn Waugh";
+			published = 2000;
+			genre = "Fiction";
+		};
+	},
+	{
+		title = "The Thing Around Your Neck - Chimamanda Ngozi Adichie";
+		properties = {
+            publisher = "Fourth Estate";
+			author = "Chimamanda Ngozi Adichie";
+			published = 2009;
+			genre = "Fiction";
+		};
+	},
+	{
+		title = "The Children of Men - P.D. James";
+		properties = {
+            publisher = "Faber and Faber";
+			author = "P.D. James";
+			published = 2006;
+			genre = "Dystopian Fiction";
+		};
+	},
+	{
+		title = "The Girl Who Played with Fire - Stieg Larsson";
+		properties = {
+            publisher = "Maclehose Press";
+			author = "Stieg Larsson";
+			published = 2009;
+			genre = "Suspense Fiction";
+		};
+	},
+	{
+		title = "The Angel's Game - Carlos Ruiz Zafon";
+		properties = {
+            publisher = "Weidenfeld & Nicolson";
+			author = "Carlos Ruiz Zafon";
+			published = 2009;
+			genre = "Suspense Fiction";
+		};
+	},
+	{
+		title = "The Girl with the Dragon Tattoo by Stieg Larsson";
+		properties = {
+            publisher = "Maclehose Press";
+			author = "Stieg Larsson";
+			published = 2008;
+			genre = "Suspense Fiction";
+		};
+	},
+	{
+		title = "The Amber Spyglass - Philip Pullman";
+		properties = {
+            publisher = "Scholastic";
+			author = "Philip Pullman";
+			published = 2001;
+			genre = "Fantasy Fiction";
+		};
+	},
+	{
+		title = "The Subtle Knife - Philip Pullman";
+		properties = {
+            publisher = "Scholastic";
+			author = "Philip Pullman";
+			published = 1997;
+			genre = "Fantasy Fiction";
+		};
+	},
+	{
+		title = "Northern Lights - Philip Pullman";
+		properties = {
+            publisher = "Scholastic";
+			author = "Philip Pullman";
+			published = 1995;
+			genre = "Fantasy Fiction";
+		};
+	},
+	{
+		title = "Breaking Dawn - Stephenie Meyer";
+		properties = {
+            publisher = "Atom";
+			author = "Stephenie Meyer";
+			published = 2008;
+			genre = "Fantasy Fiction";
+		};
+	},
+	{
+		title = "Revolutionary Road - Richard Yates";
+		properties = {
+            publisher = "Vintage Books";
+			author = "Richard Yates";
+			published = 2007;
+			genre = "Domestic Fiction";
+		};
+	},
+	{
+		title = "Eclipse - Stephenie Meyer";
+		properties = {
+            publisher = "Atom";
+			author = "Stephenie Meyer";
+			published = 2008;
+			genre = "Fantasy Fiction";
+		};
+	},
+	{
+		title = "New Moon - Stephenie Meyer";
+		properties = {
+            publisher = "Atom";
+			author = "Stephenie Meyer";
+			published = 2009;
+			genre = "Fantasy Fiction";
+		};
+	},
+	{
+		title = "Twilight - Stephenie Meyer";
+		properties = {
+            publisher = "Atom";
+			author = "Stephenie Meyer";
+			published = 2007;
+			genre = "Fantasy Fiction";
+		};
+	},
+	{
+		title = "East is East: Screenplay - Ayub Khan-Din";
+		properties = {
+            publisher = "FilmFour";
+			author = "Ayub Khan-Din";
+			published = 1999;
+			genre = "Fiction";
+		};
+	},
+)

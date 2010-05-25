@@ -1,0 +1,7 @@
+{
+	itemDescription = {
+		title = Books;
+		canAppearAsFilter = YES;
+		filterIcon = "book.png";
+	};
+}

@@ -1,0 +1,50 @@
+{
+	categories = (
+		{
+			title = Date;
+			icon = "date.png";
+			path = (
+				publishDate,
+				genre,
+			);
+		},
+		{
+			title = Publishers;
+			icon = "publishers.png";
+			path = (
+				publishers,
+				authors,
+			);
+		},
+		{
+			title = Authors;
+			icon = "authors.png";
+			path = (
+				authors,
+			);
+		},
+		{
+			title = Genres;
+			icon = "genres.png";
+			path = (
+				genres,
+			);
+		},
+	);
+	filters = {
+		publishDate = {
+			sections = "round:100";
+			property = published;
+		};
+		publishers = {
+			property = publisher;
+		};
+		authors = {
+			property = author;
+			sections = alphainitial;
+		};
+		genres = {
+			property = genre;
+		};
+	};
+}
