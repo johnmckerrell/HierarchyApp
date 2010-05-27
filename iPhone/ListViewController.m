@@ -61,6 +61,15 @@
 }
 */
 
+-(BOOL) validFilterValue:(NSString*)value {
+    NSString *other;
+    for (other in tableData) {
+        if ([other isEqualToString:value]) {
+            return YES;
+        }
+    }
+    return NO;
+}
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -184,7 +193,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Navigation logic may go here. Create and push another view controller.
     AppDelegate_Phone *appDelegate = (AppDelegate_Phone*)[[UIApplication sharedApplication] delegate];
-    [appDelegate filterProperty:[displayFilter objectForKey:@"property"] value:[tableData objectAtIndex:[indexPath indexAtPosition:1]]];
+    [appDelegate filterProperty:[displayFilter objectForKey:@"property"] value:[tableData objectAtIndex:[indexPath indexAtPosition:1]] confirm:NO];
 	/*
 	 <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
      // ...

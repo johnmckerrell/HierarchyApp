@@ -50,6 +50,17 @@
     return self;    
 }
 
+-(BOOL) validItem:(NSDictionary*)itemData {
+    NSDictionary *other;
+    NSString *itemID = [itemData objectForKey:@"id"];
+    for (other in tableData) {
+        if ([itemID isEqualToString:[other objectForKey:@"id"]]) {
+            return YES;
+        }
+    }
+    return NO;
+    
+}
 /*
 - (id)initWithStyle:(UITableViewStyle)style {
     // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -184,7 +195,7 @@
     // Navigation logic may go here. Create and push another view controller.
     AppDelegate_Phone *appDelegate = (AppDelegate_Phone*)[[UIApplication sharedApplication] delegate];
     NSDictionary *itemData = [tableData objectAtIndex:[indexPath indexAtPosition:1]];
-    [appDelegate showItem:itemData];
+    [appDelegate showItem:itemData confirm:NO];
 	/*
 	 <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
      // ...

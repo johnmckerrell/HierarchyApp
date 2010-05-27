@@ -279,13 +279,13 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>19</integer>
+									<integer>7</integer>
 									<integer>5</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 153}, {236, 714}}</string>
+							<string>{{0, 15}, {236, 714}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -322,7 +322,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>WebBrowserViewController.m</string>
+								<string>AppDelegate_Phone.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -330,30 +330,30 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>WebBrowserViewController.m</string>
+										<string>AppDelegate_Phone.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>52D7FCBA11AEE42A0018EB4F</string>
+										<string>52D7FD4511AF14720018EB4F</string>
 										<key>history</key>
 										<array>
 											<string>52D7F84811ABEDEB0018EB4F</string>
 											<string>52D7F84B11ABEDEB0018EB4F</string>
 											<string>52D7F87611AC14940018EB4F</string>
 											<string>52D7F87711AC14940018EB4F</string>
-											<string>52D7F9CC11AC32E60018EB4F</string>
-											<string>52D7F9CD11AC32E60018EB4F</string>
-											<string>52D7FA2611AC3A430018EB4F</string>
 											<string>52D7FAF311AD31370018EB4F</string>
-											<string>52D7FAF411AD31370018EB4F</string>
 											<string>52D7FB3111AD36430018EB4F</string>
 											<string>52D7FB3211AD36430018EB4F</string>
 											<string>52D7FB3311AD36430018EB4F</string>
 											<string>52D7FC4011AEDC790018EB4F</string>
-											<string>52D7FC9E11AEE2030018EB4F</string>
-											<string>52D7FC9F11AEE2030018EB4F</string>
 											<string>52D7FCA911AEE2F90018EB4F</string>
-											<string>52D7FCAA11AEE2F90018EB4F</string>
+											<string>52D7FCDD11AF0C250018EB4F</string>
+											<string>52D7FCFD11AF0D270018EB4F</string>
+											<string>52D7FD2111AF11A30018EB4F</string>
+											<string>52D7FD2211AF11A30018EB4F</string>
+											<string>52D7FD2311AF11A30018EB4F</string>
+											<string>52D7FD2411AF11A30018EB4F</string>
+											<string>52D7FD2511AF11A30018EB4F</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -551,7 +551,7 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>52D7FCBB11AEE42A0018EB4F</string>
+		<string>52D7FD4611AF14720018EB4F</string>
 		<string>52D7F91C11AC26720018EB4F</string>
 		<string>52D7F91D11AC26720018EB4F</string>
 		<string>1CD10A99069EF8BA00B06720</string>
@@ -590,7 +590,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {500, 218}}</string>
 								<key>RubberWindowFrame</key>
-								<string>587 523 500 500 0 0 1920 1178 </string>
+								<string>1184 343 500 500 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -616,7 +616,7 @@
 								<key>Frame</key>
 								<string>{{0, 223}, {500, 236}}</string>
 								<key>RubberWindowFrame</key>
-								<string>587 523 500 500 0 0 1920 1178 </string>
+								<string>1184 343 500 500 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXBuildResultsModule</string>
@@ -648,11 +648,11 @@
 			<key>WindowContentMinSize</key>
 			<string>486 300</string>
 			<key>WindowString</key>
-			<string>587 523 500 500 0 0 1920 1178 </string>
+			<string>1184 343 500 500 0 0 1920 1178 </string>
 			<key>WindowToolGUID</key>
 			<string>52D7F84011ABED6D0018EB4F</string>
 			<key>WindowToolIsVisible</key>
-			<false/>
+			<true/>
 		</dict>
 		<dict>
 			<key>FirstTimeWindowDisplayed</key>

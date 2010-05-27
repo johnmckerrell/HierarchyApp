@@ -35,13 +35,47 @@
     NSString *splashFile = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: @"Splash.png"];    
 
     NSLog(@"splashFile=%@", splashFile);
+
+    // Set the start settings
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDate *lastRun = [userDefaults objectForKey:@"lastRun"];
     
-    if ([fileManager fileExistsAtPath:splashFile]) {
+    BOOL usingRecentSettings = NO;
+    
+    if ([lastRun timeIntervalSinceNow] > -300) {
+        // Restore
+        NSString *startCategory =  [userDefaults objectForKey:@"startCategory"];
+        [self setCategoryByName:startCategory];
+        
+        NSArray *startFilters = [userDefaults objectForKey:@"startFilters"];
+        NSArray *oneFilter;
+        BOOL oneValidFilter = NO;
+        for (oneFilter in startFilters) {
+            if (![self filterProperty:[oneFilter objectAtIndex:0] value:[oneFilter objectAtIndex:1] confirm:YES]) {
+                // If this filter is no longer valid then don't look at following ones.
+                break;
+            }
+            oneValidFilter = YES;
+        }
+        
+        NSDictionary *startItem = [userDefaults objectForKey:@"startItem"];
+        NSLog(@"startItem=%@", startItem);
+        if (startItem) {
+            [self showItem:startItem confirm:YES];
+        }
+        
+        usingRecentSettings = YES;
+
+    } else {
+        [self setCategoryByName:nil];
+    }
+    
+    if (!usingRecentSettings && [fileManager fileExistsAtPath:splashFile]) {
         // Load the splash view
         UIImage *splashImage = [UIImage imageWithContentsOfFile:splashFile];
         splashView = [[[UIImageView alloc] initWithFrame:window.frame] autorelease];
         splashView.image = splashImage;
-                       
+        
         NSLog(@"Loading the splash screen");
         [window addSubview:splashView];
         [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(slideSplashScreenOut) userInfo:nil repeats:NO];
@@ -49,15 +83,17 @@
         // Add the navigation view to the window
         NSLog(@"Loading the navigation view");
         [window addSubview:self.navigationController.view];
-    }
-
-
-    // Set the filters to the default.
-    [self setCategoryByName:nil];
+    }    
     
     [window makeKeyAndVisible];
 	
 	return YES;
+}
+
+-(void)applicationWillTerminate:(UIApplication *)application {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    [userDefaults setObject:[NSDate date] forKey:@"lastRun"];    
 }
 
 -(void)slideSplashScreenOut {
@@ -133,8 +169,15 @@
     while ([currentFilters count] > categoryPathPosition) {
         [currentFilters removeLastObject];
     }
+    
+    NSLog(@"[currentFilters count] = %i", [currentFilters count] );
+    NSLog(@"categoryPathPosition = %i", categoryPathPosition );
 
+    if (currentItem && [currentFilters count] == categoryPathPosition) {
+        [currentItem release], currentItem = nil;
+    }
     NSLog(@"currentFilters now %@", currentFilters);
+    [self saveCurrentPosition];
 }
 /*
 -(BOOL) navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item {
@@ -144,7 +187,22 @@
 }
  */
   
--(void) filterProperty:(NSString*)name value:(NSString*)value {
+-(void) saveCurrentPosition {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+
+    [userDefaults setObject:currentFilters forKey:@"startFilters"];
+    [userDefaults setObject:currentCategory forKey:@"startCategory"];
+    NSLog(@"currentItem = %@", currentItem);
+    [userDefaults setObject:currentItem forKey:@"startItem"];
+}
+
+-(BOOL) filterProperty:(NSString*)name value:(NSString*)value confirm:(BOOL) confirm {
+    if (confirm) {
+        ListViewController *currentViewController = [self.navigationController.viewControllers lastObject];
+        if (![currentViewController validFilterValue:value]) {
+            return NO;
+        }
+    }
     NSLog(@"Should filter items with %@ = %@", name, value );
     [currentFilters addObject:[NSArray arrayWithObjects:name, value, nil]];
     
@@ -163,17 +221,25 @@
                                                    filteredBy:currentFilters] autorelease];
         [self.navigationController pushViewController:viewController animated:YES];
     }
-
+    return YES;
 }
 
--(void) showItem:(NSDictionary*)itemData {
+-(BOOL) showItem:(NSDictionary*)itemData confirm:(BOOL) confirm {
+    if (confirm) {
+        ItemListViewController *currentViewController = [self.navigationController.viewControllers lastObject];
+        if (![currentViewController validItem:itemData]) {
+            return NO;
+        }
+    }
     id viewController;
     if ([itemData objectForKey:@"htmlfile"]) {
         viewController = [[[ItemWebViewController alloc] initWithItem:itemData] autorelease];
     } else {
         viewController = [[[ItemDetailViewController alloc] initWithItem:itemData] autorelease];
     }
+    currentItem = [itemData retain];
     [self.navigationController pushViewController:viewController animated:YES];
+    return YES;
 }
 
 -(void) loadURLRequestInLocalBrowser:(NSURLRequest*) request {

@@ -14,5 +14,6 @@
 }
 
 -(id) initDisplaying:(NSDictionary*)_itemData data:(NSArray*)data filteredBy:(NSArray*)_allFilters;
+-(BOOL) validItem:(NSDictionary*)itemData;
 
 @end

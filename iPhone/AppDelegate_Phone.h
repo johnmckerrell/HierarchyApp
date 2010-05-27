@@ -18,6 +18,7 @@
     NSMutableArray *currentFilters;
     NSUInteger categoryPathPosition;
     UIImageView *splashView;
+    NSDictionary *currentItem;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
@@ -27,11 +28,12 @@
 @property (nonatomic, readonly) NSDictionary *appdata;
 
 -(void) setCategoryByName:(NSString*) category;
--(void) filterProperty:(NSString*)name value:(NSString*)value;
--(void) showItem:(NSDictionary*)itemData;
+-(BOOL) filterProperty:(NSString*)name value:(NSString*)value confirm:(BOOL) confirm;
+-(BOOL) showItem:(NSDictionary*)itemData confirm:(BOOL) confirm;
 -(void) loadURLRequestInLocalBrowser:(NSURLRequest*) request;
 -(NSDictionary*) getCurrentFilterAtPosition:(NSUInteger)position;
 -(NSDictionary*) getCategoryDataByName:(NSString*) category;
+-(void) saveCurrentPosition;
 
 @end
 
