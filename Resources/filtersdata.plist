@@ -1,19 +1,19 @@
 {
 	categories = (
 		{
-			title = Date;
-			icon = "date.png";
-			path = (
-				publishDate,
-				genre,
-			);
-		},
-		{
 			title = Publishers;
 			icon = "publishers.png";
 			path = (
 				publishers,
 				authors,
+			);
+		},
+		{
+			title = Date;
+			icon = "date.png";
+			path = (
+				publishDate,
+				genre,
 			);
 		},
 		{
@@ -33,18 +33,22 @@
 	);
 	filters = {
 		publishDate = {
+			title = "Publish Date";
 			sections = "round:100";
 			property = published;
 		};
 		publishers = {
 			property = publisher;
+			title = Publishers;
 		};
 		authors = {
 			property = author;
+			title = Authors;
 			sections = alphainitial;
 		};
 		genres = {
 			property = genre;
+			title = Genres;
 		};
 	};
 }

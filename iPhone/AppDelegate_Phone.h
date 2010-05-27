@@ -8,11 +8,30 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AppDelegate_Phone : NSObject <UIApplicationDelegate> {
+@interface AppDelegate_Phone : NSObject <UIApplicationDelegate,UINavigationControllerDelegate> {
     UIWindow *window;
+    IBOutlet UINavigationController *navigationController;
+    NSArray *maindata;
+    NSDictionary *filtersdata;
+    NSDictionary *appdata;
+    NSString *currentCategory;
+    NSMutableArray *currentFilters;
+    NSUInteger categoryPathPosition;
+    UIImageView *splashView;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
+@property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
+@property (nonatomic, readonly) NSArray *maindata;
+@property (nonatomic, readonly) NSDictionary *filtersdata;
+@property (nonatomic, readonly) NSDictionary *appdata;
+
+-(void) setCategoryByName:(NSString*) category;
+-(void) filterProperty:(NSString*)name value:(NSString*)value;
+-(void) showItem:(NSDictionary*)itemData;
+-(void) loadURLRequestInLocalBrowser:(NSURLRequest*) request;
+-(NSDictionary*) getCurrentFilterAtPosition:(NSUInteger)position;
+-(NSDictionary*) getCategoryDataByName:(NSString*) category;
 
 @end
 
