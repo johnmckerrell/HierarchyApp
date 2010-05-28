@@ -1,98 +1,164 @@
 (
 	{
         id = 1;
-		title = "Blossom Hill White Zinfandel";
-        htmlfile = "bhwz.html";
+		title = "Anthem - Rand Ayn";
+        htmlfile = "anthem.html";
 		properties = {
-            producer = "Blossom Hill";
-			type = "Rosé";
-			drink = "Wine";
-            area = "United States";
-            district = "California";
+            publisher = "Standard Publications";
+			author = "Rand Ayn";
+			published = 2007;
+			genre = "Dystopian Fiction";
 		};
 	},
 	{
         id = 2;
-		title = "Jacob's Creek Chardonnay";
-        htmlfile = "jcc.html";
+		title = "Vile Bodies - Evelyn Waugh";
+        htmlfile = "vilebodies.html";
 		properties = {
-            producer = "Jacob's Creek";
-			type = "White";
-			drink = "Wine";
-            area = "Australia";
-            district = "Sydney Valley";
+            publisher = "Penguin Modern Classics";
+			author = "Evelyn Waugh";
+			published = 2000;
+			genre = "Fiction";
 		};
 	},
 	{
         id = 3;
-		title = "Jacob's Creek Chardonnay";
-        htmlfile = "jcc.html";
+		title = "The Thing Around Your Neck - Chimamanda Ngozi Adichie";
 		properties = {
-            producer = "Jacob's Creek";
-			type = "White";
-			drink = "Wine";
-            area = "Australia";
-            district = "Sydney Valley";
+            publisher = "Fourth Estate";
+			author = "Chimamanda Ngozi Adichie";
+			published = 2009;
+			genre = "Fiction";
 		};
 	},
 	{
         id = 4;
-		title = "A Rioja";
-        htmlfile = "ar.html";
+		title = "The Children of Men - P.D. James";
 		properties = {
-            producer = "A";
-			type = "Red";
-			drink = "Wine";
-            area = "Europe";
-            district = "Spain";
+            publisher = "Faber and Faber";
+			author = "P.D. James";
+			published = 2006;
+			genre = "Dystopian Fiction";
 		};
 	},
 	{
         id = 5;
-		title = "Boddingtons";
-        htmlfile = "ar.html";
+		title = "The Girl Who Played with Fire - Stieg Larsson";
 		properties = {
-            producer = "Coors";
-			type = "Ale";
-			drink = "Beer";
-            area = "Europe";
-            district = "England";
+            publisher = "Maclehose Press";
+			author = "Stieg Larsson";
+			published = 2009;
+			genre = "Suspense Fiction";
 		};
 	},
 	{
         id = 6;
-		title = "Guinness Stout";
-        htmlfile = "ar.html";
+		title = "The Angel's Game - Carlos Ruiz Zafon";
 		properties = {
-            producer = "Guinness";
-			type = "Stout";
-			drink = "Beer";
-            area = "Europe";
-            district = "Ireland";
+            publisher = "Weidenfeld & Nicolson";
+			author = "Carlos Ruiz Zafon";
+			published = 2009;
+			genre = "Suspense Fiction";
 		};
 	},
 	{
         id = 7;
-		title = "Leffe";
-        htmlfile = "leffe.html";
+		title = "The Girl with the Dragon Tattoo by Stieg Larsson";
 		properties = {
-            producer = "Leffe";
-			type = "Lager";
-			drink = "Beer";
-            area = "Europe";
-            district = "Belgium";
+            publisher = "Maclehose Press";
+			author = "Stieg Larsson";
+			published = 2008;
+			genre = "Suspense Fiction";
 		};
 	},
 	{
         id = 8;
-		title = "Erdinger";
-        htmlfile = "ar.html";
+		title = "The Amber Spyglass - Philip Pullman";
 		properties = {
-            producer = "Erdinger";
-			type = "Lager";
-			drink = "Beer";
-            area = "Europe";
-            district = "Belgium";
+            publisher = "Scholastic";
+			author = "Philip Pullman";
+			published = 2001;
+			genre = "Fantasy Fiction";
+		};
+	},
+	{
+        id = 9;
+		title = "The Subtle Knife - Philip Pullman";
+		properties = {
+            publisher = "Scholastic";
+			author = "Philip Pullman";
+			published = 1997;
+			genre = "Fantasy Fiction";
+		};
+	},
+	{
+        id = 10;
+		title = "Northern Lights - Philip Pullman";
+		properties = {
+            publisher = "Scholastic";
+			author = "Philip Pullman";
+			published = 1995;
+			genre = "Fantasy Fiction";
+		};
+	},
+	{
+        id = 11;
+		title = "Breaking Dawn - Stephenie Meyer";
+		properties = {
+            publisher = "Atom";
+			author = "Stephenie Meyer";
+			published = 2008;
+			genre = "Fantasy Fiction";
+		};
+	},
+	{
+        id = 12;
+		title = "Revolutionary Road - Richard Yates";
+		properties = {
+            publisher = "Vintage Books";
+			author = "Richard Yates";
+			published = 2007;
+			genre = "Domestic Fiction";
+		};
+	},
+	{
+        id = 13;
+		title = "Eclipse - Stephenie Meyer";
+		properties = {
+            publisher = "Atom";
+			author = "Stephenie Meyer";
+			published = 2008;
+			genre = "Fantasy Fiction";
+		};
+	},
+	{
+        id = 14;
+		title = "New Moon - Stephenie Meyer";
+		properties = {
+            publisher = "Atom";
+			author = "Stephenie Meyer";
+			published = 2009;
+			genre = "Fantasy Fiction";
+		};
+	},
+	{
+        id = 15;
+		title = "Twilight - Stephenie Meyer";
+		properties = {
+            publisher = "Atom";
+			author = "Stephenie Meyer";
+			published = 2007;
+			genre = "Fantasy Fiction";
+		};
+	},
+	{
+        id = 16;
+		title = "East is East: Screenplay - Ayub Khan-Din";
+		properties = {
+            publisher = "FilmFour";
+			author = "Ayub Khan-Din";
+			published = 1999;
+			genre = "Fiction";
 		};
 	},
 )
