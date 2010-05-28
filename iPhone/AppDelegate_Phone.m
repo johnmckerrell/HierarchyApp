@@ -28,14 +28,24 @@
     filtersdata = [[NSDictionary dictionaryWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: @"filtersdata.plist"]] retain];
     maindata = [[NSArray arrayWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: @"maindata.plist"]] retain];
     
+    NSDictionary *appearance = [appdata objectForKey:@"appearance"];
+    if (appearance ) {
+        if ([appearance objectForKey:@"navigationBarTint"]) {
+            float red, blue, green, alpha;
+            NSString *tintColor = [appearance objectForKey:@"navigationBarTint"];
+            NSScanner *s = [NSScanner scannerWithString:tintColor];
+            [s setCharactersToBeSkipped:
+             [NSCharacterSet characterSetWithCharactersInString:@"\n, "]];
+            if ([s scanFloat:&red] && [s scanFloat:&green] && [s scanFloat:&blue] && [s scanFloat:&alpha] ) {
+                self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+            }
+        }
+    }
+    //self.navigationController.navigationBar.tintColor = [UIColor c
+    
     // The currently applied filters
     currentFilters = [[NSMutableArray alloc] init];
     
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *splashFile = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: @"Splash.png"];    
-
-    NSLog(@"splashFile=%@", splashFile);
-
     // Set the start settings
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSDate *lastRun = [userDefaults objectForKey:@"lastRun"];
@@ -69,6 +79,9 @@
     } else {
         [self setCategoryByName:nil];
     }
+
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *splashFile = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: @"Splash.png"];        
     
     if (!usingRecentSettings && [fileManager fileExistsAtPath:splashFile]) {
         // Load the splash view

@@ -8,23 +8,23 @@
 	};
 	2860E325111B887F00E27156 /* AppDelegate_Phone.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1005, 520}}";
-			sepNavSelRange = "{1054, 0}";
-			sepNavVisRange = "{0, 1337}";
+			sepNavIntBoundsRect = "{{0, 0}, {1005, 585}}";
+			sepNavSelRange = "{1477, 0}";
+			sepNavVisRange = "{92, 1392}";
 		};
 	};
 	2860E326111B887F00E27156 /* AppDelegate_Phone.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1139, 3523}}";
-			sepNavSelRange = "{1784, 0}";
-			sepNavVisRange = "{1289, 1443}";
+			sepNavIntBoundsRect = "{{0, 0}, {1139, 3679}}";
+			sepNavSelRange = "{1479, 0}";
+			sepNavVisRange = "{429, 2091}";
 			sepNavWindowFrame = "{{15, 615}, {750, 558}}";
 		};
 	};
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
 		activeBuildConfigurationName = Debug;
 		activeExecutable = 52D7F82311ABD4550018EB4F /* HierarchyApp */;
-		activeSDKPreference = iphoneos3.1;
+		activeSDKPreference = iphonesimulator3.1;
 		activeTarget = 1D6058900D05DD3D006BFB54 /* HierarchyApp */;
 		addToTargets = (
 			1D6058900D05DD3D006BFB54 /* HierarchyApp */,
@@ -94,13 +94,15 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 296687805;
-			PBXWorkspaceStateSaveDate = 296687805;
+			PBXPerProjectTemplateStateSaveDate = 296730708;
+			PBXWorkspaceStateSaveDate = 296730708;
 		};
 		perUserProjectItems = {
-			523BBE7C11AFBEC700490192 /* PBXTextBookmark */ = 523BBE7C11AFBEC700490192 /* PBXTextBookmark */;
-			523BBE7D11AFBEC700490192 /* PlistBookmark */ = 523BBE7D11AFBEC700490192 /* PlistBookmark */;
-			523BBE7E11AFBEC700490192 /* PlistBookmark */ = 523BBE7E11AFBEC700490192 /* PlistBookmark */;
+			523BBEAB11AFD7FE00490192 /* PlistBookmark */ = 523BBEAB11AFD7FE00490192 /* PlistBookmark */;
+			523BBEAC11AFD7FE00490192 /* PBXTextBookmark */ = 523BBEAC11AFD7FE00490192 /* PBXTextBookmark */;
+			523BBEAD11AFD7FE00490192 /* PBXTextBookmark */ = 523BBEAD11AFD7FE00490192 /* PBXTextBookmark */;
+			523BBEAE11AFD7FE00490192 /* PBXTextBookmark */ = 523BBEAE11AFD7FE00490192 /* PBXTextBookmark */;
+			523BBF2011AFE45600490192 /* PBXTextBookmark */ = 523BBF2011AFE45600490192 /* PBXTextBookmark */;
 			52D7F84B11ABEDEB0018EB4F /* PlistBookmark */ = 52D7F84B11ABEDEB0018EB4F /* PlistBookmark */;
 			52D7F87611AC14940018EB4F /* PlistBookmark */ = 52D7F87611AC14940018EB4F /* PlistBookmark */;
 			52D7F87711AC14940018EB4F /* PlistBookmark */ = 52D7F87711AC14940018EB4F /* PlistBookmark */;
@@ -110,49 +112,65 @@
 			52D7FB3311AD36430018EB4F /* PBXTextBookmark */ = 52D7FB3311AD36430018EB4F /* PBXTextBookmark */;
 			52D7FC4011AEDC790018EB4F /* PBXBookmark */ = 52D7FC4011AEDC790018EB4F /* PBXBookmark */;
 			52D7FCA911AEE2F90018EB4F /* PBXTextBookmark */ = 52D7FCA911AEE2F90018EB4F /* PBXTextBookmark */;
-			52D7FCDD11AF0C250018EB4F /* PBXTextBookmark */ = 52D7FCDD11AF0C250018EB4F /* PBXTextBookmark */;
 			52D7FCFD11AF0D270018EB4F /* PBXTextBookmark */ = 52D7FCFD11AF0D270018EB4F /* PBXTextBookmark */;
 			52D7FD2111AF11A30018EB4F /* PBXTextBookmark */ = 52D7FD2111AF11A30018EB4F /* PBXTextBookmark */;
 			52D7FD2211AF11A30018EB4F /* PBXTextBookmark */ = 52D7FD2211AF11A30018EB4F /* PBXTextBookmark */;
 			52D7FD2311AF11A30018EB4F /* PBXTextBookmark */ = 52D7FD2311AF11A30018EB4F /* PBXTextBookmark */;
-			52D7FD2411AF11A30018EB4F /* PBXTextBookmark */ = 52D7FD2411AF11A30018EB4F /* PBXTextBookmark */;
 		};
 		sourceControlManager = 52D7F82D11ABD4760018EB4F /* Source Control */;
 		userBuildSettings = {
 		};
 	};
-	523BBE7C11AFBEC700490192 /* PBXTextBookmark */ = {
+	523BBEAB11AFD7FE00490192 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = 8D1107310486CEB800E47090 /* HierarchyApp-Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+		);
+		name = "/Users/john/Coding/iPhone/HierarchyApp/HierarchyApp-Info.plist";
+		rLen = 0;
+		rLoc = 9223372036854775807;
+	};
+	523BBEAC11AFD7FE00490192 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 52D7FAD211AD2EEF0018EB4F /* WebBrowserViewController.m */;
+		name = "WebBrowserViewController.m: 63";
+		rLen = 0;
+		rLoc = 2198;
+		rType = 0;
+		vrLen = 1421;
+		vrLoc = 1348;
+	};
+	523BBEAD11AFD7FE00490192 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 2860E325111B887F00E27156 /* AppDelegate_Phone.h */;
+		name = "AppDelegate_Phone.h: 42";
+		rLen = 0;
+		rLoc = 1477;
+		rType = 0;
+		vrLen = 1392;
+		vrLoc = 92;
+	};
+	523BBEAE11AFD7FE00490192 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 2860E326111B887F00E27156 /* AppDelegate_Phone.m */;
-		name = "AppDelegate_Phone.m: 45";
+		name = "AppDelegate_Phone.m: 17";
 		rLen = 0;
-		rLoc = 1784;
+		rLoc = 427;
 		rType = 0;
-		vrLen = 1443;
-		vrLoc = 1289;
+		vrLen = 1537;
+		vrLoc = 0;
 	};
-	523BBE7D11AFBEC700490192 /* PlistBookmark */ = {
-		isa = PlistBookmark;
-		fRef = 8D1107310486CEB800E47090 /* HierarchyApp-Info.plist */;
-		fallbackIsa = PBXBookmark;
-		isK = 0;
-		kPath = (
-		);
-		name = "/Users/john/Coding/iPhone/HierarchyApp/HierarchyApp-Info.plist";
+	523BBF2011AFE45600490192 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 2860E326111B887F00E27156 /* AppDelegate_Phone.m */;
+		name = "AppDelegate_Phone.m: 36";
 		rLen = 0;
-		rLoc = 9223372036854775807;
-	};
-	523BBE7E11AFBEC700490192 /* PlistBookmark */ = {
-		isa = PlistBookmark;
-		fRef = 8D1107310486CEB800E47090 /* HierarchyApp-Info.plist */;
-		fallbackIsa = PBXBookmark;
-		isK = 0;
-		kPath = (
-			"NSMainNibFile~ipad",
-		);
-		name = "/Users/john/Coding/iPhone/HierarchyApp/HierarchyApp-Info.plist";
-		rLen = 0;
-		rLoc = 9223372036854775807;
+		rLoc = 1479;
+		rType = 0;
+		vrLen = 2091;
+		vrLoc = 429;
 	};
 	52D7F82311ABD4550018EB4F /* HierarchyApp */ = {
 		isa = PBXExecutable;
@@ -301,9 +319,9 @@
 	};
 	52D7FAD211AD2EEF0018EB4F /* WebBrowserViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1377, 1859}}";
-			sepNavSelRange = "{3258, 0}";
-			sepNavVisRange = "{2810, 1343}";
+			sepNavIntBoundsRect = "{{0, 0}, {1349, 1924}}";
+			sepNavSelRange = "{2198, 0}";
+			sepNavVisRange = "{1348, 1421}";
 		};
 	};
 	52D7FAF311AD31370018EB4F /* PBXTextBookmark */ = {
@@ -360,16 +378,6 @@
 		vrLen = 849;
 		vrLoc = 0;
 	};
-	52D7FCDD11AF0C250018EB4F /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 52D7FAD211AD2EEF0018EB4F /* WebBrowserViewController.m */;
-		name = "WebBrowserViewController.m: 96";
-		rLen = 0;
-		rLoc = 3258;
-		rType = 0;
-		vrLen = 1343;
-		vrLoc = 2810;
-	};
 	52D7FCFD11AF0D270018EB4F /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 52D7F83711ABEC200018EB4F /* ListViewController.h */;
@@ -409,15 +417,5 @@
 		rType = 0;
 		vrLen = 1248;
 		vrLoc = 5257;
-	};
-	52D7FD2411AF11A30018EB4F /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 2860E325111B887F00E27156 /* AppDelegate_Phone.h */;
-		name = "AppDelegate_Phone.h: 32";
-		rLen = 0;
-		rLoc = 1054;
-		rType = 0;
-		vrLen = 1337;
-		vrLoc = 0;
 	};
 }
