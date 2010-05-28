@@ -18,6 +18,7 @@
         // navigation bar, which we do in viewWillAppear
         //self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(closeWebBrowser:)] autorelease];
         //self.navigationItem.hidesBackButton = YES;
+        // Test Comment
     }
     return self;
 }
