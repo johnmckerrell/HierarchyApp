@@ -42,7 +42,7 @@
     
     BOOL usingRecentSettings = NO;
     
-    if ([lastRun timeIntervalSinceNow] > -300) {
+    if (lastRun && [lastRun timeIntervalSinceNow] > -300) {
         // Restore
         NSString *startCategory =  [userDefaults objectForKey:@"startCategory"];
         [self setCategoryByName:startCategory];
