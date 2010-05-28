@@ -60,7 +60,10 @@
 - (void)webViewDidStartLoad:(UIWebView *)_webView {
     NSLog(@"web browser Did start load.");
     NSLog(@"3:statusURL.text=%@", statusURL.text);
-    statusURL.text = [[webView.request URL] absoluteString];
+    NSString *url = [[webView.request URL] absoluteString];
+    if (url && ! [url isEqualToString:@""]) {
+        statusURL.text = url;
+    }
     NSLog(@"4:statusURL.text=%@", statusURL.text);
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.5];
