@@ -1,54 +1,32 @@
 {
 	categories = (
 		{
-			title = Publishers;
+			title = Main;
 			icon = "publishers.png";
 			path = (
-				publishers,
-				authors,
-			);
-		},
-		{
-			title = Date;
-			icon = "date.png";
-			path = (
-				publishDate,
-				genre,
-			);
-		},
-		{
-			title = Authors;
-			icon = "authors.png";
-			path = (
-				authors,
-			);
-		},
-		{
-			title = Genres;
-			icon = "genres.png";
-			path = (
-				genres,
+				drink,
+                type,
+				area,
+                district,
 			);
 		},
 	);
 	filters = {
-		publishDate = {
-			title = "Publish Date";
-			sections = "round:100";
-			property = published;
+		drink = {
+			title = "Drink";
+			property = drink;
 		};
-		publishers = {
-			property = publisher;
-			title = Publishers;
+		type = {
+			property = type;
+			title = Type;
 		};
-		authors = {
-			property = author;
-			title = Authors;
-			sections = alphainitial;
+		area = {
+			property = area;
+			title = Area;
 		};
-		genres = {
-			property = genre;
-			title = Genres;
+		district = {
+			property = district;
+			title = District;
 		};
 	};
 }

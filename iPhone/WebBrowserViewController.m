@@ -41,6 +41,7 @@
     NSLog(@"1:statusURL.text=%@", statusURL.text);
     statusURL.text = [[request URL] absoluteString];
     NSLog(@"2:statusURL.text=%@", statusURL.text);
+    webView.scalesPageToFit = YES;
     [webView loadRequest:request];
     
 }

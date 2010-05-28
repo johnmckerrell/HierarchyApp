@@ -86,7 +86,7 @@
     if (!usingRecentSettings && [fileManager fileExistsAtPath:splashFile]) {
         // Load the splash view
         UIImage *splashImage = [UIImage imageWithContentsOfFile:splashFile];
-        splashView = [[[UIImageView alloc] initWithFrame:window.frame] autorelease];
+        splashView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 20, splashImage.size.width, splashImage.size.height)] autorelease];
         splashView.image = splashImage;
         
         NSLog(@"Loading the splash screen");
