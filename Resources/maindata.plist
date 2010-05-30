@@ -65,7 +65,7 @@
         htmlfile = "ar.html";
 		properties = {
             producer = "Guinness";
-			type = "Stout";
+			type = "Stout & Porter";
 			drink = "Beer";
             area = "Europe";
             district = "Ireland";
@@ -93,6 +93,18 @@
 			drink = "Beer";
             area = "Europe";
             district = "Belgium";
+		};
+	},
+	{
+        id = 9;
+		title = "Conwy Telford Porter";
+        url = "http://www.drinkprice.com/product/conwy-telford-porter-case-of-12x50cl";
+		properties = {
+            producer = "Conwy Telford";
+			type = "Stout & Porter";
+			drink = "Beer";
+            area = "Europe";
+            district = "Wales";
 		};
 	},
 )

@@ -13,8 +13,11 @@
     NSDictionary *itemData;
     IBOutlet UIWebView *webView;
     BOOL initialLoadPerformed;
+    IBOutlet UIView *statusIndicator;
 }
 
 -(id) initWithItem:(NSDictionary*)_itemData;
+-(void) setStatusTimer;
+-(void) hideStatusIndicator;
 
 @end

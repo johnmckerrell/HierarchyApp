@@ -245,7 +245,7 @@
         }
     }
     id viewController;
-    if ([itemData objectForKey:@"htmlfile"]) {
+    if ([itemData objectForKey:@"htmlfile"] || [itemData objectForKey:@"url"]) {
         viewController = [[[ItemWebViewController alloc] initWithItem:itemData] autorelease];
     } else {
         viewController = [[[ItemDetailViewController alloc] initWithItem:itemData] autorelease];
