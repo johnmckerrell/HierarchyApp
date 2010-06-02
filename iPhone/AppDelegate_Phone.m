@@ -28,6 +28,9 @@
     filtersdata = [[NSDictionary dictionaryWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: @"filtersdata.plist"]] retain];
     maindata = [[NSArray arrayWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: @"maindata.plist"]] retain];
     
+    // Create an array to hold the filtered data
+    filteredData = [[NSMutableArray alloc] initWithCapacity:[maindata count]];
+    
     NSDictionary *appearance = [appdata objectForKey:@"appearance"];
     if (appearance ) {
         if ([appearance objectForKey:@"navigationBarTint"]) {
@@ -45,6 +48,7 @@
     
     // The currently applied filters
     currentFilters = [[NSMutableArray alloc] init];
+    ignoredFilters = [[NSMutableArray alloc] init];
     
     // Set the start settings
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -86,7 +90,7 @@
     if (!usingRecentSettings && [fileManager fileExistsAtPath:splashFile]) {
         // Load the splash view
         UIImage *splashImage = [UIImage imageWithContentsOfFile:splashFile];
-        splashView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 20, splashImage.size.width, splashImage.size.height)] autorelease];
+        splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 20, splashImage.size.width, splashImage.size.height)];
         splashView.image = splashImage;
         
         NSLog(@"Loading the splash screen");
@@ -101,6 +105,49 @@
     [window makeKeyAndVisible];
 	
 	return YES;
+}
+
+-(void)filterData {
+    if ([currentFilters count] == 0) {
+        [filteredData setArray:maindata];
+        return;
+    }
+    NSDictionary *itemData, *itemProperties;
+    NSArray *filter;
+    NSString *testValue;
+    BOOL match;
+    [filteredData removeAllObjects];
+    for (itemData in maindata) {
+        match = YES;
+        itemProperties = [itemData objectForKey:@"properties"];
+        
+        for (filter in currentFilters) {
+            testValue = [itemProperties objectForKey:[filter objectAtIndex:0]];
+            if (![testValue isEqualToString:[filter objectAtIndex:1]]) {
+                match = NO;
+                break;
+            }
+        }
+        
+        if (match) {
+            [filteredData addObject:itemData];
+        }
+    }
+}
+
+-(void)filterDataWhereProperty:(NSString*)property hasValue:(NSString*)value {
+    NSUInteger i, count = [filteredData count];
+    NSDictionary *itemData, *itemProperties;
+    for (i = 0; i < count; ) {
+        itemData = [filteredData objectAtIndex:i];
+        itemProperties = [itemData objectForKey:@"properties"];
+        if ([value isEqualToString:[itemProperties objectForKey:property]]) {
+            ++i;
+        } else {
+            [filteredData removeObjectAtIndex:i];
+            --count;
+        }
+    }
 }
 
 -(void)applicationWillTerminate:(UIApplication *)application {
@@ -160,16 +207,18 @@
 
     categoryPathPosition = 0;
     [currentFilters removeAllObjects];
+    [self filterData];
     if ([currentCategory isEqualToString:[categoryData objectForKey:@"title"]]) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
         NSDictionary *firstFilter = [self getCurrentFilterAtPosition:0];
+        NSArray *headings = [self filterHeadings:firstFilter];
         
         NSLog(@"firstFilter=%@", firstFilter);
         // Create a ListViewController with
         //  displaying firstFilter
         //  filteredBy currentFilters
-        ListViewController *viewController = [[[ListViewController alloc] initDisplaying:firstFilter data:maindata filteredBy:currentFilters] autorelease];
+        ListViewController *viewController = [[[ListViewController alloc] initDisplaying:firstFilter data:headings] autorelease];
         [self.navigationController setViewControllers:[NSArray arrayWithObject:viewController]];
         
         [currentCategory release];
@@ -177,10 +226,41 @@
     }
 }
 
+/**
+ * This function may be called whether we're going forwards or backwards
+ * in a hierarchy. If we're going forwards then everything should add up
+ * fine and we won't do anything, if we're going backwards then
+ * categoryPathPosition should end up "too big" and we'll know that we
+ * need to remove filters until we match the number of viewcontrollers
+ * that are visible. Couldn't think of a better way of detecting that we
+ * had gone backwards through the hierarchy.
+ */
 -(void) navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
-    categoryPathPosition = [self.navigationController.viewControllers count] - 1;
+    BOOL modifiedFilters = NO;
+    // The number of navigation controllers will be less if we've ignored filters
+    // so we need to add their count on here
+    categoryPathPosition = ([self.navigationController.viewControllers count] - 1) + [ignoredFilters count];
+    
+    // Whereas currentFilters still has the ignoredFilters included so should be "right"
     while ([currentFilters count] > categoryPathPosition) {
+        NSArray *removingFilter = [currentFilters lastObject];
+        NSDictionary *lastIgnoredFilter = [ignoredFilters lastObject];
+        
+        // Now check if the filter we just removed was one that we were ignoring anyway, if it
+        // was then we'll need to remove the next one too.
+        NSString *removedFilterProperty = [removingFilter objectAtIndex:0];
+        NSLog(@"removedFilterProperty=%@:lastIgnoredFilter=%@", removedFilterProperty, [lastIgnoredFilter objectForKey:@"property"] );
+        if ([removedFilterProperty isEqualToString:[lastIgnoredFilter objectForKey:@"property"]]) {
+            NSLog(@"IGNORED FILTER");
+            [ignoredFilters removeLastObject];
+            --categoryPathPosition;
+        }
         [currentFilters removeLastObject];
+        modifiedFilters = YES;
+    }
+    
+    if (modifiedFilters) {
+        [self filterData];
     }
     
     NSLog(@"[currentFilters count] = %i", [currentFilters count] );
@@ -211,30 +291,60 @@
 
 -(BOOL) filterProperty:(NSString*)name value:(NSString*)value confirm:(BOOL) confirm {
     if (confirm) {
-        ListViewController *currentViewController = [self.navigationController.viewControllers lastObject];
-        if (![currentViewController validFilterValue:value]) {
+        NSDictionary *itemData;
+        BOOL match = NO;
+        for (itemData in filteredData) {
+            if ([value isEqualToString:[[itemData objectForKey:@"properties"] objectForKey:name]]) {
+                match = YES;
+            }
+        }
+        if (!match) {
             return NO;
         }
     }
     NSLog(@"Should filter items with %@ = %@", name, value );
     [currentFilters addObject:[NSArray arrayWithObjects:name, value, nil]];
+    [self filterDataWhereProperty:name hasValue:value];
     
     // Advance to next path position
     ++categoryPathPosition;
     NSDictionary *currentFilter = [self getCurrentFilterAtPosition:categoryPathPosition];
     
     if (currentFilter) {
-        ListViewController *viewController = [[[ListViewController alloc] initDisplaying:currentFilter data:maindata filteredBy:currentFilters] autorelease];
+        NSArray *headings = [self filterHeadings:currentFilter];
+        if ( [headings count] == 1
+            && [@"YES" isEqualToString:[currentFilter objectForKey:@"skipSingleEntry"] ]) {
+            NSLog(@"skipping %@ because everything has the value %@", [currentFilter objectForKey:@"property"], [headings objectAtIndex:0] );
+            [ignoredFilters addObject:currentFilter];
+            // Skip onto the next filter
+            return [self filterProperty:[currentFilter objectForKey:@"property"] value:[headings objectAtIndex:0] confirm:NO];
+        }
+        ListViewController *viewController = [[[ListViewController alloc] initDisplaying:currentFilter data:headings] autorelease];
         [self.navigationController pushViewController:viewController animated:YES];
     } else {
         // Show a list of items
         ItemListViewController *viewController = [[[ItemListViewController alloc] 
                                                    initDisplaying:[appdata objectForKey:@"itemData"] 
-                                                   data:maindata
-                                                   filteredBy:currentFilters] autorelease];
+                                                   data:filteredData] autorelease];
         [self.navigationController pushViewController:viewController animated:YES];
     }
     return YES;
+}
+
+-(NSArray*) filterHeadings:(NSDictionary *)filter {
+    NSMutableDictionary *tableHash = [NSMutableDictionary dictionaryWithCapacity:[filteredData count]];
+    NSDictionary *itemData, *itemProperties;
+    NSString *itemName;
+    for (itemData in filteredData) {
+        itemProperties = [itemData objectForKey:@"properties"];
+        itemName = [itemProperties objectForKey:[filter objectForKey:@"property"]];
+        if (![tableHash objectForKey:itemName]) {
+            [tableHash setObject:itemName forKey:itemName];
+        }
+    }
+    return [[tableHash allKeys] sortedArrayUsingDescriptors:
+                  [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"self" ascending:YES] autorelease]]
+                  ];
 }
 
 -(BOOL) showItem:(NSDictionary*)itemData confirm:(BOOL) confirm {

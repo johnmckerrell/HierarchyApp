@@ -13,7 +13,7 @@
     NSArray *tableData;
 }
 
--(id) initDisplaying:(NSDictionary*)_itemData data:(NSArray*)data filteredBy:(NSArray*)_allFilters;
+-(id) initDisplaying:(NSDictionary*)_itemData data:(NSArray*)data;
 -(BOOL) validItem:(NSDictionary*)itemData;
 
 @end

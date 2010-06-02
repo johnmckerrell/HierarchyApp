@@ -15,35 +15,14 @@
 #pragma mark -
 #pragma mark Initialization
 
--(id) initDisplaying:(NSDictionary*)_itemData data:(NSArray*)data filteredBy:(NSArray*)allFilters {
+-(id) initDisplaying:(NSDictionary*)_itemData data:(NSArray*)data {
     if ((self = [super initWithStyle:UITableViewStylePlain])) {
         self.title = [_itemData objectForKey:@"title"];
         NSLog(@"Set title to %@", [_itemData objectForKey:@"title"] );
         NSLog(@"itemData = %@", _itemData);
         //tableData = [[NSMutableArray alloc] initWithCapacity:[data count]];
         
-        NSMutableArray *newTableData = [NSMutableArray arrayWithCapacity:[data count]];
-        NSDictionary *itemData, *itemProperties;
-        NSArray *filter;
-        NSString *testValue;
-        for (itemData in data) {
-            BOOL match = YES;
-            itemProperties = [itemData objectForKey:@"properties"];
-            
-            // FIXME Do some checking against the filters
-            for (filter in allFilters) {
-                testValue = [itemProperties objectForKey:[filter objectAtIndex:0]];
-                if (![testValue isEqualToString:[filter objectAtIndex:1]]) {
-                    match = NO;
-                    break;
-                }
-            }
-            
-            if (match) {
-                [newTableData addObject:itemData];
-            }
-        }
-        tableData = [[newTableData sortedArrayUsingDescriptors:
+        tableData = [[data sortedArrayUsingDescriptors:
                       [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"self.title" ascending:YES] autorelease]]
                       ] retain];
     }

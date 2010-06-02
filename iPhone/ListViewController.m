@@ -15,40 +15,14 @@
 #pragma mark -
 #pragma mark Initialization
 
--(id) initDisplaying:(NSDictionary*)_displayFilter data:(NSArray*)data filteredBy:(NSArray*)allFilters {
+-(id) initDisplaying:(NSDictionary*)_displayFilter data:(NSArray*)data {
     if ((self = [super initWithStyle:UITableViewStylePlain])) {
         displayFilter = [_displayFilter retain];
         self.title = [displayFilter objectForKey:@"title"];
         NSLog(@"Set title to %@", [displayFilter objectForKey:@"title"] );
         //tableData = [[NSMutableArray alloc] initWithCapacity:[data count]];
         
-        NSMutableDictionary *tableHash = [NSMutableDictionary dictionaryWithCapacity:[data count]];
-        NSDictionary *itemData, *itemProperties;
-        NSArray *filter;
-        NSString *testValue, *itemName;
-        for (itemData in data) {
-            BOOL match = YES;
-            itemProperties = [itemData objectForKey:@"properties"];
-            
-            // FIXME Do some checking against the filters
-            for (filter in allFilters) {
-                testValue = [itemProperties objectForKey:[filter objectAtIndex:0]];
-                if (![testValue isEqualToString:[filter objectAtIndex:1]]) {
-                    match = NO;
-                    break;
-                }
-            }
-            
-            if (match) {
-                itemName = [itemProperties objectForKey:[displayFilter objectForKey:@"property"]];
-                if (![tableHash objectForKey:itemName]) {
-                    [tableHash setObject:itemName forKey:itemName];
-                }
-            }
-        }
-        tableData = [[[tableHash allKeys] sortedArrayUsingDescriptors:
-                      [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"self" ascending:YES] autorelease]]
-                      ] retain];
+        tableData = [data retain];
     }
     return self;    
 }
@@ -60,16 +34,6 @@
     return self;
 }
 */
-
--(BOOL) validFilterValue:(NSString*)value {
-    NSString *other;
-    for (other in tableData) {
-        if ([other isEqualToString:value]) {
-            return YES;
-        }
-    }
-    return NO;
-}
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -139,6 +103,7 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
+    NSLog(@"table data %i is %@", [indexPath indexAtPosition:1], [tableData objectAtIndex:[indexPath indexAtPosition:1]] );
     // Configure the cell...
     cell.textLabel.text = [tableData objectAtIndex:[indexPath indexAtPosition:1]];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

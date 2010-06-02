@@ -5,15 +5,15 @@
 			icon = "publishers.png";
 			path = (
 				drink,
-                type,
+				type,
 				area,
-                district,
+				district,
 			);
 		},
 	);
 	filters = {
 		drink = {
-			title = "Drink";
+			title = Drink;
 			property = drink;
 		};
 		type = {
@@ -21,6 +21,7 @@
 			title = Type;
 		};
 		area = {
+			skipSingleEntry = YES;
 			property = area;
 			title = Area;
 		};

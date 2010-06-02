@@ -17,7 +17,6 @@
 //  displaying firstFilter
 //  [filteredBy currentFilters copy]
 
--(id) initDisplaying:(NSDictionary*)_displayFilter data:(NSArray*)data filteredBy:(NSArray*)_allFilters;
--(BOOL) validFilterValue:(NSString*)value;
+-(id) initDisplaying:(NSDictionary*)_displayFilter data:(NSArray*)data;
 
 @end
