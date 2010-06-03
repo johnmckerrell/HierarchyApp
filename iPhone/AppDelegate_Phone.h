@@ -19,6 +19,8 @@
     NSUInteger categoryPathPosition;
     UIImageView *splashView;
     NSDictionary *currentItem;
+    NSMutableArray *filteredData;
+    NSMutableArray *ignoredFilters;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
@@ -27,18 +29,18 @@
 @property (nonatomic, readonly) NSDictionary *filtersdata;
 @property (nonatomic, readonly) NSDictionary *appdata;
 
+-(void)slideSplashScreenOut;
 -(void) setCategoryByName:(NSString*) category;
--(BOOL) filterProperty:(NSString*)name value:(NSString*)value confirm:(BOOL) confirm;
--(BOOL) showItem:(NSDictionary*)itemData confirm:(BOOL) confirm;
+-(BOOL) filterProperty:(NSString*)name value:(NSString*)value fromSave:(BOOL) fromSave;
+-(BOOL) showItem:(NSDictionary*)itemData fromSave:(BOOL) fromSave;
 -(void) loadURLRequestInLocalBrowser:(NSURLRequest*) request;
 -(NSDictionary*) getCurrentFilterAtPosition:(NSUInteger)position;
 -(NSDictionary*) getCategoryDataByName:(NSString*) category;
 -(void) saveCurrentPosition;
+-(void)filterData;
+-(NSArray*)filterHeadings:(NSDictionary*)filter;
 
-#define HEXCOLOR(c) [UIColor colorWithRed:((c>>24)&0xFF)/255.0 \
-green:((c>>16)&0xFF)/255.0 \
-blue:((c>>8)&0xFF)/255.0 \
-alpha:((c)&0xFF)/255.0]
+-(NSArray*)filterDataForSearchTerm:(NSString*)string usingFilters:(BOOL)useFilters;
 
 @end
 

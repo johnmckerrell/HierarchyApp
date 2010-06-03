@@ -9,11 +9,14 @@
 #import <UIKit/UIKit.h>
 
 
-@interface ItemListViewController : UITableViewController {
+@interface ItemListViewController : UITableViewController <UISearchDisplayDelegate> {
     NSArray *tableData;
+    NSArray *filteredData;
+    UISearchDisplayController *searchDisplayController;
 }
 
--(id) initDisplaying:(NSDictionary*)_itemData data:(NSArray*)data filteredBy:(NSArray*)_allFilters;
+-(id) initDisplaying:(NSDictionary*)_itemData data:(NSArray*)data;
 -(BOOL) validItem:(NSDictionary*)itemData;
+- (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope;
 
 @end

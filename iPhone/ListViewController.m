@@ -15,40 +15,15 @@
 #pragma mark -
 #pragma mark Initialization
 
--(id) initDisplaying:(NSDictionary*)_displayFilter data:(NSArray*)data filteredBy:(NSArray*)allFilters {
+-(id) initDisplaying:(NSDictionary*)_displayFilter data:(NSArray*)data {
     if ((self = [super initWithStyle:UITableViewStylePlain])) {
         displayFilter = [_displayFilter retain];
         self.title = [displayFilter objectForKey:@"title"];
         NSLog(@"Set title to %@", [displayFilter objectForKey:@"title"] );
         //tableData = [[NSMutableArray alloc] initWithCapacity:[data count]];
         
-        NSMutableDictionary *tableHash = [NSMutableDictionary dictionaryWithCapacity:[data count]];
-        NSDictionary *itemData, *itemProperties;
-        NSArray *filter;
-        NSString *testValue, *itemName;
-        for (itemData in data) {
-            BOOL match = YES;
-            itemProperties = [itemData objectForKey:@"properties"];
-            
-            // FIXME Do some checking against the filters
-            for (filter in allFilters) {
-                testValue = [itemProperties objectForKey:[filter objectAtIndex:0]];
-                if (![testValue isEqualToString:[filter objectAtIndex:1]]) {
-                    match = NO;
-                    break;
-                }
-            }
-            
-            if (match) {
-                itemName = [itemProperties objectForKey:[displayFilter objectForKey:@"property"]];
-                if (![tableHash objectForKey:itemName]) {
-                    [tableHash setObject:itemName forKey:itemName];
-                }
-            }
-        }
-        tableData = [[[tableHash allKeys] sortedArrayUsingDescriptors:
-                      [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"self" ascending:YES] autorelease]]
-                      ] retain];
+        tableData = [data retain];
+        filteredData = nil;
     }
     return self;    
 }
@@ -61,30 +36,28 @@
 }
 */
 
--(BOOL) validFilterValue:(NSString*)value {
-    NSString *other;
-    for (other in tableData) {
-        if ([other isEqualToString:value]) {
-            return YES;
-        }
-    }
-    return NO;
-}
-
 #pragma mark -
 #pragma mark View lifecycle
 
-/*
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    UISearchBar *searchBar = [[[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)] autorelease];
+    searchBar.scopeButtonTitles = [NSArray arrayWithObjects:@"Using filters", @"All entries", nil];
+    self.tableView.tableHeaderView = searchBar;
+    
+    searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
+    searchDisplayController.delegate = self;
+    searchDisplayController.searchResultsDelegate = self;
+    searchDisplayController.searchResultsDataSource = self;
     // Uncomment the following line to preserve selection between presentations.
-    self.clearsSelectionOnViewWillAppear = NO;
+    //self.clearsSelectionOnViewWillAppear = NO;
+    
+    //UISearchDisplayController *sdc = [[UISearchDisplayController alloc] initWithSearchBar:<#(UISearchBar *)searchBar#> contentsController:<#(UIViewController *)viewController#>
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
-*/
 
 /*
 - (void)viewWillAppear:(BOOL)animated {
@@ -119,15 +92,41 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 1;
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return [filteredData count];
+    } else {
+        return 1;
+    }
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return [tableData count];
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        if (filteredData) {
+            NSLog(@"For section %i returning %i rows", section, [[[filteredData objectAtIndex:section] objectForKey:@"results"] count]);
+            NSLog(@"Section %i has this data: %@", section, [filteredData objectAtIndex:section]);
+            return [[[filteredData objectAtIndex:section] objectForKey:@"results"] count];
+        } else {
+            return 0;
+        }
+    } else {
+        return [tableData count];        
+    }
+
 }
 
+- (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        if (filteredData) {
+            return [[filteredData objectAtIndex:section] objectForKey:@"type"];
+        } else {
+            return nil;
+        }
+    } else {
+        return nil;
+    }
+}
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -140,8 +139,13 @@
     }
     
     // Configure the cell...
-    cell.textLabel.text = [tableData objectAtIndex:[indexPath indexAtPosition:1]];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        NSDictionary *result = [[[filteredData objectAtIndex:[indexPath indexAtPosition:0]] objectForKey:@"results"] objectAtIndex:[indexPath indexAtPosition:1]];
+        cell.textLabel.text = [result objectForKey:@"title"];
+    } else {
+        cell.textLabel.text = [tableData objectAtIndex:[indexPath indexAtPosition:1]];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
     
     return cell;
 }
@@ -186,6 +190,44 @@
 }
 */
 
+#pragma mark -
+#pragma mark Content Filtering
+
+- (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope
+{
+	/*
+	 Update the filtered array based on the search text and scope.
+	 */
+	AppDelegate_Phone *appDelegate = (AppDelegate_Phone*)[[UIApplication sharedApplication] delegate];
+    [filteredData release];
+    filteredData = [appDelegate filterDataForSearchTerm:searchText usingFilters:[scope isEqualToString:@"Using filters"]];
+    [filteredData retain];
+}
+
+
+#pragma mark -
+#pragma mark UISearchDisplayController Delegate Methods
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+{
+    [self filterContentForSearchText:searchString scope:
+     [[self.searchDisplayController.searchBar scopeButtonTitles] objectAtIndex:[self.searchDisplayController.searchBar selectedScopeButtonIndex]]];
+    
+    // Return YES to cause the search result table view to be reloaded.
+    return YES;
+}
+
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption
+{
+    [self filterContentForSearchText:[self.searchDisplayController.searchBar text] scope:
+     [[self.searchDisplayController.searchBar scopeButtonTitles] objectAtIndex:searchOption]];
+    
+    // Return YES to cause the search result table view to be reloaded.
+    return YES;
+}
+
+
 
 #pragma mark -
 #pragma mark Table view delegate
@@ -193,14 +235,17 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Navigation logic may go here. Create and push another view controller.
     AppDelegate_Phone *appDelegate = (AppDelegate_Phone*)[[UIApplication sharedApplication] delegate];
-    [appDelegate filterProperty:[displayFilter objectForKey:@"property"] value:[tableData objectAtIndex:[indexPath indexAtPosition:1]] confirm:NO];
-	/*
-	 <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-	 [self.navigationController pushViewController:detailViewController animated:YES];
-	 [detailViewController release];
-	 */
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        NSDictionary *result = [[[filteredData objectAtIndex:[indexPath indexAtPosition:0]] objectForKey:@"results"] objectAtIndex:[indexPath indexAtPosition:1]];
+        if ([result objectForKey:@"itemData"]) {
+            [appDelegate showItem:[result objectForKey:@"itemData"] fromSave:NO];
+        } else {
+            // Load a filter
+        }
+
+    } else {
+        [appDelegate filterProperty:[displayFilter objectForKey:@"property"] value:[tableData objectAtIndex:[indexPath indexAtPosition:1]] fromSave:NO];
+    }
 }
 
 

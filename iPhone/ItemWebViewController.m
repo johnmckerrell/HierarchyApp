@@ -8,6 +8,7 @@
 
 #import "ItemWebViewController.h"
 #import "AppDelegate_Phone.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation ItemWebViewController
 
@@ -35,9 +36,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSString *path = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:[itemData objectForKey:@"htmlfile"]];
-    NSURL *url = [NSURL fileURLWithPath:path];
-    [webView loadRequest:[NSURLRequest requestWithURL:url]];
+    statusIndicator.layer.cornerRadius = 10.0;
+    
+    NSURL *requestURL;
+    if ([itemData objectForKey:@"url"]) {
+        requestURL = [NSURL URLWithString:[itemData objectForKey:@"url"]];
+    } else if ([itemData objectForKey:@"htmlfile"]) {
+        NSString *path = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:[itemData objectForKey:@"htmlfile"]];
+        requestURL = [NSURL fileURLWithPath:path];
+    }
+    
+    [webView loadRequest:[NSURLRequest requestWithURL:requestURL]];
     
 }
 
@@ -59,12 +68,24 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     NSLog(@"Did finish load.");
+    [self setStatusTimer];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     NSLog(@"Did fail load with error: %@", error);
+    [self setStatusTimer];
 }
 
+-(void) setStatusTimer {
+    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(hideStatusIndicator) userInfo:nil repeats:NO];
+}
+
+-(void) hideStatusIndicator {
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.5];
+    statusIndicator.alpha = 0;
+    [UIView commitAnimations];
+}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Overriden to allow any orientation.
