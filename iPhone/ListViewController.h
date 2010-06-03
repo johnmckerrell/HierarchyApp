@@ -9,14 +9,14 @@
 #import <UIKit/UIKit.h>
 
 
-@interface ListViewController : UITableViewController {
+@interface ListViewController : UITableViewController <UISearchDisplayDelegate> {
     NSDictionary *displayFilter;
     NSArray *tableData;
+    NSArray *filteredData;
+    UISearchDisplayController *searchDisplayController;
 }
-// Create a ListViewController with
-//  displaying firstFilter
-//  [filteredBy currentFilters copy]
 
 -(id) initDisplaying:(NSDictionary*)_displayFilter data:(NSArray*)data;
+- (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope;
 
 @end

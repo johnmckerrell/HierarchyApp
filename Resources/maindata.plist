@@ -1,5 +1,17 @@
 (
 	{
+        id = 0;
+		title = "Other Californian Rosé";
+        htmlfile = "bhwz.html";
+		properties = {
+            producer = "Blossom Hill";
+			type = "Rosé";
+			drink = "Wine";
+            area = "United States";
+            district = "California";
+		};
+	},
+	{
         id = 1;
 		title = "Blossom Hill White Zinfandel";
         htmlfile = "bhwz.html";

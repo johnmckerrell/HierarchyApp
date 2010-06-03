@@ -226,6 +226,49 @@
     }
 }
 
+-(NSArray*)filterDataForSearchTerm:(NSString*)string usingFilters:(BOOL)useFilters {
+    NSArray *searchData;
+    if (useFilters) {
+        searchData = filteredData;
+    } else {
+        searchData = maindata;
+    }
+    NSArray *filters = [filtersdata objectForKey:@"filters"];
+    NSDictionary *itemDescription = [appdata objectForKey:@"itemData"];
+    NSMutableArray *itemResults = [NSMutableArray arrayWithCapacity:[searchData count]];
+    NSMutableDictionary *filterResults = [NSMutableArray arrayWithCapacity:[filters count]];
+    
+    
+    NSDictionary *itemData;
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(self like[cd] %@)", [NSString stringWithFormat:@"*%@*", string]];
+    for (itemData in searchData) {
+        NSString *title = [itemData objectForKey:@"title"];
+        NSLog(@"Checking %@", title);
+        if ([predicate evaluateWithObject:title]) {
+            NSLog(@"MATCH - %@", title);
+            [itemResults addObject:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:title, itemData, nil]
+                                                               forKeys:[NSArray arrayWithObjects:@"title", @"itemData", nil]]
+             ];
+        }
+    }
+    
+    
+    
+    NSUInteger resultsCapacity = [filterResults count];
+    if ([itemResults count]) {
+        ++resultsCapacity;
+    }
+    NSMutableArray *results = [NSMutableArray arrayWithCapacity:resultsCapacity];
+    if ([itemResults count]) {
+        [results addObject:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[itemDescription objectForKey:@"title"], itemResults, nil]
+                                                       forKeys:[NSArray arrayWithObjects:@"type", @"results", nil]]];
+    }
+    //[results addObjectsFromArray:[filterResults allValues]];
+    
+    NSLog(@"returning results=%@", results);
+    return results;
+}
+
 /**
  * This function may be called whether we're going forwards or backwards
  * in a hierarchy. If we're going forwards then everything should add up

@@ -39,5 +39,7 @@
 -(void)filterData;
 -(NSArray*)filterHeadings:(NSDictionary*)filter;
 
+-(NSArray*)filterDataForSearchTerm:(NSString*)string usingFilters:(BOOL)useFilters;
+
 @end
 
