@@ -4,7 +4,7 @@
 	};
 	itemData = {
 		title = Books;
-		canAppearAsFilter = YES;
-		filterIcon = "book.png";
+		canAppearAsCategory = YES;
+		categoryIcon = "books.png";
 	};
 }

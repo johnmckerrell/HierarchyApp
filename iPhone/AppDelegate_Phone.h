@@ -30,8 +30,9 @@
 @property (nonatomic, readonly) NSArray *maindata;
 @property (nonatomic, readonly) NSDictionary *filtersdata;
 @property (nonatomic, readonly) NSDictionary *appdata;
+@property (nonatomic, readonly) NSMutableArray *currentFilters;
 
--(void)setupTabBar;
+-(void)setupTabBarWithInitialCategory:(NSString*)initialCategory;
 -(void)slideSplashScreenOut;
 -(void) setCategoryByName:(NSString*) category;
 -(BOOL) filterProperty:(NSString*)name value:(NSString*)value fromSave:(BOOL) fromSave;

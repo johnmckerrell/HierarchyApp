@@ -16,7 +16,7 @@
 
 @implementation AppDelegate_Phone
 
-@synthesize window, navigationController, tabBarController;
+@synthesize window, navigationController, tabBarController, currentFilters;
 @synthesize appdata, filtersdata, maindata;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
@@ -31,19 +31,6 @@
     // Create an array to hold the filtered data
     filteredData = [[NSMutableArray alloc] initWithCapacity:[maindata count]];
     
-    NSDictionary *appearance = [appdata objectForKey:@"appearance"];
-    if (appearance ) {
-        if ([appearance objectForKey:@"navigationBarTint"]) {
-            float red, blue, green, alpha;
-            NSString *tintColor = [appearance objectForKey:@"navigationBarTint"];
-            NSScanner *s = [NSScanner scannerWithString:tintColor];
-            [s setCharactersToBeSkipped:
-             [NSCharacterSet characterSetWithCharactersInString:@"\n, "]];
-            if ([s scanFloat:&red] && [s scanFloat:&green] && [s scanFloat:&blue] && [s scanFloat:&alpha] ) {
-                self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
-            }
-        }
-    }
     //self.navigationController.navigationBar.tintColor = [UIColor c
     
     // The currently applied filters
@@ -56,12 +43,12 @@
     
     BOOL usingRecentSettings = NO;
  
-    [self setupTabBar];
     
 
     if (lastRun && [lastRun timeIntervalSinceNow] > -300) {
         // Restore
         NSString *startCategory =  [userDefaults objectForKey:@"startCategory"];
+        [self setupTabBarWithInitialCategory:startCategory];
         [self setCategoryByName:startCategory];
         
         NSArray *startFilters = [userDefaults objectForKey:@"startFilters"];
@@ -85,6 +72,7 @@
         usingRecentSettings = YES;
 
     } else {
+        [self setupTabBarWithInitialCategory:nil];
         [self setCategoryByName:nil];
     }
 
@@ -131,40 +119,83 @@
 	return YES;
 }
 
--(void)setupTabBar {
+-(void)setupTabBarWithInitialCategory:(NSString*)initialCategory {
+    NSDictionary *appearance = [appdata objectForKey:@"appearance"];
+    UIColor *tintColor = nil;
+    if (appearance ) {
+        if ([appearance objectForKey:@"navigationBarTint"]) {
+            float red, blue, green, alpha;
+            NSScanner *s = [NSScanner scannerWithString:[appearance objectForKey:@"navigationBarTint"]];
+            [s setCharactersToBeSkipped:
+             [NSCharacterSet characterSetWithCharactersInString:@"\n, "]];
+            if ([s scanFloat:&red] && [s scanFloat:&green] && [s scanFloat:&blue] && [s scanFloat:&alpha] ) {
+                tintColor = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+            }
+        }
+    }
+    
     tabBarController = [[UITabBarController alloc] init];
     tabBarController.delegate = self;
     NSArray *categories = [filtersdata objectForKey:@"categories"];
     NSMutableArray *viewControllers = [NSMutableArray arrayWithCapacity:([categories count]+1)];
     NSDictionary *categoryData;
-    NSUInteger i = 0, l = [categories count];
+    NSString *iconFile;
+    UIImage *icon;
+    UINavigationController *navController;
+    UITabBarItem *tabBarItem;
+    NSUInteger selected = 0, i = 0, l = [categories count];
     for (;i < l; ++i) {
         categoryData = [categories objectAtIndex:i];
-        NSString *iconFile = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: [categoryData objectForKey:@"icon"]];
-        UIImage *icon = [UIImage imageWithContentsOfFile:iconFile];
+        iconFile = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: [categoryData objectForKey:@"icon"]];
+        icon = [UIImage imageWithContentsOfFile:iconFile];
         NSLog(@"icon %@ gave %@", iconFile, icon );
 
-        UINavigationController *navController = [[[UINavigationController alloc] init] autorelease];
+        navController = [[[UINavigationController alloc] init] autorelease];
         navController.delegate = self;
-        UITabBarItem *tabBarItem = [[[UITabBarItem alloc] initWithTitle:[categoryData objectForKey:@"title"] image:icon tag:i] autorelease];
+        if (tintColor) {
+            navController.navigationBar.tintColor = tintColor;
+        }
+        tabBarItem = [[[UITabBarItem alloc] initWithTitle:[categoryData objectForKey:@"title"] image:icon tag:i] autorelease];
         navController.tabBarItem = tabBarItem;
         [viewControllers addObject:navController];
-        if (!navigationController) {
-            self.navigationController = navController;
+        
+        if ([initialCategory isEqualToString:[categoryData objectForKey:@"title"]]) {
+            selected = i;
+        }
+    }
+    
+    NSDictionary *itemDescription = [appdata objectForKey:@"itemData"];
+    if ([@"YES" isEqualToString:[itemDescription objectForKey:@"canAppearAsCategory"]]) {
+        iconFile = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: [itemDescription objectForKey:@"categoryIcon"]];
+        icon = [UIImage imageWithContentsOfFile:iconFile];
+        NSLog(@"icon %@ gave %@", iconFile, icon );
+        
+        navController = [[[UINavigationController alloc] init] autorelease];
+        navController.delegate = self;
+        if (tintColor) {
+            navController.navigationBar.tintColor = tintColor;
+        }        
+        tabBarItem = [[[UITabBarItem alloc] initWithTitle:[itemDescription objectForKey:@"title"] image:icon tag:i] autorelease];
+        navController.tabBarItem = tabBarItem;
+        [viewControllers addObject:navController];        
+
+        if ([initialCategory isEqualToString:[itemDescription objectForKey:@"title"]]) {
+            selected = i;
         }
     }
     
     [tabBarController setViewControllers:viewControllers];
+    tabBarController.selectedIndex = selected;
+    self.navigationController = (UINavigationController*)tabBarController.selectedViewController;
+    
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-    NSArray *categories = [filtersdata objectForKey:@"categories"];
-    NSDictionary *category = [categories objectAtIndex:viewController.tabBarItem.tag];
     self.navigationController = (UINavigationController*)viewController;
     NSLog(@"selected %@", viewController);
     NSLog(@"viewController.tag = %i", viewController.tabBarItem.tag);
     NSLog(@"viewController count = %i", [self.navigationController.viewControllers count]);
-    [self setCategoryByName:[category objectForKey:@"title"]];
+    [self setCategoryByName:viewController.tabBarItem.title];
     NSLog(@"viewController count = %i", [self.navigationController.viewControllers count]);
 }
 
@@ -244,6 +275,10 @@
 
 -(NSDictionary*) getCategoryDataByName:(NSString*) category {
     NSArray *categories = [filtersdata objectForKey:@"categories"];
+    NSDictionary *itemDescription = [appdata objectForKey:@"itemData"];
+    if ([category isEqualToString:[itemDescription objectForKey:@"title"]]) {
+        return itemDescription;
+    }
     NSDictionary *categoryData = nil, *searchCategoryData = nil;
     if (category) {
         for (searchCategoryData in categories) {
@@ -274,16 +309,19 @@
     } else {
         [currentCategory release];
         currentCategory = [[categoryData objectForKey:@"title"] retain];
-        NSDictionary *firstFilter = [self getCurrentFilterAtPosition:0];
-        NSArray *headings = [self filterHeadings:firstFilter];
-        
-        NSLog(@"firstFilter=%@", firstFilter);
-        // Create a ListViewController with
-        //  displaying firstFilter
-        //  filteredBy currentFilters
-        ListViewController *viewController = [[[ListViewController alloc] initDisplaying:firstFilter data:headings] autorelease];
-        [self.navigationController setViewControllers:[NSArray arrayWithObject:viewController]];
-        
+        NSDictionary *currentFilter = [self getCurrentFilterAtPosition:categoryPathPosition];
+
+        id viewController;
+        if (currentFilter) {
+            NSArray *headings = [self filterHeadings:currentFilter];
+            viewController = [[[ListViewController alloc] initDisplaying:currentFilter data:headings] autorelease];
+        } else {
+            // Show a list of items
+            viewController = [[[ItemListViewController alloc] 
+                                                       initDisplaying:[appdata objectForKey:@"itemData"] 
+                                                       data:filteredData] autorelease];
+        }
+        [self.navigationController setViewControllers:[NSArray arrayWithObject:viewController]];        
     }
 }
 
