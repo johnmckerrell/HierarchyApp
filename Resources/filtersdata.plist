@@ -28,6 +28,7 @@
 			icon = "genres.png";
 			path = (
 				genres,
+				authors,
 			);
 		},
 	);

@@ -15,6 +15,10 @@
 		2860E32E111B888700E27156 /* AppDelegate_Pad.m in Sources */ = {isa = PBXBuildFile; fileRef = 2860E32C111B888700E27156 /* AppDelegate_Pad.m */; };
 		2860E32F111B888700E27156 /* MainWindow_Pad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E32D111B888700E27156 /* MainWindow_Pad.xib */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		52191F9011B7FDDB006A53C3 /* date.png in Resources */ = {isa = PBXBuildFile; fileRef = 52191F8F11B7FDDB006A53C3 /* date.png */; };
+		52191FA611B801C5006A53C3 /* authors.png in Resources */ = {isa = PBXBuildFile; fileRef = 52191FA511B801C5006A53C3 /* authors.png */; };
+		52191FA811B801CE006A53C3 /* publishers.png in Resources */ = {isa = PBXBuildFile; fileRef = 52191FA711B801CE006A53C3 /* publishers.png */; };
+		52191FAA11B801EE006A53C3 /* genres.png in Resources */ = {isa = PBXBuildFile; fileRef = 52191FA911B801EE006A53C3 /* genres.png */; };
 		52D7F83311ABEAE10018EB4F /* appdata.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52D7F83011ABEAE10018EB4F /* appdata.plist */; };
 		52D7F83411ABEAE10018EB4F /* filtersdata.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52D7F83111ABEAE10018EB4F /* filtersdata.plist */; };
 		52D7F83511ABEAE10018EB4F /* maindata.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52D7F83211ABEAE10018EB4F /* maindata.plist */; };
@@ -48,6 +52,10 @@
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Shared/main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* HierarchyApp_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HierarchyApp_Prefix.pch; sourceTree = "<group>"; };
+		52191F8F11B7FDDB006A53C3 /* date.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = date.png; sourceTree = "<group>"; };
+		52191FA511B801C5006A53C3 /* authors.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = authors.png; sourceTree = "<group>"; };
+		52191FA711B801CE006A53C3 /* publishers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = publishers.png; sourceTree = "<group>"; };
+		52191FA911B801EE006A53C3 /* genres.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = genres.png; sourceTree = "<group>"; };
 		52D7F83011ABEAE10018EB4F /* appdata.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = appdata.plist; sourceTree = "<group>"; };
 		52D7F83111ABEAE10018EB4F /* filtersdata.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = filtersdata.plist; sourceTree = "<group>"; };
 		52D7F83211ABEAE10018EB4F /* maindata.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = maindata.plist; sourceTree = "<group>"; };
@@ -195,6 +203,10 @@
 		52D7FB6E11AECB040018EB4F /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				52191F8F11B7FDDB006A53C3 /* date.png */,
+				52191FA511B801C5006A53C3 /* authors.png */,
+				52191FA711B801CE006A53C3 /* publishers.png */,
+				52191FA911B801EE006A53C3 /* genres.png */,
 				52D7FC2711AEDBDF0018EB4F /* Splash.png */,
 				52D7FB6F11AECB040018EB4F /* UIButtonBarArrowLeft.png */,
 				52D7FB7011AECB040018EB4F /* UIButtonBarArrowRight.png */,
@@ -260,6 +272,10 @@
 				52D7FB7411AECB040018EB4F /* UIButtonBarRefresh.png in Resources */,
 				52D7FBB611AED2450018EB4F /* UIButtonBarStop.png in Resources */,
 				52D7FC2811AEDBDF0018EB4F /* Splash.png in Resources */,
+				52191F9011B7FDDB006A53C3 /* date.png in Resources */,
+				52191FA611B801C5006A53C3 /* authors.png in Resources */,
+				52191FA811B801CE006A53C3 /* publishers.png in Resources */,
+				52191FAA11B801EE006A53C3 /* genres.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

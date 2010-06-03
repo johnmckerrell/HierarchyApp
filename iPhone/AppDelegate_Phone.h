@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AppDelegate_Phone : NSObject <UIApplicationDelegate,UINavigationControllerDelegate> {
+@interface AppDelegate_Phone : NSObject <UIApplicationDelegate,UINavigationControllerDelegate,UITabBarControllerDelegate> {
     UIWindow *window;
-    IBOutlet UINavigationController *navigationController;
+    UINavigationController *navigationController;
+    UITabBarController *tabBarController;
     NSArray *maindata;
     NSDictionary *filtersdata;
     NSDictionary *appdata;
@@ -25,10 +26,12 @@
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
+@property (nonatomic, retain) UITabBarController *tabBarController;
 @property (nonatomic, readonly) NSArray *maindata;
 @property (nonatomic, readonly) NSDictionary *filtersdata;
 @property (nonatomic, readonly) NSDictionary *appdata;
 
+-(void)setupTabBar;
 -(void)slideSplashScreenOut;
 -(void) setCategoryByName:(NSString*) category;
 -(BOOL) filterProperty:(NSString*)name value:(NSString*)value fromSave:(BOOL) fromSave;

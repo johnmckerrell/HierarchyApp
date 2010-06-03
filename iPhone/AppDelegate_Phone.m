@@ -16,7 +16,7 @@
 
 @implementation AppDelegate_Phone
 
-@synthesize window, navigationController;
+@synthesize window, navigationController, tabBarController;
 @synthesize appdata, filtersdata, maindata;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
@@ -55,7 +55,10 @@
     NSDate *lastRun = [userDefaults objectForKey:@"lastRun"];
     
     BOOL usingRecentSettings = NO;
+ 
+    [self setupTabBar];
     
+
     if (lastRun && [lastRun timeIntervalSinceNow] > -300) {
         // Restore
         NSString *startCategory =  [userDefaults objectForKey:@"startCategory"];
@@ -96,7 +99,7 @@
     }
 
     NSLog(@"splashFile=%@:defaultFile=%@", splashFile, defaultFile);
-    
+
     if ( ( splashFile && ! usingRecentSettings ) || defaultFile ) {
         // Load the splash view
         UIImage *splashImage;
@@ -120,12 +123,49 @@
     } else {
         // Add the navigation view to the window
         NSLog(@"Loading the navigation view");
-        [window addSubview:self.navigationController.view];
+        [window addSubview:self.tabBarController.view];
     }    
     
     [window makeKeyAndVisible];
 	
 	return YES;
+}
+
+-(void)setupTabBar {
+    tabBarController = [[UITabBarController alloc] init];
+    tabBarController.delegate = self;
+    NSArray *categories = [filtersdata objectForKey:@"categories"];
+    NSMutableArray *viewControllers = [NSMutableArray arrayWithCapacity:([categories count]+1)];
+    NSDictionary *categoryData;
+    NSUInteger i = 0, l = [categories count];
+    for (;i < l; ++i) {
+        categoryData = [categories objectAtIndex:i];
+        NSString *iconFile = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: [categoryData objectForKey:@"icon"]];
+        UIImage *icon = [UIImage imageWithContentsOfFile:iconFile];
+        NSLog(@"icon %@ gave %@", iconFile, icon );
+
+        UINavigationController *navController = [[[UINavigationController alloc] init] autorelease];
+        navController.delegate = self;
+        UITabBarItem *tabBarItem = [[[UITabBarItem alloc] initWithTitle:[categoryData objectForKey:@"title"] image:icon tag:i] autorelease];
+        navController.tabBarItem = tabBarItem;
+        [viewControllers addObject:navController];
+        if (!navigationController) {
+            self.navigationController = navController;
+        }
+    }
+    
+    [tabBarController setViewControllers:viewControllers];
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
+    NSArray *categories = [filtersdata objectForKey:@"categories"];
+    NSDictionary *category = [categories objectAtIndex:viewController.tabBarItem.tag];
+    self.navigationController = (UINavigationController*)viewController;
+    NSLog(@"selected %@", viewController);
+    NSLog(@"viewController.tag = %i", viewController.tabBarItem.tag);
+    NSLog(@"viewController count = %i", [self.navigationController.viewControllers count]);
+    [self setCategoryByName:[category objectForKey:@"title"]];
+    NSLog(@"viewController count = %i", [self.navigationController.viewControllers count]);
 }
 
 -(void)filterData {
@@ -179,7 +219,7 @@
 
 -(void)slideSplashScreenOut {
     [splashView removeFromSuperview];
-    [window addSubview:self.navigationController.view];
+    [window addSubview:self.tabBarController.view];
     
     // set up an animation for the transition between the views
 	CATransition *animation = [CATransition animation];
@@ -232,6 +272,8 @@
     if ([currentCategory isEqualToString:[categoryData objectForKey:@"title"]]) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
+        [currentCategory release];
+        currentCategory = [[categoryData objectForKey:@"title"] retain];
         NSDictionary *firstFilter = [self getCurrentFilterAtPosition:0];
         NSArray *headings = [self filterHeadings:firstFilter];
         
@@ -242,8 +284,6 @@
         ListViewController *viewController = [[[ListViewController alloc] initDisplaying:firstFilter data:headings] autorelease];
         [self.navigationController setViewControllers:[NSArray arrayWithObject:viewController]];
         
-        [currentCategory release];
-        currentCategory = [[categoryData objectForKey:@"title"] retain];
     }
 }
 

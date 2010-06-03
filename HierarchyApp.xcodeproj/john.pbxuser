@@ -8,16 +8,16 @@
 	};
 	2860E325111B887F00E27156 /* AppDelegate_Phone.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1005, 585}}";
-			sepNavSelRange = "{1477, 0}";
-			sepNavVisRange = "{92, 1392}";
+			sepNavIntBoundsRect = "{{0, 0}, {1005, 650}}";
+			sepNavSelRange = "{300, 0}";
+			sepNavVisRange = "{0, 1297}";
 		};
 	};
 	2860E326111B887F00E27156 /* AppDelegate_Phone.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1139, 3679}}";
-			sepNavSelRange = "{1479, 0}";
-			sepNavVisRange = "{429, 2091}";
+			sepNavIntBoundsRect = "{{0, 0}, {992, 6552}}";
+			sepNavSelRange = "{7032, 0}";
+			sepNavVisRange = "{6152, 662}";
 			sepNavWindowFrame = "{{15, 615}, {750, 558}}";
 		};
 	};
@@ -30,6 +30,8 @@
 			1D6058900D05DD3D006BFB54 /* HierarchyApp */,
 		);
 		breakpoints = (
+			52191F3E11B7F49B006A53C3 /* AppDelegate_Phone.m:262 */,
+			52191F7D11B7FB82006A53C3 /* AppDelegate_Phone.m:161 */,
 		);
 		codeSenseManager = 52D7F82E11ABD4760018EB4F /* Code sense */;
 		executables = (
@@ -94,15 +96,19 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 296730708;
-			PBXWorkspaceStateSaveDate = 296730708;
+			PBXPerProjectTemplateStateSaveDate = 297266253;
+			PBXWorkspaceStateSaveDate = 297266253;
 		};
 		perUserProjectItems = {
+			52191F7111B7FAD2006A53C3 /* PBXTextBookmark */ = 52191F7111B7FAD2006A53C3 /* PBXTextBookmark */;
+			52191F9511B7FE24006A53C3 /* PBXBookmark */ = 52191F9511B7FE24006A53C3 /* PBXBookmark */;
+			52191FAD11B80229006A53C3 /* PBXTextBookmark */ = 52191FAD11B80229006A53C3 /* PBXTextBookmark */;
+			52191FAE11B80229006A53C3 /* PBXBookmark */ = 52191FAE11B80229006A53C3 /* PBXBookmark */;
+			52191FAF11B80229006A53C3 /* PBXBookmark */ = 52191FAF11B80229006A53C3 /* PBXBookmark */;
+			52191FB011B80229006A53C3 /* PBXBookmark */ = 52191FB011B80229006A53C3 /* PBXBookmark */;
+			52191FB111B80229006A53C3 /* PBXBookmark */ = 52191FB111B80229006A53C3 /* PBXBookmark */;
 			523BBEAB11AFD7FE00490192 /* PlistBookmark */ = 523BBEAB11AFD7FE00490192 /* PlistBookmark */;
 			523BBEAC11AFD7FE00490192 /* PBXTextBookmark */ = 523BBEAC11AFD7FE00490192 /* PBXTextBookmark */;
-			523BBEAD11AFD7FE00490192 /* PBXTextBookmark */ = 523BBEAD11AFD7FE00490192 /* PBXTextBookmark */;
-			523BBEAE11AFD7FE00490192 /* PBXTextBookmark */ = 523BBEAE11AFD7FE00490192 /* PBXTextBookmark */;
-			523BBF2011AFE45600490192 /* PBXTextBookmark */ = 523BBF2011AFE45600490192 /* PBXTextBookmark */;
 			52D7F84B11ABEDEB0018EB4F /* PlistBookmark */ = 52D7F84B11ABEDEB0018EB4F /* PlistBookmark */;
 			52D7F87611AC14940018EB4F /* PlistBookmark */ = 52D7F87611AC14940018EB4F /* PlistBookmark */;
 			52D7F87711AC14940018EB4F /* PlistBookmark */ = 52D7F87711AC14940018EB4F /* PlistBookmark */;
@@ -121,6 +127,82 @@
 		userBuildSettings = {
 		};
 	};
+	52191F3E11B7F49B006A53C3 /* AppDelegate_Phone.m:262 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = 2860E326111B887F00E27156 /* AppDelegate_Phone.m */;
+		functionName = "-setCategoryByName:";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 262;
+		location = HierarchyApp;
+		modificationTime = 297271799.332009;
+		originalNumberOfMultipleMatches = 1;
+		state = 2;
+	};
+	52191F7111B7FAD2006A53C3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 2860E325111B887F00E27156 /* AppDelegate_Phone.h */;
+		name = "AppDelegate_Phone.h: 11";
+		rLen = 0;
+		rLoc = 300;
+		rType = 0;
+		vrLen = 1297;
+		vrLoc = 0;
+	};
+	52191F7D11B7FB82006A53C3 /* AppDelegate_Phone.m:161 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = 2860E326111B887F00E27156 /* AppDelegate_Phone.m */;
+		functionName = "-tabBarController:didSelectViewController:";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 161;
+		location = HierarchyApp;
+		modificationTime = 297271799.332147;
+		originalNumberOfMultipleMatches = 1;
+		state = 2;
+	};
+	52191F9511B7FE24006A53C3 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 52191F8F11B7FDDB006A53C3 /* date.png */;
+	};
+	52191FAD11B80229006A53C3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 2860E326111B887F00E27156 /* AppDelegate_Phone.m */;
+		name = "AppDelegate_Phone.m: 144";
+		rLen = 0;
+		rLoc = 5958;
+		rType = 0;
+		vrLen = 1821;
+		vrLoc = 5303;
+	};
+	52191FAE11B80229006A53C3 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 52191FA511B801C5006A53C3 /* authors.png */;
+	};
+	52191FAF11B80229006A53C3 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 52191FA711B801CE006A53C3 /* publishers.png */;
+	};
+	52191FB011B80229006A53C3 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 52191FA911B801EE006A53C3 /* genres.png */;
+	};
+	52191FB111B80229006A53C3 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 52191FA911B801EE006A53C3 /* genres.png */;
+	};
 	523BBEAB11AFD7FE00490192 /* PlistBookmark */ = {
 		isa = PlistBookmark;
 		fRef = 8D1107310486CEB800E47090 /* HierarchyApp-Info.plist */;
@@ -130,7 +212,7 @@
 		);
 		name = "/Users/john/Coding/iPhone/HierarchyApp/HierarchyApp-Info.plist";
 		rLen = 0;
-		rLoc = 9223372036854775807;
+		rLoc = 9223372036854775808;
 	};
 	523BBEAC11AFD7FE00490192 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -141,36 +223,6 @@
 		rType = 0;
 		vrLen = 1421;
 		vrLoc = 1348;
-	};
-	523BBEAD11AFD7FE00490192 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 2860E325111B887F00E27156 /* AppDelegate_Phone.h */;
-		name = "AppDelegate_Phone.h: 42";
-		rLen = 0;
-		rLoc = 1477;
-		rType = 0;
-		vrLen = 1392;
-		vrLoc = 92;
-	};
-	523BBEAE11AFD7FE00490192 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 2860E326111B887F00E27156 /* AppDelegate_Phone.m */;
-		name = "AppDelegate_Phone.m: 17";
-		rLen = 0;
-		rLoc = 427;
-		rType = 0;
-		vrLen = 1537;
-		vrLoc = 0;
-	};
-	523BBF2011AFE45600490192 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 2860E326111B887F00E27156 /* AppDelegate_Phone.m */;
-		name = "AppDelegate_Phone.m: 36";
-		rLen = 0;
-		rLoc = 1479;
-		rType = 0;
-		vrLen = 2091;
-		vrLoc = 429;
 	};
 	52D7F82311ABD4550018EB4F /* HierarchyApp */ = {
 		isa = PBXExecutable;
