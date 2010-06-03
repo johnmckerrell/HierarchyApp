@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface ItemListViewController : UITableViewController {
+@interface ItemListViewController : UITableViewController <UISearchDisplayDelegate> {
     NSArray *tableData;
     NSArray *filteredData;
     UISearchDisplayController *searchDisplayController;

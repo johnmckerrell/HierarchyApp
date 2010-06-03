@@ -62,10 +62,11 @@
         [self setCategoryByName:startCategory];
         
         NSArray *startFilters = [userDefaults objectForKey:@"startFilters"];
+        NSLog(@"startFilters=%@", startFilters);
         NSArray *oneFilter;
         BOOL oneValidFilter = NO;
         for (oneFilter in startFilters) {
-            if (![self filterProperty:[oneFilter objectAtIndex:0] value:[oneFilter objectAtIndex:1] confirm:YES]) {
+            if (![self filterProperty:[oneFilter objectAtIndex:0] value:[oneFilter objectAtIndex:1] fromSave:YES]) {
                 // If this filter is no longer valid then don't look at following ones.
                 break;
             }
@@ -75,7 +76,7 @@
         NSDictionary *startItem = [userDefaults objectForKey:@"startItem"];
         NSLog(@"startItem=%@", startItem);
         if (startItem) {
-            [self showItem:startItem confirm:YES];
+            [self showItem:startItem fromSave:YES];
         }
         
         usingRecentSettings = YES;
@@ -85,17 +86,37 @@
     }
 
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *splashFile = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: @"Splash.png"];        
+    NSString *splashFile = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: @"Splash.png"];
+    NSString *defaultFile = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: @"Default.png"];
+    if (![fileManager fileExistsAtPath:splashFile]) {
+        splashFile = nil;
+    }
+    if (![fileManager fileExistsAtPath:defaultFile]) {
+        defaultFile = nil;
+    }
+
+    NSLog(@"splashFile=%@:defaultFile=%@", splashFile, defaultFile);
     
-    if (!usingRecentSettings && [fileManager fileExistsAtPath:splashFile]) {
+    if ( ( splashFile && ! usingRecentSettings ) || defaultFile ) {
         // Load the splash view
-        UIImage *splashImage = [UIImage imageWithContentsOfFile:splashFile];
+        UIImage *splashImage;
+        if (splashFile && ! usingRecentSettings) {
+            splashImage = [UIImage imageWithContentsOfFile:splashFile];
+        } else {
+            splashImage = [UIImage imageWithContentsOfFile:defaultFile];
+        }
+
         splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 20, splashImage.size.width, splashImage.size.height)];
         splashView.image = splashImage;
         
         NSLog(@"Loading the splash screen");
         [window addSubview:splashView];
-        [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(slideSplashScreenOut) userInfo:nil repeats:NO];
+        if (splashFile && ! usingRecentSettings) {
+            [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(slideSplashScreenOut) userInfo:nil repeats:NO];
+        } else {
+            [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(slideSplashScreenOut) userInfo:nil repeats:NO];
+        }
+
     } else {
         // Add the navigation view to the window
         NSLog(@"Loading the navigation view");
@@ -326,14 +347,15 @@
 -(void) saveCurrentPosition {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 
+    NSLog(@"saving currentFilters as %@", currentFilters);
     [userDefaults setObject:currentFilters forKey:@"startFilters"];
     [userDefaults setObject:currentCategory forKey:@"startCategory"];
     NSLog(@"currentItem = %@", currentItem);
     [userDefaults setObject:currentItem forKey:@"startItem"];
 }
 
--(BOOL) filterProperty:(NSString*)name value:(NSString*)value confirm:(BOOL) confirm {
-    if (confirm) {
+-(BOOL) filterProperty:(NSString*)name value:(NSString*)value fromSave:(BOOL) fromSave {
+    if (fromSave) {
         NSDictionary *itemData;
         BOOL match = NO;
         for (itemData in filteredData) {
@@ -359,8 +381,13 @@
             && [@"YES" isEqualToString:[currentFilter objectForKey:@"skipSingleEntry"] ]) {
             NSLog(@"skipping %@ because everything has the value %@", [currentFilter objectForKey:@"property"], [headings objectAtIndex:0] );
             [ignoredFilters addObject:currentFilter];
+            // If we're restoring from a saved position then we will have already saved the skip and doing it here
+            // will result in a duplicated filter
+            if (fromSave) {
+                return YES;
+            }
             // Skip onto the next filter
-            return [self filterProperty:[currentFilter objectForKey:@"property"] value:[headings objectAtIndex:0] confirm:NO];
+            return [self filterProperty:[currentFilter objectForKey:@"property"] value:[headings objectAtIndex:0] fromSave:NO];
         }
         ListViewController *viewController = [[[ListViewController alloc] initDisplaying:currentFilter data:headings] autorelease];
         [self.navigationController pushViewController:viewController animated:YES];
@@ -390,8 +417,8 @@
                   ];
 }
 
--(BOOL) showItem:(NSDictionary*)itemData confirm:(BOOL) confirm {
-    if (confirm) {
+-(BOOL) showItem:(NSDictionary*)itemData fromSave:(BOOL) fromSave {
+    if (fromSave) {
         ItemListViewController *currentViewController = [self.navigationController.viewControllers lastObject];
         if (![currentViewController validItem:itemData]) {
             return NO;

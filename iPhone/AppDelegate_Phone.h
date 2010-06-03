@@ -29,9 +29,10 @@
 @property (nonatomic, readonly) NSDictionary *filtersdata;
 @property (nonatomic, readonly) NSDictionary *appdata;
 
+-(void)slideSplashScreenOut;
 -(void) setCategoryByName:(NSString*) category;
--(BOOL) filterProperty:(NSString*)name value:(NSString*)value confirm:(BOOL) confirm;
--(BOOL) showItem:(NSDictionary*)itemData confirm:(BOOL) confirm;
+-(BOOL) filterProperty:(NSString*)name value:(NSString*)value fromSave:(BOOL) fromSave;
+-(BOOL) showItem:(NSDictionary*)itemData fromSave:(BOOL) fromSave;
 -(void) loadURLRequestInLocalBrowser:(NSURLRequest*) request;
 -(NSDictionary*) getCurrentFilterAtPosition:(NSUInteger)position;
 -(NSDictionary*) getCategoryDataByName:(NSString*) category;

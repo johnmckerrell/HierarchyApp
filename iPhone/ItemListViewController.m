@@ -252,14 +252,14 @@
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         NSDictionary *result = [[[filteredData objectAtIndex:[indexPath indexAtPosition:0]] objectForKey:@"results"] objectAtIndex:[indexPath indexAtPosition:1]];
         if ([result objectForKey:@"itemData"]) {
-            [appDelegate showItem:[result objectForKey:@"itemData"] confirm:NO];
+            [appDelegate showItem:[result objectForKey:@"itemData"] fromSave:NO];
         } else {
             // Load a filter
         }
         
     } else {
         NSDictionary *itemData = [tableData objectAtIndex:[indexPath indexAtPosition:1]];
-        [appDelegate showItem:itemData confirm:NO];
+        [appDelegate showItem:itemData fromSave:NO];
     }
 	/*
 	 <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];

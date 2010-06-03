@@ -238,13 +238,13 @@
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         NSDictionary *result = [[[filteredData objectAtIndex:[indexPath indexAtPosition:0]] objectForKey:@"results"] objectAtIndex:[indexPath indexAtPosition:1]];
         if ([result objectForKey:@"itemData"]) {
-            [appDelegate showItem:[result objectForKey:@"itemData"] confirm:NO];
+            [appDelegate showItem:[result objectForKey:@"itemData"] fromSave:NO];
         } else {
             // Load a filter
         }
 
     } else {
-        [appDelegate filterProperty:[displayFilter objectForKey:@"property"] value:[tableData objectAtIndex:[indexPath indexAtPosition:1]] confirm:NO];
+        [appDelegate filterProperty:[displayFilter objectForKey:@"property"] value:[tableData objectAtIndex:[indexPath indexAtPosition:1]] fromSave:NO];
     }
 }
 
