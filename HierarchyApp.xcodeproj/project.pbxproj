@@ -20,6 +20,7 @@
 		52191FA811B801CE006A53C3 /* publishers.png in Resources */ = {isa = PBXBuildFile; fileRef = 52191FA711B801CE006A53C3 /* publishers.png */; };
 		52191FAA11B801EE006A53C3 /* genres.png in Resources */ = {isa = PBXBuildFile; fileRef = 52191FA911B801EE006A53C3 /* genres.png */; };
 		5219200511B80A79006A53C3 /* books.png in Resources */ = {isa = PBXBuildFile; fileRef = 5219200411B80A79006A53C3 /* books.png */; };
+		5220E28311B8EE6800090384 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220E28211B8EE6800090384 /* Default.png */; };
 		52D7F83311ABEAE10018EB4F /* appdata.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52D7F83011ABEAE10018EB4F /* appdata.plist */; };
 		52D7F83411ABEAE10018EB4F /* filtersdata.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52D7F83111ABEAE10018EB4F /* filtersdata.plist */; };
 		52D7F83511ABEAE10018EB4F /* maindata.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52D7F83211ABEAE10018EB4F /* maindata.plist */; };
@@ -58,6 +59,7 @@
 		52191FA711B801CE006A53C3 /* publishers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = publishers.png; sourceTree = "<group>"; };
 		52191FA911B801EE006A53C3 /* genres.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = genres.png; sourceTree = "<group>"; };
 		5219200411B80A79006A53C3 /* books.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = books.png; sourceTree = "<group>"; };
+		5220E28211B8EE6800090384 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		52D7F83011ABEAE10018EB4F /* appdata.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = appdata.plist; sourceTree = "<group>"; };
 		52D7F83111ABEAE10018EB4F /* filtersdata.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = filtersdata.plist; sourceTree = "<group>"; };
 		52D7F83211ABEAE10018EB4F /* maindata.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = maindata.plist; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 		52D7FB6E11AECB040018EB4F /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				5220E28211B8EE6800090384 /* Default.png */,
 				52191F8F11B7FDDB006A53C3 /* date.png */,
 				52191FA511B801C5006A53C3 /* authors.png */,
 				52191FA711B801CE006A53C3 /* publishers.png */,
@@ -280,6 +283,7 @@
 				52191FA811B801CE006A53C3 /* publishers.png in Resources */,
 				52191FAA11B801EE006A53C3 /* genres.png in Resources */,
 				5219200511B80A79006A53C3 /* books.png in Resources */,
+				5220E28311B8EE6800090384 /* Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
