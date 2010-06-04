@@ -48,5 +48,7 @@
 
 -(NSArray*)filterDataForSearchTerm:(NSString*)string usingFilters:(BOOL)useFilters;
 
+-(BOOL)property:(id) property matchesValue:(NSString*) testString;
+
 @end
 

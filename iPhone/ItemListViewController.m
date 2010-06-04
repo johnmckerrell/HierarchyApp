@@ -29,17 +29,6 @@
     return self;    
 }
 
--(BOOL) validItem:(NSDictionary*)itemData {
-    NSDictionary *other;
-    NSString *itemID = [itemData objectForKey:@"id"];
-    for (other in tableData) {
-        if ([itemID isEqualToString:[other objectForKey:@"id"]]) {
-            return YES;
-        }
-    }
-    return NO;
-    
-}
 /*
 - (id)initWithStyle:(UITableViewStyle)style {
     // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.

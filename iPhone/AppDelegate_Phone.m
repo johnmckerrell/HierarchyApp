@@ -200,6 +200,21 @@
     NSLog(@"viewController count = %i", [self.navigationController.viewControllers count]);
 }
 
+-(BOOL)property:(id) property matchesValue:(NSString*) testString {
+    if ([property isKindOfClass:[NSArray class]]) {
+        NSString *propertyValue;
+        for (propertyValue in property) {
+            if ([testString isEqualToString:propertyValue]) {
+                return YES;
+            }
+        }
+        return NO;
+    } else {
+        return [testString isEqualToString:property];
+    }
+    
+}
+
 -(void)filterData {
     if ([currentFilters count] == 0) {
         [filteredData setArray:maindata];
@@ -207,7 +222,7 @@
     }
     NSDictionary *itemData, *itemProperties;
     NSArray *filter;
-    NSString *testValue;
+    id testValue;
     BOOL match;
     [filteredData removeAllObjects];
     for (itemData in maindata) {
@@ -216,7 +231,7 @@
         
         for (filter in currentFilters) {
             testValue = [itemProperties objectForKey:[filter objectAtIndex:0]];
-            if (![testValue isEqualToString:[filter objectAtIndex:1]]) {
+            if (![self property:testValue matchesValue:[filter objectAtIndex:1]]) {
                 match = NO;
                 break;
             }
@@ -234,7 +249,7 @@
     for (i = 0; i < count; ) {
         itemData = [filteredData objectAtIndex:i];
         itemProperties = [itemData objectForKey:@"properties"];
-        if ([value isEqualToString:[itemProperties objectForKey:property]]) {
+        if ([self property:[itemProperties objectForKey:property] matchesValue:value]) {
             ++i;
         } else {
             [filteredData removeObjectAtIndex:i];
@@ -340,7 +355,7 @@
     
     
     NSDictionary *itemData;
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(self like[cd] %@)", [NSString stringWithFormat:@"*%@*", string]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(self contains[cd] %@)", string];
     for (itemData in searchData) {
         NSString *title = [itemData objectForKey:@"title"];
         NSLog(@"Checking %@", title);
@@ -436,10 +451,13 @@
 -(BOOL) filterProperty:(NSString*)name value:(NSString*)value fromSave:(BOOL) fromSave {
     if (fromSave) {
         NSDictionary *itemData;
+        NSDictionary *itemProperties;
         BOOL match = NO;
         for (itemData in filteredData) {
-            if ([value isEqualToString:[[itemData objectForKey:@"properties"] objectForKey:name]]) {
+            itemProperties = [itemData objectForKey:@"properties"];
+            if ([self property:[itemProperties objectForKey:name] matchesValue:value]) {
                 match = YES;
+                break;
             }
         }
         if (!match) {
@@ -483,12 +501,19 @@
 -(NSArray*) filterHeadings:(NSDictionary *)filter {
     NSMutableDictionary *tableHash = [NSMutableDictionary dictionaryWithCapacity:[filteredData count]];
     NSDictionary *itemData, *itemProperties;
+    id propertyValue;
     NSString *itemName;
     for (itemData in filteredData) {
         itemProperties = [itemData objectForKey:@"properties"];
-        itemName = [itemProperties objectForKey:[filter objectForKey:@"property"]];
-        if (![tableHash objectForKey:itemName]) {
-            [tableHash setObject:itemName forKey:itemName];
+        propertyValue = [itemProperties objectForKey:[filter objectForKey:@"property"]];
+        if ([propertyValue isKindOfClass:[NSArray class]]) {
+            for (itemName in propertyValue) {
+                if (![tableHash objectForKey:itemName]) {
+                    [tableHash setObject:itemName forKey:itemName];
+                }
+            }
+        } else if (![tableHash objectForKey:propertyValue]) {
+            [tableHash setObject:propertyValue forKey:propertyValue];
         }
     }
     return [[tableHash allKeys] sortedArrayUsingDescriptors:
@@ -498,11 +523,20 @@
 
 -(BOOL) showItem:(NSDictionary*)itemData fromSave:(BOOL) fromSave {
     if (fromSave) {
-        ItemListViewController *currentViewController = [self.navigationController.viewControllers lastObject];
-        if (![currentViewController validItem:itemData]) {
+        NSDictionary *testItemData;
+        NSString *itemID = [itemData objectForKey:@"id"];
+        BOOL match = NO;
+        for (testItemData in filteredData) {
+            if ([itemID isEqualToString:[testItemData objectForKey:@"id"]]) {
+                match = YES;
+                break;
+            }
+        }
+        if (!match) {
             return NO;
         }
     }
+    
     id viewController;
     if ([itemData objectForKey:@"htmlfile"] || [itemData objectForKey:@"url"]) {
         viewController = [[[ItemWebViewController alloc] initWithItem:itemData] autorelease];

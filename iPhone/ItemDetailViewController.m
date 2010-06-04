@@ -127,8 +127,23 @@
     } else {
         NSDictionary *properties = [itemData objectForKey:@"properties"];
         NSArray *keys = [properties allKeys];
+        id propertyValue = [properties objectForKey:[keys objectAtIndex:[indexPath indexAtPosition:1]]];
+        NSString *stringPropertyValue = nil;
         cell.textLabel.text = [keys objectAtIndex:[indexPath indexAtPosition:1]];
-        cell.detailTextLabel.text = [properties objectForKey:[keys objectAtIndex:[indexPath indexAtPosition:1]]];
+        if ([propertyValue isKindOfClass:[NSArray class]]) {
+            NSString *oneValue;
+            for (oneValue in propertyValue) {
+                if (stringPropertyValue) {
+                    stringPropertyValue = [NSString stringWithFormat:@"%@, %@", stringPropertyValue, oneValue];
+                } else {
+                    stringPropertyValue = oneValue;
+                }
+
+            }
+        } else {
+            stringPropertyValue = propertyValue;
+        }
+        cell.detailTextLabel.text = stringPropertyValue;
     }
 
     

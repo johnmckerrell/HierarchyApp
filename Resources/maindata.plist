@@ -1,164 +1,170 @@
 (
 	{
-        id = 1;
+		id = 1;
 		title = "Anthem - Rand Ayn";
-        htmlfile = "anthem.html";
+		htmlfile = "anthem.html";
 		properties = {
-            publisher = "Standard Publications";
+			publisher = "Standard Publications";
 			author = "Rand Ayn";
 			published = 2007;
-			genre = "Dystopian Fiction";
+			genre = (
+				"Dystopian Fiction",
+				Fiction,
+			);
 		};
 	},
 	{
-        id = 2;
+		id = 2;
 		title = "Vile Bodies - Evelyn Waugh";
-        htmlfile = "vilebodies.html";
+		htmlfile = "vilebodies.html";
 		properties = {
-            publisher = "Penguin Modern Classics";
+			publisher = "Penguin Modern Classics";
 			author = "Evelyn Waugh";
 			published = 2000;
-			genre = "Fiction";
+			genre = Fiction;
 		};
 	},
 	{
-        id = 3;
+		id = 3;
 		title = "The Thing Around Your Neck - Chimamanda Ngozi Adichie";
 		properties = {
-            publisher = "Fourth Estate";
+			publisher = "Fourth Estate";
 			author = "Chimamanda Ngozi Adichie";
 			published = 2009;
-			genre = "Fiction";
+			genre = (
+				Fiction,
+				"African Fiction",
+			);
 		};
 	},
 	{
-        id = 4;
+		id = 4;
 		title = "The Children of Men - P.D. James";
 		properties = {
-            publisher = "Faber and Faber";
+			publisher = "Faber and Faber";
 			author = "P.D. James";
 			published = 2006;
 			genre = "Dystopian Fiction";
 		};
 	},
 	{
-        id = 5;
+		id = 5;
 		title = "The Girl Who Played with Fire - Stieg Larsson";
 		properties = {
-            publisher = "Maclehose Press";
+			publisher = "Maclehose Press";
 			author = "Stieg Larsson";
 			published = 2009;
 			genre = "Suspense Fiction";
 		};
 	},
 	{
-        id = 6;
+		id = 6;
 		title = "The Angel's Game - Carlos Ruiz Zafon";
 		properties = {
-            publisher = "Weidenfeld & Nicolson";
+			publisher = "Weidenfeld & Nicolson";
 			author = "Carlos Ruiz Zafon";
 			published = 2009;
 			genre = "Suspense Fiction";
 		};
 	},
 	{
-        id = 7;
+		id = 7;
 		title = "The Girl with the Dragon Tattoo by Stieg Larsson";
 		properties = {
-            publisher = "Maclehose Press";
+			publisher = "Maclehose Press";
 			author = "Stieg Larsson";
 			published = 2008;
 			genre = "Suspense Fiction";
 		};
 	},
 	{
-        id = 8;
+		id = 8;
 		title = "The Amber Spyglass - Philip Pullman";
 		properties = {
-            publisher = "Scholastic";
+			publisher = Scholastic;
 			author = "Philip Pullman";
 			published = 2001;
 			genre = "Fantasy Fiction";
 		};
 	},
 	{
-        id = 9;
+		id = 9;
 		title = "The Subtle Knife - Philip Pullman";
 		properties = {
-            publisher = "Scholastic";
+			publisher = Scholastic;
 			author = "Philip Pullman";
 			published = 1997;
 			genre = "Fantasy Fiction";
 		};
 	},
 	{
-        id = 10;
+		id = 10;
 		title = "Northern Lights - Philip Pullman";
 		properties = {
-            publisher = "Scholastic";
+			publisher = Scholastic;
 			author = "Philip Pullman";
 			published = 1995;
 			genre = "Fantasy Fiction";
 		};
 	},
 	{
-        id = 11;
+		id = 11;
 		title = "Breaking Dawn - Stephenie Meyer";
 		properties = {
-            publisher = "Atom";
+			publisher = Atom;
 			author = "Stephenie Meyer";
 			published = 2008;
 			genre = "Fantasy Fiction";
 		};
 	},
 	{
-        id = 12;
+		id = 12;
 		title = "Revolutionary Road - Richard Yates";
 		properties = {
-            publisher = "Vintage Books";
+			publisher = "Vintage Books";
 			author = "Richard Yates";
 			published = 2007;
 			genre = "Domestic Fiction";
 		};
 	},
 	{
-        id = 13;
+		id = 13;
 		title = "Eclipse - Stephenie Meyer";
 		properties = {
-            publisher = "Atom";
+			publisher = Atom;
 			author = "Stephenie Meyer";
 			published = 2008;
 			genre = "Fantasy Fiction";
 		};
 	},
 	{
-        id = 14;
+		id = 14;
 		title = "New Moon - Stephenie Meyer";
 		properties = {
-            publisher = "Atom";
+			publisher = Atom;
 			author = "Stephenie Meyer";
 			published = 2009;
 			genre = "Fantasy Fiction";
 		};
 	},
 	{
-        id = 15;
+		id = 15;
 		title = "Twilight - Stephenie Meyer";
 		properties = {
-            publisher = "Atom";
+			publisher = Atom;
 			author = "Stephenie Meyer";
 			published = 2007;
 			genre = "Fantasy Fiction";
 		};
 	},
 	{
-        id = 16;
+		id = 16;
 		title = "East is East: Screenplay - Ayub Khan-Din";
 		properties = {
-            publisher = "FilmFour";
+			publisher = FilmFour;
 			author = "Ayub Khan-Din";
 			published = 1999;
-			genre = "Fiction";
+			genre = Fiction;
 		};
 	},
 )
