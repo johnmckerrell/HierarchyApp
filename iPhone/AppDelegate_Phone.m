@@ -16,7 +16,7 @@
 
 @implementation AppDelegate_Phone
 
-@synthesize window, navigationController, tabBarController, currentFilters;
+@synthesize window, navigationController, tabBarController, currentFilters, tintColor;
 @synthesize appdata, filtersdata, maindata;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
@@ -27,6 +27,21 @@
     NSLog(@"appdata=%@",appdata);
     filtersdata = [[NSDictionary dictionaryWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: @"filtersdata.plist"]] retain];
     maindata = [[NSArray arrayWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: @"maindata.plist"]] retain];
+
+    // Retrieve the tint color for nav bars if we have one
+    NSDictionary *appearance = [appdata objectForKey:@"appearance"];
+    if (appearance ) {
+        if ([appearance objectForKey:@"navigationBarTint"]) {
+            float red, blue, green, alpha;
+            NSScanner *s = [NSScanner scannerWithString:[appearance objectForKey:@"navigationBarTint"]];
+            [s setCharactersToBeSkipped:
+             [NSCharacterSet characterSetWithCharactersInString:@"\n, "]];
+            if ([s scanFloat:&red] && [s scanFloat:&green] && [s scanFloat:&blue] && [s scanFloat:&alpha] ) {
+                tintColor = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+            }
+        }
+    }
+    
     
     // Create an array to hold the filtered data
     filteredData = [[NSMutableArray alloc] initWithCapacity:[maindata count]];
@@ -119,21 +134,7 @@
 	return YES;
 }
 
--(void)setupTabBarWithInitialCategory:(NSString*)initialCategory {
-    NSDictionary *appearance = [appdata objectForKey:@"appearance"];
-    UIColor *tintColor = nil;
-    if (appearance ) {
-        if ([appearance objectForKey:@"navigationBarTint"]) {
-            float red, blue, green, alpha;
-            NSScanner *s = [NSScanner scannerWithString:[appearance objectForKey:@"navigationBarTint"]];
-            [s setCharactersToBeSkipped:
-             [NSCharacterSet characterSetWithCharactersInString:@"\n, "]];
-            if ([s scanFloat:&red] && [s scanFloat:&green] && [s scanFloat:&blue] && [s scanFloat:&alpha] ) {
-                tintColor = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
-            }
-        }
-    }
-    
+-(void)setupTabBarWithInitialCategory:(NSString*)initialCategory {    
     tabBarController = [[UITabBarController alloc] init];
     tabBarController.delegate = self;
     NSArray *categories = [filtersdata objectForKey:@"categories"];
@@ -152,7 +153,7 @@
 
         navController = [[[UINavigationController alloc] init] autorelease];
         navController.delegate = self;
-        if (tintColor) {
+        if (self.tintColor) {
             navController.navigationBar.tintColor = tintColor;
         }
         tabBarItem = [[[UITabBarItem alloc] initWithTitle:[categoryData objectForKey:@"title"] image:icon tag:i] autorelease];
@@ -172,7 +173,7 @@
         
         navController = [[[UINavigationController alloc] init] autorelease];
         navController.delegate = self;
-        if (tintColor) {
+        if (self.tintColor) {
             navController.navigationBar.tintColor = tintColor;
         }        
         tabBarItem = [[[UITabBarItem alloc] initWithTitle:[itemDescription objectForKey:@"title"] image:icon tag:i] autorelease];
@@ -517,6 +518,8 @@
     WebBrowserViewController *viewController;
     viewController = [[[WebBrowserViewController alloc] initWithRequest:request] autorelease];
     [self.navigationController pushViewController:viewController animated:YES];
+    NSLog(@"toolbar=%@", viewController.toolbar);
+    viewController.toolbar.tintColor = tintColor;
 }
 
 -(NSDictionary*) getCurrentFilterAtPosition:(NSUInteger)position {

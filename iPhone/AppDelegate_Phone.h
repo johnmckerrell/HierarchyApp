@@ -22,8 +22,10 @@
     NSDictionary *currentItem;
     NSMutableArray *filteredData;
     NSMutableArray *ignoredFilters;
+    UIColor *tintColor;
 }
 
+@property (nonatomic, retain) UIColor *tintColor;
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
 @property (nonatomic, retain) UITabBarController *tabBarController;

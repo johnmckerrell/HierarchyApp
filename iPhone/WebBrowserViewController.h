@@ -18,6 +18,8 @@
     IBOutlet UIToolbar *toolbar;
 }
 
+@property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
+
 -(id) initWithRequest:(NSURLRequest*)_request;
 -(IBAction) closeWebBrowser:(id)sender;
 - (void)goBack:(id)sender;

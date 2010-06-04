@@ -11,6 +11,8 @@
 
 @implementation WebBrowserViewController
 
+@synthesize toolbar;
+
 -(id) initWithRequest:(NSURLRequest*)_request {
     if ((self = [super init])) {
         request = [_request retain];
@@ -20,6 +22,7 @@
         //self.navigationItem.hidesBackButton = YES;
         // Test Comment
         // Test Comment 2
+        self.hidesBottomBarWhenPushed = YES;
     }
     return self;
 }
