@@ -7,10 +7,12 @@
 //
 
 #import "ItemWebViewController.h"
-#import "AppDelegate_Phone.h"
+#import "HierarchyViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 @implementation ItemWebViewController
+
+@synthesize hierarchyController;
 
 -(id) initWithItem:(NSDictionary*)_itemData {
     if ((self = [super init])) {
@@ -53,8 +55,7 @@
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     NSLog(@"shouldStartLoad? %i", navigationType);
     if (initialLoadPerformed) {
-        AppDelegate_Phone *appDelegate = (AppDelegate_Phone*)[[UIApplication sharedApplication] delegate];
-        [appDelegate loadURLRequestInLocalBrowser:request];
+        [hierarchyController loadURLRequestInLocalBrowser:request];
         return NO;
     } else {
         initialLoadPerformed = YES;

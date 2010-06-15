@@ -8,13 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+@class HierarchyViewController;
+
 
 @interface ItemWebViewController : UIViewController <UIWebViewDelegate> {
     NSDictionary *itemData;
     IBOutlet UIWebView *webView;
     BOOL initialLoadPerformed;
     IBOutlet UIView *statusIndicator;
+    HierarchyViewController *hierarchyController;
 }
+
+@property (nonatomic, retain) HierarchyViewController *hierarchyController;
 
 -(id) initWithItem:(NSDictionary*)_itemData;
 -(void) setStatusTimer;

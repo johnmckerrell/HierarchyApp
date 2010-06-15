@@ -7,9 +7,11 @@
 //
 
 #import "ListViewController.h"
-#import "AppDelegate_Phone.h"
+#import "HierarchyViewController.h"
 
 @implementation ListViewController
+
+@synthesize hierarchyController;
 
 
 #pragma mark -
@@ -198,9 +200,8 @@
 	/*
 	 Update the filtered array based on the search text and scope.
 	 */
-	AppDelegate_Phone *appDelegate = (AppDelegate_Phone*)[[UIApplication sharedApplication] delegate];
     [filteredData release];
-    filteredData = [appDelegate filterDataForSearchTerm:searchText usingFilters:[scope isEqualToString:@"Using filters"]];
+    filteredData = [hierarchyController filterDataForSearchTerm:searchText usingFilters:[scope isEqualToString:@"Using filters"]];
     [filteredData retain];
 }
 
@@ -234,17 +235,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Navigation logic may go here. Create and push another view controller.
-    AppDelegate_Phone *appDelegate = (AppDelegate_Phone*)[[UIApplication sharedApplication] delegate];
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         NSDictionary *result = [[[filteredData objectAtIndex:[indexPath indexAtPosition:0]] objectForKey:@"results"] objectAtIndex:[indexPath indexAtPosition:1]];
         if ([result objectForKey:@"itemData"]) {
-            [appDelegate showItem:[result objectForKey:@"itemData"] fromSave:NO];
+            [hierarchyController showItem:[result objectForKey:@"itemData"] fromSave:NO];
         } else {
             // Load a filter
         }
 
     } else {
-        [appDelegate filterProperty:[displayFilter objectForKey:@"property"] value:[tableData objectAtIndex:[indexPath indexAtPosition:1]] fromSave:NO];
+        [hierarchyController filterProperty:[displayFilter objectForKey:@"property"] value:[tableData objectAtIndex:[indexPath indexAtPosition:1]] fromSave:NO];
     }
 }
 

@@ -7,10 +7,11 @@
 //
 
 #import "ItemListViewController.h"
-#import "AppDelegate_Phone.h"
+#import "HierarchyViewController.h"
 
 @implementation ItemListViewController
 
+@synthesize hierarchyController;
 
 #pragma mark -
 #pragma mark Initialization
@@ -45,10 +46,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    AppDelegate_Phone *appDelegate = (AppDelegate_Phone*)[[UIApplication sharedApplication] delegate];
-    
     UISearchBar *searchBar = [[[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)] autorelease];
-    if ([appDelegate.currentFilters count] > 0) {
+    if ([hierarchyController.currentFilters count] > 0) {
         searchBar.scopeButtonTitles = [NSArray arrayWithObjects:@"Using filters", @"All entries", nil];
     }
     self.tableView.tableHeaderView = searchBar;
@@ -205,9 +204,8 @@
 	/*
 	 Update the filtered array based on the search text and scope.
 	 */
-	AppDelegate_Phone *appDelegate = (AppDelegate_Phone*)[[UIApplication sharedApplication] delegate];
     [filteredData release];
-    filteredData = [appDelegate filterDataForSearchTerm:searchText usingFilters:[scope isEqualToString:@"Using filters"]];
+    filteredData = [hierarchyController filterDataForSearchTerm:searchText usingFilters:[scope isEqualToString:@"Using filters"]];
     [filteredData retain];
 }
 
@@ -241,18 +239,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Navigation logic may go here. Create and push another view controller.
-    AppDelegate_Phone *appDelegate = (AppDelegate_Phone*)[[UIApplication sharedApplication] delegate];
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         NSDictionary *result = [[[filteredData objectAtIndex:[indexPath indexAtPosition:0]] objectForKey:@"results"] objectAtIndex:[indexPath indexAtPosition:1]];
         if ([result objectForKey:@"itemData"]) {
-            [appDelegate showItem:[result objectForKey:@"itemData"] fromSave:NO];
+            [hierarchyController showItem:[result objectForKey:@"itemData"] fromSave:NO];
         } else {
             // Load a filter
         }
         
     } else {
         NSDictionary *itemData = [tableData objectAtIndex:[indexPath indexAtPosition:1]];
-        [appDelegate showItem:itemData fromSave:NO];
+        [hierarchyController showItem:itemData fromSave:NO];
     }
 	/*
 	 <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];

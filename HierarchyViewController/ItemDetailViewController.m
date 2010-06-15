@@ -11,6 +11,8 @@
 
 @implementation ItemDetailViewController
 
+@synthesize hierarchyController;
+
 
 #pragma mark -
 #pragma mark Initialization

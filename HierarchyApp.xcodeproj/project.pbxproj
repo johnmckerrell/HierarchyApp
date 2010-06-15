@@ -21,18 +21,19 @@
 		52191FAA11B801EE006A53C3 /* genres.png in Resources */ = {isa = PBXBuildFile; fileRef = 52191FA911B801EE006A53C3 /* genres.png */; };
 		5219200511B80A79006A53C3 /* books.png in Resources */ = {isa = PBXBuildFile; fileRef = 5219200411B80A79006A53C3 /* books.png */; };
 		5220E28311B8EE6800090384 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220E28211B8EE6800090384 /* Default.png */; };
+		5255D98C11C78DCF003B9FE2 /* ItemDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5255D98111C78DCF003B9FE2 /* ItemDetailViewController.m */; };
+		5255D98D11C78DCF003B9FE2 /* ItemListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5255D98311C78DCF003B9FE2 /* ItemListViewController.m */; };
+		5255D98E11C78DCF003B9FE2 /* ItemWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5255D98511C78DCF003B9FE2 /* ItemWebViewController.m */; };
+		5255D98F11C78DCF003B9FE2 /* ItemWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5255D98611C78DCF003B9FE2 /* ItemWebViewController.xib */; };
+		5255D99011C78DCF003B9FE2 /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5255D98811C78DCF003B9FE2 /* ListViewController.m */; };
+		5255D99111C78DCF003B9FE2 /* WebBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5255D98A11C78DCF003B9FE2 /* WebBrowserViewController.m */; };
+		5255D99211C78DCF003B9FE2 /* WebBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5255D98B11C78DCF003B9FE2 /* WebBrowserViewController.xib */; };
+		5255D99A11C7919C003B9FE2 /* HierarchyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5255D99911C7919C003B9FE2 /* HierarchyViewController.m */; };
 		52D7F83311ABEAE10018EB4F /* appdata.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52D7F83011ABEAE10018EB4F /* appdata.plist */; };
 		52D7F83411ABEAE10018EB4F /* filtersdata.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52D7F83111ABEAE10018EB4F /* filtersdata.plist */; };
 		52D7F83511ABEAE10018EB4F /* maindata.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52D7F83211ABEAE10018EB4F /* maindata.plist */; };
-		52D7F83911ABEC200018EB4F /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D7F83811ABEC200018EB4F /* ListViewController.m */; };
-		52D7F9BD11AC30430018EB4F /* ItemListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D7F9BC11AC30430018EB4F /* ItemListViewController.m */; };
-		52D7F9EE11AC35570018EB4F /* ItemDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D7F9ED11AC35570018EB4F /* ItemDetailViewController.m */; };
-		52D7FA4211AD22B10018EB4F /* ItemWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D7FA4011AD22B10018EB4F /* ItemWebViewController.m */; };
-		52D7FA4311AD22B10018EB4F /* ItemWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52D7FA4111AD22B10018EB4F /* ItemWebViewController.xib */; };
 		52D7FAA011AD2A1E0018EB4F /* anthem.html in Resources */ = {isa = PBXBuildFile; fileRef = 52D7FA9E11AD2A1E0018EB4F /* anthem.html */; };
 		52D7FAA111AD2A1E0018EB4F /* vilebodies.html in Resources */ = {isa = PBXBuildFile; fileRef = 52D7FA9F11AD2A1E0018EB4F /* vilebodies.html */; };
-		52D7FAD411AD2EEF0018EB4F /* WebBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D7FAD211AD2EEF0018EB4F /* WebBrowserViewController.m */; };
-		52D7FAD511AD2EEF0018EB4F /* WebBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52D7FAD311AD2EEF0018EB4F /* WebBrowserViewController.xib */; };
 		52D7FB7211AECB040018EB4F /* UIButtonBarArrowLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = 52D7FB6F11AECB040018EB4F /* UIButtonBarArrowLeft.png */; };
 		52D7FB7311AECB040018EB4F /* UIButtonBarArrowRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 52D7FB7011AECB040018EB4F /* UIButtonBarArrowRight.png */; };
 		52D7FB7411AECB040018EB4F /* UIButtonBarRefresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 52D7FB7111AECB040018EB4F /* UIButtonBarRefresh.png */; };
@@ -60,23 +61,25 @@
 		52191FA911B801EE006A53C3 /* genres.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = genres.png; sourceTree = "<group>"; };
 		5219200411B80A79006A53C3 /* books.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = books.png; sourceTree = "<group>"; };
 		5220E28211B8EE6800090384 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		5255D98011C78DCF003B9FE2 /* ItemDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemDetailViewController.h; sourceTree = "<group>"; };
+		5255D98111C78DCF003B9FE2 /* ItemDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemDetailViewController.m; sourceTree = "<group>"; };
+		5255D98211C78DCF003B9FE2 /* ItemListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemListViewController.h; sourceTree = "<group>"; };
+		5255D98311C78DCF003B9FE2 /* ItemListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemListViewController.m; sourceTree = "<group>"; };
+		5255D98411C78DCF003B9FE2 /* ItemWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemWebViewController.h; sourceTree = "<group>"; };
+		5255D98511C78DCF003B9FE2 /* ItemWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemWebViewController.m; sourceTree = "<group>"; };
+		5255D98611C78DCF003B9FE2 /* ItemWebViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemWebViewController.xib; sourceTree = "<group>"; };
+		5255D98711C78DCF003B9FE2 /* ListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListViewController.h; sourceTree = "<group>"; };
+		5255D98811C78DCF003B9FE2 /* ListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListViewController.m; sourceTree = "<group>"; };
+		5255D98911C78DCF003B9FE2 /* WebBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebBrowserViewController.h; sourceTree = "<group>"; };
+		5255D98A11C78DCF003B9FE2 /* WebBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebBrowserViewController.m; sourceTree = "<group>"; };
+		5255D98B11C78DCF003B9FE2 /* WebBrowserViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebBrowserViewController.xib; sourceTree = "<group>"; };
+		5255D99811C7919C003B9FE2 /* HierarchyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HierarchyViewController.h; sourceTree = "<group>"; };
+		5255D99911C7919C003B9FE2 /* HierarchyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HierarchyViewController.m; sourceTree = "<group>"; };
 		52D7F83011ABEAE10018EB4F /* appdata.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = appdata.plist; sourceTree = "<group>"; };
 		52D7F83111ABEAE10018EB4F /* filtersdata.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = filtersdata.plist; sourceTree = "<group>"; };
 		52D7F83211ABEAE10018EB4F /* maindata.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = maindata.plist; sourceTree = "<group>"; };
-		52D7F83711ABEC200018EB4F /* ListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListViewController.h; sourceTree = "<group>"; };
-		52D7F83811ABEC200018EB4F /* ListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListViewController.m; sourceTree = "<group>"; };
-		52D7F9BB11AC30430018EB4F /* ItemListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemListViewController.h; sourceTree = "<group>"; };
-		52D7F9BC11AC30430018EB4F /* ItemListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemListViewController.m; sourceTree = "<group>"; };
-		52D7F9EC11AC35570018EB4F /* ItemDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemDetailViewController.h; sourceTree = "<group>"; };
-		52D7F9ED11AC35570018EB4F /* ItemDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemDetailViewController.m; sourceTree = "<group>"; };
-		52D7FA3F11AD22B10018EB4F /* ItemWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemWebViewController.h; sourceTree = "<group>"; };
-		52D7FA4011AD22B10018EB4F /* ItemWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemWebViewController.m; sourceTree = "<group>"; };
-		52D7FA4111AD22B10018EB4F /* ItemWebViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemWebViewController.xib; sourceTree = "<group>"; };
 		52D7FA9E11AD2A1E0018EB4F /* anthem.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = anthem.html; sourceTree = "<group>"; };
 		52D7FA9F11AD2A1E0018EB4F /* vilebodies.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = vilebodies.html; sourceTree = "<group>"; };
-		52D7FAD111AD2EEF0018EB4F /* WebBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebBrowserViewController.h; sourceTree = "<group>"; };
-		52D7FAD211AD2EEF0018EB4F /* WebBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebBrowserViewController.m; sourceTree = "<group>"; };
-		52D7FAD311AD2EEF0018EB4F /* WebBrowserViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WebBrowserViewController.xib; sourceTree = "<group>"; };
 		52D7FB6F11AECB040018EB4F /* UIButtonBarArrowLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIButtonBarArrowLeft.png; sourceTree = "<group>"; };
 		52D7FB7011AECB040018EB4F /* UIButtonBarArrowRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIButtonBarArrowRight.png; sourceTree = "<group>"; };
 		52D7FB7111AECB040018EB4F /* UIButtonBarRefresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIButtonBarRefresh.png; sourceTree = "<group>"; };
@@ -115,18 +118,6 @@
 				2860E325111B887F00E27156 /* AppDelegate_Phone.h */,
 				2860E326111B887F00E27156 /* AppDelegate_Phone.m */,
 				2860E327111B887F00E27156 /* MainWindow_Phone.xib */,
-				52D7F83711ABEC200018EB4F /* ListViewController.h */,
-				52D7F83811ABEC200018EB4F /* ListViewController.m */,
-				52D7F9BB11AC30430018EB4F /* ItemListViewController.h */,
-				52D7F9BC11AC30430018EB4F /* ItemListViewController.m */,
-				52D7F9EC11AC35570018EB4F /* ItemDetailViewController.h */,
-				52D7F9ED11AC35570018EB4F /* ItemDetailViewController.m */,
-				52D7FA3F11AD22B10018EB4F /* ItemWebViewController.h */,
-				52D7FA4011AD22B10018EB4F /* ItemWebViewController.m */,
-				52D7FA4111AD22B10018EB4F /* ItemWebViewController.xib */,
-				52D7FAD111AD2EEF0018EB4F /* WebBrowserViewController.h */,
-				52D7FAD211AD2EEF0018EB4F /* WebBrowserViewController.m */,
-				52D7FAD311AD2EEF0018EB4F /* WebBrowserViewController.xib */,
 			);
 			path = iPhone;
 			sourceTree = "<group>";
@@ -152,6 +143,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				5255D97F11C78DCF003B9FE2 /* HierarchyViewController */,
 				2860E32A111B888700E27156 /* iPad */,
 				2860E324111B887F00E27156 /* iPhone */,
 				28EEBF621118D79A00187D67 /* Shared */,
@@ -181,6 +173,27 @@
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5255D97F11C78DCF003B9FE2 /* HierarchyViewController */ = {
+			isa = PBXGroup;
+			children = (
+				5255D98011C78DCF003B9FE2 /* ItemDetailViewController.h */,
+				5255D98111C78DCF003B9FE2 /* ItemDetailViewController.m */,
+				5255D98211C78DCF003B9FE2 /* ItemListViewController.h */,
+				5255D98311C78DCF003B9FE2 /* ItemListViewController.m */,
+				5255D98411C78DCF003B9FE2 /* ItemWebViewController.h */,
+				5255D98511C78DCF003B9FE2 /* ItemWebViewController.m */,
+				5255D98611C78DCF003B9FE2 /* ItemWebViewController.xib */,
+				5255D98711C78DCF003B9FE2 /* ListViewController.h */,
+				5255D98811C78DCF003B9FE2 /* ListViewController.m */,
+				5255D98911C78DCF003B9FE2 /* WebBrowserViewController.h */,
+				5255D98A11C78DCF003B9FE2 /* WebBrowserViewController.m */,
+				5255D98B11C78DCF003B9FE2 /* WebBrowserViewController.xib */,
+				5255D99811C7919C003B9FE2 /* HierarchyViewController.h */,
+				5255D99911C7919C003B9FE2 /* HierarchyViewController.m */,
+			);
+			path = HierarchyViewController;
 			sourceTree = "<group>";
 		};
 		52D7F82F11ABEAE10018EB4F /* Resources */ = {
@@ -269,10 +282,8 @@
 				52D7F83311ABEAE10018EB4F /* appdata.plist in Resources */,
 				52D7F83411ABEAE10018EB4F /* filtersdata.plist in Resources */,
 				52D7F83511ABEAE10018EB4F /* maindata.plist in Resources */,
-				52D7FA4311AD22B10018EB4F /* ItemWebViewController.xib in Resources */,
 				52D7FAA011AD2A1E0018EB4F /* anthem.html in Resources */,
 				52D7FAA111AD2A1E0018EB4F /* vilebodies.html in Resources */,
-				52D7FAD511AD2EEF0018EB4F /* WebBrowserViewController.xib in Resources */,
 				52D7FB7211AECB040018EB4F /* UIButtonBarArrowLeft.png in Resources */,
 				52D7FB7311AECB040018EB4F /* UIButtonBarArrowRight.png in Resources */,
 				52D7FB7411AECB040018EB4F /* UIButtonBarRefresh.png in Resources */,
@@ -284,6 +295,8 @@
 				52191FAA11B801EE006A53C3 /* genres.png in Resources */,
 				5219200511B80A79006A53C3 /* books.png in Resources */,
 				5220E28311B8EE6800090384 /* Default.png in Resources */,
+				5255D98F11C78DCF003B9FE2 /* ItemWebViewController.xib in Resources */,
+				5255D99211C78DCF003B9FE2 /* WebBrowserViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,11 +310,12 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				2860E328111B887F00E27156 /* AppDelegate_Phone.m in Sources */,
 				2860E32E111B888700E27156 /* AppDelegate_Pad.m in Sources */,
-				52D7F83911ABEC200018EB4F /* ListViewController.m in Sources */,
-				52D7F9BD11AC30430018EB4F /* ItemListViewController.m in Sources */,
-				52D7F9EE11AC35570018EB4F /* ItemDetailViewController.m in Sources */,
-				52D7FA4211AD22B10018EB4F /* ItemWebViewController.m in Sources */,
-				52D7FAD411AD2EEF0018EB4F /* WebBrowserViewController.m in Sources */,
+				5255D98C11C78DCF003B9FE2 /* ItemDetailViewController.m in Sources */,
+				5255D98D11C78DCF003B9FE2 /* ItemListViewController.m in Sources */,
+				5255D98E11C78DCF003B9FE2 /* ItemWebViewController.m in Sources */,
+				5255D99011C78DCF003B9FE2 /* ListViewController.m in Sources */,
+				5255D99111C78DCF003B9FE2 /* WebBrowserViewController.m in Sources */,
+				5255D99A11C7919C003B9FE2 /* HierarchyViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

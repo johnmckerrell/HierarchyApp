@@ -7,48 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HierarchyViewController.h"
 
-@interface AppDelegate_Phone : NSObject <UIApplicationDelegate,UINavigationControllerDelegate,UITabBarControllerDelegate> {
+@interface AppDelegate_Phone : NSObject <UIApplicationDelegate> {
     UIWindow *window;
-    UINavigationController *navigationController;
-    UITabBarController *tabBarController;
-    NSArray *maindata;
-    NSDictionary *filtersdata;
-    NSDictionary *appdata;
-    NSString *currentCategory;
-    NSMutableArray *currentFilters;
-    NSUInteger categoryPathPosition;
     UIImageView *splashView;
-    NSDictionary *currentItem;
-    NSMutableArray *filteredData;
-    NSMutableArray *ignoredFilters;
-    UIColor *tintColor;
+    HierarchyViewController *hierarchyController;
 }
 
-@property (nonatomic, retain) UIColor *tintColor;
 @property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
-@property (nonatomic, retain) UITabBarController *tabBarController;
-@property (nonatomic, readonly) NSArray *maindata;
-@property (nonatomic, readonly) NSDictionary *filtersdata;
-@property (nonatomic, readonly) NSDictionary *appdata;
-@property (nonatomic, readonly) NSMutableArray *currentFilters;
 
--(void)setupTabBarWithInitialCategory:(NSString*)initialCategory;
 -(void)slideSplashScreenOut;
--(void) setCategoryByName:(NSString*) category;
--(BOOL) filterProperty:(NSString*)name value:(NSString*)value fromSave:(BOOL) fromSave;
--(BOOL) showItem:(NSDictionary*)itemData fromSave:(BOOL) fromSave;
--(void) loadURLRequestInLocalBrowser:(NSURLRequest*) request;
--(NSDictionary*) getCurrentFilterAtPosition:(NSUInteger)position;
--(NSDictionary*) getCategoryDataByName:(NSString*) category;
--(void) saveCurrentPosition;
--(void)filterData;
--(NSArray*)filterHeadings:(NSDictionary*)filter;
-
--(NSArray*)filterDataForSearchTerm:(NSString*)string usingFilters:(BOOL)useFilters;
-
--(BOOL)property:(id) property matchesValue:(NSString*) testString;
 
 @end
 

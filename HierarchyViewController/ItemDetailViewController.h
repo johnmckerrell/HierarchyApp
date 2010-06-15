@@ -8,10 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@class HierarchyViewController;
+
 
 @interface ItemDetailViewController : UITableViewController {
     NSDictionary *itemData;
+    HierarchyViewController *hierarchyController;
 }
+
+@property (nonatomic, retain) HierarchyViewController *hierarchyController;
 
 -(id) initWithItem:(NSDictionary*)_itemData;
 
