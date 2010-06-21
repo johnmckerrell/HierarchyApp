@@ -16,6 +16,5 @@
 
 
 -(id) initDisplaying:(NSDictionary*)_itemData data:(NSArray*)data;
-- (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope;
 
 @end

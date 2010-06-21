@@ -27,12 +27,15 @@
     NSArray *startFilters;
     NSDictionary *startItem;
     
+    NSArray *extraViewControllers;
+    
     UIBarButtonItem *leftMostItem;
     UIBarButtonItem *rightBarButtonItem;
     UINavigationItem *selectModeNavigationItem;
 }
 
 @property (nonatomic, readonly) NSArray *filteredData;
+@property (nonatomic, retain) NSArray *extraViewControllers;
 @property (nonatomic, retain) UIBarButtonItem *leftMostItem;
 @property (nonatomic, retain) UIBarButtonItem *rightBarButtonItem;
 @property (nonatomic, retain) UINavigationItem *selectModeNavigationItem;
@@ -54,6 +57,7 @@
 -(void) startSelectMode;
 -(void) stopSelectMode;
 -(NSArray*) selectedData;
+-(void) setCurrentCategory:(NSString*)_category filters:(NSArray*) _filters item:(NSDictionary*)_itemData;
 -(void) setupTabBarWithInitialCategory:(NSString*)initialCategory;
 -(void) setCategoryByName:(NSString*) category;
 -(BOOL) filterProperty:(NSString*)name value:(NSString*)value fromSave:(BOOL) fromSave;
@@ -64,6 +68,7 @@
 -(void) saveCurrentPosition;
 -(void)filterData;
 -(NSArray*)filterHeadings:(NSDictionary*)filter;
+-(void) updateData:(NSArray*)_data;
 
 -(NSArray*)filterDataForSearchTerm:(NSString*)string usingFilters:(BOOL)useFilters;
 

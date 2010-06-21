@@ -15,7 +15,7 @@
 
 @implementation HierarchyViewController
 
-@synthesize startCategory, startFilters, startItem, extraFilters, leftMostItem, rightBarButtonItem, selectModeNavigationItem;
+@synthesize startCategory, startFilters, startItem, extraFilters, leftMostItem, rightBarButtonItem, selectModeNavigationItem, extraViewControllers;
 @synthesize filteredData, tabBarController, currentCategory, currentFilters, currentItem, tintColor;
 @synthesize appdata, filtersdata, maindata;
 
@@ -67,6 +67,11 @@
 - (void)loadView {
     // Create the tab bar showing the right category
     [self setupTabBarWithInitialCategory:self.startCategory];
+    [self setCurrentCategory:self.startCategory filters:self.startFilters item:self.startItem];
+    self.view = tabBarController.view;
+}
+
+-(void) setCurrentCategory:(NSString*)_category filters:(NSArray*) _filters item:(NSDictionary*)_itemData {
     // This is needed to prepare the headings correctly
     [self setCategoryByName:self.startCategory];
     
@@ -86,7 +91,20 @@
         [self showItem:startItem fromSave:YES];
     }
     
-    self.view = tabBarController.view;
+}
+
+-(void) updateData:(NSArray*)_data {
+    if (_data == maindata) {
+        // Do nothing, assume we just need to re-filter
+    } else {
+        [maindata release];
+        maindata = [_data retain];
+    }
+    // Need to do this or it won't update the data
+    // FIXME - this could be improved by not replacing stuff 
+    NSString *oldCurrentCategory = currentCategory;
+    currentCategory = nil;
+    [self setCurrentCategory:oldCurrentCategory filters:currentFilters item:currentItem];
 }
 
 -(void) startSelectMode {
@@ -189,6 +207,10 @@
         }
     }
     
+    if (self.extraViewControllers) {
+        [viewControllers addObjectsFromArray:self.extraViewControllers];
+    }
+    
     [tabBarController setViewControllers:viewControllers];
     tabBarController.selectedIndex = selected;
     //self.navigationController = (UINavigationController*)tabBarController.selectedViewController;
@@ -216,6 +238,10 @@
     NSLog(@"selected %@", viewController);
     NSLog(@"viewController.tag = %i", viewController.tabBarItem.tag);
     NSLog(@"viewController count = %i", [self.navigationController.viewControllers count]);
+    if (self.extraViewControllers && [self.extraViewControllers indexOfObject:viewController] != NSNotFound) {
+        // Don't want to set a category as this is nothing to do with the hierarchy controller.
+        return;
+    }
     [self setCategoryByName:viewController.tabBarItem.title];
     NSLog(@"viewController count = %i", [self.navigationController.viewControllers count]);
 }
