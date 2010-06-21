@@ -15,8 +15,8 @@
 
 @implementation HierarchyViewController
 
-@synthesize startCategory, startFilters, startItem;
-@synthesize tabBarController, currentCategory, currentFilters, currentItem, tintColor;
+@synthesize startCategory, startFilters, startItem, extraFilters, leftMostItem, rightBarButtonItem, selectModeNavigationItem;
+@synthesize filteredData, tabBarController, currentCategory, currentFilters, currentItem, tintColor;
 @synthesize appdata, filtersdata, maindata;
 
 - (id)initWithAppData:(NSDictionary*)_appdata filtersData:(NSDictionary*)_filtersdata mainData:(NSArray*)_maindata {
@@ -45,6 +45,8 @@
         // The currently applied filters
         currentFilters = [[NSMutableArray alloc] init];
         ignoredFilters = [[NSMutableArray alloc] init];
+        extraFilters = [[NSArray array] retain];
+        selectModeNavigationItem = [[UINavigationItem alloc] init];
         
         
     }
@@ -60,7 +62,6 @@
     return self;
 }
 */
-
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView {
@@ -86,6 +87,55 @@
     }
     
     self.view = tabBarController.view;
+}
+
+-(void) startSelectMode {
+    NSLog(@"Editing");
+    ListViewController *visibleController = [((UINavigationController*)tabBarController.selectedViewController).viewControllers lastObject];
+    [visibleController setSelecting:YES];
+}
+
+-(void) stopSelectMode {
+    ListViewController *visibleController = [((UINavigationController*)tabBarController.selectedViewController).viewControllers lastObject];
+    [visibleController setSelecting:NO];
+}
+
+-(NSArray*) selectedData {
+    ListViewController *visibleController = [((UINavigationController*)tabBarController.selectedViewController).viewControllers lastObject];
+    NSDictionary *filter = visibleController.displayFilter;
+    NSDictionary *itemData, *itemProperties;
+    NSArray *selections = [visibleController selectedData];
+    id filterProperty;
+    NSString *selectedValue;
+    NSMutableArray *selectedData = [NSMutableArray arrayWithCapacity:[filteredData count]];
+    
+    // The item list returns all we need anyway.
+    if ([visibleController isKindOfClass:[ItemListViewController class]]) {
+        return selections;
+    }
+    
+    for (itemData in filteredData) {
+        itemProperties = [itemData objectForKey:@"properties"];
+        BOOL match = NO;
+        for (selectedValue in selections) {
+            if (filter) {                
+                filterProperty = [filter objectForKey:@"property"];
+                if ([self property:[itemProperties objectForKey:filterProperty] matchesValue:selectedValue]) {
+                    match = YES;
+                    break;
+                }
+            } else {
+                if ([selectedValue isEqualToString:[itemData objectForKey:@"title"]]) {
+                    match = YES;
+                    break;
+                }
+            }
+        }
+        if (match) {
+            [selectedData addObject:itemData];
+        }
+    }
+    return selectedData;
 }
 
 -(void)setupTabBarWithInitialCategory:(NSString*)initialCategory {    
@@ -186,12 +236,13 @@
 }
 
 -(void)filterData {
-    if ([currentFilters count] == 0) {
+    if ([currentFilters count] == 0 && [extraFilters count] == 0) {
         [filteredData setArray:maindata];
         return;
     }
     NSDictionary *itemData, *itemProperties;
-    NSArray *filter;
+    NSArray *allFilters, *filter;
+    allFilters = [extraFilters arrayByAddingObjectsFromArray:currentFilters];
     id testValue;
     BOOL match;
     [filteredData removeAllObjects];
@@ -199,7 +250,7 @@
         match = YES;
         itemProperties = [itemData objectForKey:@"properties"];
         
-        for (filter in currentFilters) {
+        for (filter in allFilters) {
             testValue = [itemProperties objectForKey:[filter objectAtIndex:0]];
             if (![self property:testValue matchesValue:[filter objectAtIndex:1]]) {
                 match = NO;
@@ -266,7 +317,7 @@
         currentCategory = [[categoryData objectForKey:@"title"] retain];
         NSDictionary *currentFilter = [self getCurrentFilterAtPosition:categoryPathPosition];
         
-        id viewController;
+        UIViewController *viewController;
         if (currentFilter) {
             NSArray *headings = [self filterHeadings:currentFilter];
             viewController = [[[ListViewController alloc] initDisplaying:currentFilter data:headings] autorelease];
@@ -278,6 +329,13 @@
                                data:filteredData] autorelease];
             ((ItemListViewController*)viewController).hierarchyController = self;
         }
+        if (self.leftMostItem) {
+            viewController.navigationItem.leftBarButtonItem = self.leftMostItem;
+        }
+        if (self.rightBarButtonItem && ! viewController.navigationItem.rightBarButtonItem) {
+            viewController.navigationItem.rightBarButtonItem = self.rightBarButtonItem;
+        }
+        
         [((UINavigationController*)tabBarController.selectedViewController) setViewControllers:[NSArray arrayWithObject:viewController]];        
     }
 }
@@ -417,6 +475,7 @@
     ++categoryPathPosition;
     NSDictionary *currentFilter = [self getCurrentFilterAtPosition:categoryPathPosition];
     
+    UIViewController *viewController;
     if (currentFilter) {
         NSArray *headings = [self filterHeadings:currentFilter];
         if ( [headings count] == 1
@@ -431,17 +490,21 @@
             // Skip onto the next filter
             return [self filterProperty:[currentFilter objectForKey:@"property"] value:[headings objectAtIndex:0] fromSave:NO];
         }
-        ListViewController *viewController = [[[ListViewController alloc] initDisplaying:currentFilter data:headings] autorelease];
-        viewController.hierarchyController = self;
-        [((UINavigationController*)tabBarController.selectedViewController) pushViewController:viewController animated:YES];
+        ListViewController *listViewController = [[[ListViewController alloc] initDisplaying:currentFilter data:headings] autorelease];
+        listViewController.hierarchyController = self;
+        viewController = listViewController;
     } else {
         // Show a list of items
-        ItemListViewController *viewController = [[[ItemListViewController alloc] 
+        ItemListViewController *itemViewController = [[[ItemListViewController alloc] 
                                                    initDisplaying:[appdata objectForKey:@"itemData"] 
                                                    data:filteredData] autorelease];
-        viewController.hierarchyController = self;
-        [((UINavigationController*)tabBarController.selectedViewController) pushViewController:viewController animated:YES];
+        itemViewController.hierarchyController = self;
+        viewController = itemViewController;
     }
+    if (self.rightBarButtonItem && ! viewController.navigationItem.rightBarButtonItem) {
+        viewController.navigationItem.rightBarButtonItem = self.rightBarButtonItem;
+    }
+    [((UINavigationController*)tabBarController.selectedViewController) pushViewController:viewController animated:YES];
     return YES;
 }
 
@@ -537,6 +600,8 @@
 
 
 - (void)dealloc {
+    [extraFilters release], extraFilters = nil;
+    
     [super dealloc];
 }
 

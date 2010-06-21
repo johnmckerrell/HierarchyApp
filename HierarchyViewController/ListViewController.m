@@ -11,7 +11,7 @@
 
 @implementation ListViewController
 
-@synthesize hierarchyController;
+@synthesize hierarchyController, displayFilter;
 
 
 #pragma mark -
@@ -25,6 +25,7 @@
         //tableData = [[NSMutableArray alloc] initWithCapacity:[data count]];
         
         tableData = [data retain];
+        selectedCells = [[NSMutableArray arrayWithCapacity:[data count]] retain];
         filteredData = nil;
     }
     return self;    
@@ -82,6 +83,44 @@
 }
 */
 
+- (void)setSelecting:(BOOL)_selecting {
+    static UIBarButtonItem *oldRightBarButtonItem = nil;
+    static UIBarButtonItem *oldLeftBarButtonItem = nil;
+    selecting = _selecting;
+    if (selecting) {
+        UINavigationItem *item = self.hierarchyController.selectModeNavigationItem;
+        if (item.title) {
+            self.navigationItem.title = item.title;
+        }
+        if (item.leftBarButtonItem) {
+            oldLeftBarButtonItem = self.navigationItem.leftBarButtonItem;
+            self.navigationItem.leftBarButtonItem = item.leftBarButtonItem;
+        }
+        if (item.rightBarButtonItem) {
+            oldRightBarButtonItem = self.navigationItem.rightBarButtonItem;
+            self.navigationItem.rightBarButtonItem = item.rightBarButtonItem;
+        }
+        self.tableView.tableHeaderView = nil;
+        [selectedCells removeAllObjects];
+    } else {
+        self.navigationItem.title = [displayFilter objectForKey:@"title"];
+        self.navigationItem.leftBarButtonItem = oldLeftBarButtonItem;
+        self.navigationItem.rightBarButtonItem = oldRightBarButtonItem;
+        self.tableView.tableHeaderView = self.searchDisplayController.searchBar;
+    }
+    [self.tableView reloadData];
+
+}
+
+-(NSArray*) selectedData {
+    NSUInteger i, count = [selectedCells count];
+    NSMutableArray *selections = [NSMutableArray arrayWithCapacity:count];
+    for (i = 0; i < count; i++) {
+        NSIndexPath * selection = [selectedCells objectAtIndex:i];
+        [selections addObject:[tableData objectAtIndex:[selection indexAtPosition:1]]];
+    }
+    return selections;
+}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Override to allow orientations other than the default portrait orientation.
@@ -146,12 +185,26 @@
         cell.textLabel.text = [result objectForKey:@"title"];
     } else {
         cell.textLabel.text = [tableData objectAtIndex:[indexPath indexAtPosition:1]];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        if (selecting) {
+            if ([selectedCells indexOfObject:indexPath]!= NSNotFound) {
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            } else {
+                cell.accessoryType = UITableViewCellAccessoryNone;
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        } else {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+        }
+
     }
     
     return cell;
 }
 
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return UITableViewCellEditingStyleNone;
+}
 
 /*
 // Override to support conditional editing of the table view.
@@ -243,11 +296,20 @@
             // Load a filter
         }
 
+    } else if (selecting) {
+        NSUInteger index = [selectedCells indexOfObject:indexPath];
+        if (index!=NSNotFound) {
+            NSLog(@"deselecting");
+            [selectedCells removeObjectAtIndex:index];
+        } else {
+            NSLog(@"selecting");
+            [selectedCells addObject:indexPath];
+        }
+        [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     } else {
         [hierarchyController filterProperty:[displayFilter objectForKey:@"property"] value:[tableData objectAtIndex:[indexPath indexAtPosition:1]] fromSave:NO];
     }
 }
-
 
 #pragma mark -
 #pragma mark Memory management

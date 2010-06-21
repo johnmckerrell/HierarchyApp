@@ -7,17 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ListViewController.h"
 
 @class HierarchyViewController;
 
-@interface ItemListViewController : UITableViewController <UISearchDisplayDelegate> {
-    NSArray *tableData;
-    NSArray *filteredData;
-    UISearchDisplayController *searchDisplayController;
-    HierarchyViewController *hierarchyController;
+@interface ItemListViewController : ListViewController {
 }
 
-@property (nonatomic, retain) HierarchyViewController *hierarchyController;
 
 -(id) initDisplaying:(NSDictionary*)_itemData data:(NSArray*)data;
 - (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope;

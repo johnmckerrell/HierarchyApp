@@ -16,6 +16,7 @@
     NSDictionary *appdata;
     NSString *currentCategory;
     NSMutableArray *currentFilters;
+    NSArray  *extraFilters;
     NSUInteger categoryPathPosition;
     NSDictionary *currentItem;
     NSMutableArray *filteredData;
@@ -25,11 +26,20 @@
     NSString *startCategory;
     NSArray *startFilters;
     NSDictionary *startItem;
+    
+    UIBarButtonItem *leftMostItem;
+    UIBarButtonItem *rightBarButtonItem;
+    UINavigationItem *selectModeNavigationItem;
 }
 
+@property (nonatomic, readonly) NSArray *filteredData;
+@property (nonatomic, retain) UIBarButtonItem *leftMostItem;
+@property (nonatomic, retain) UIBarButtonItem *rightBarButtonItem;
+@property (nonatomic, retain) UINavigationItem *selectModeNavigationItem;
 @property (nonatomic, retain) NSString *startCategory;
 @property (nonatomic, retain) NSArray *startFilters;
 @property (nonatomic, retain) NSDictionary *startItem;
+@property (nonatomic, retain) NSArray *extraFilters;
 @property (nonatomic, retain) UIColor *tintColor;
 @property (nonatomic, retain) UITabBarController *tabBarController;
 @property (nonatomic, readonly) NSArray *maindata;
@@ -41,7 +51,10 @@
 
 - (id)initWithAppData:(NSDictionary*)_appdata filtersData:(NSDictionary*)_filtersdata mainData:(NSArray*)_maindata;
 
--(void)setupTabBarWithInitialCategory:(NSString*)initialCategory;
+-(void) startSelectMode;
+-(void) stopSelectMode;
+-(NSArray*) selectedData;
+-(void) setupTabBarWithInitialCategory:(NSString*)initialCategory;
 -(void) setCategoryByName:(NSString*) category;
 -(BOOL) filterProperty:(NSString*)name value:(NSString*)value fromSave:(BOOL) fromSave;
 -(BOOL) showItem:(NSDictionary*)itemData fromSave:(BOOL) fromSave;

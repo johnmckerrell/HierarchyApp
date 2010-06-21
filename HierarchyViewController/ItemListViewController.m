@@ -26,6 +26,7 @@
                       [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"self.title" ascending:YES] autorelease]]
                       ] retain];
         filteredData = nil;
+        selectedCells = [[NSMutableArray arrayWithCapacity:[data count]] retain];
     }
     return self;    
 }
@@ -43,6 +44,7 @@
 #pragma mark -
 #pragma mark View lifecycle
 
+/*
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -64,7 +66,7 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
-
+*/
 
 /*
 - (void)viewWillAppear:(BOOL)animated {
@@ -87,16 +89,17 @@
 }
 */
 
-
+/*
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Override to allow orientations other than the default portrait orientation.
     return YES;
 }
-
+*/
 
 #pragma mark -
 #pragma mark Table view data source
 
+/*
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
     if (tableView == self.searchDisplayController.searchResultsTableView) {
@@ -105,8 +108,9 @@
         return 1;
     }
 }
+*/
 
-
+/*
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
     if (tableView == self.searchDisplayController.searchResultsTableView) {
@@ -133,6 +137,7 @@
         return nil;
     }
 }
+*/
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -151,6 +156,18 @@
     } else {
         NSDictionary *itemData = [tableData objectAtIndex:[indexPath indexAtPosition:1]];
         cell.textLabel.text = [itemData objectForKey:@"title"];
+        if (selecting) {
+            if ([selectedCells indexOfObject:indexPath]!= NSNotFound) {
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            } else {
+                cell.accessoryType = UITableViewCellAccessoryNone;
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        } else {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+        }
+
     }
     //cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
     
@@ -199,11 +216,11 @@
 #pragma mark -
 #pragma mark Content Filtering
 
+/*
 - (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope
 {
-	/*
-	 Update the filtered array based on the search text and scope.
-	 */
+	// Update the filtered array based on the search text and scope.
+    
     [filteredData release];
     filteredData = [hierarchyController filterDataForSearchTerm:searchText usingFilters:[scope isEqualToString:@"Using filters"]];
     [filteredData retain];
@@ -232,7 +249,7 @@
     return YES;
 }
 
-
+*/
 
 #pragma mark -
 #pragma mark Table view delegate
@@ -246,7 +263,16 @@
         } else {
             // Load a filter
         }
-        
+    } else if (selecting) {
+        NSUInteger index = [selectedCells indexOfObject:indexPath];
+        if (index!=NSNotFound) {
+            NSLog(@"deselecting");
+            [selectedCells removeObjectAtIndex:index];
+        } else {
+            NSLog(@"selecting");
+            [selectedCells addObject:indexPath];
+        }
+        [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];       
     } else {
         NSDictionary *itemData = [tableData objectAtIndex:[indexPath indexAtPosition:1]];
         [hierarchyController showItem:itemData fromSave:NO];

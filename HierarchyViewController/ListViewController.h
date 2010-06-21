@@ -16,11 +16,17 @@
     NSArray *filteredData;
     UISearchDisplayController *searchDisplayController;
     HierarchyViewController *hierarchyController;
+    
+    NSMutableArray *selectedCells;
+    BOOL selecting;
 }
 
 @property (nonatomic, retain) HierarchyViewController *hierarchyController;
+@property (nonatomic, retain) NSDictionary *displayFilter;
 
 -(id) initDisplaying:(NSDictionary*)_displayFilter data:(NSArray*)data;
 - (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope;
+- (void)setSelecting:(BOOL)selecting;
+-(NSArray*) selectedData;
 
 @end
