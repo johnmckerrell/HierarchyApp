@@ -573,16 +573,49 @@
         }
     }
     
-    id viewController;
-    if ([itemData objectForKey:@"htmlfile"] || [itemData objectForKey:@"url"]) {
-        viewController = [[[ItemWebViewController alloc] initWithItem:itemData] autorelease];
+    
+    NSString *viewControllerClassString = nil;
+    Class viewControllerClass = nil;
+    id viewController = nil;
+    if ([itemData objectForKey:@"viewController"]) {
+        viewControllerClassString = [itemData objectForKey:@"viewController"];
+        viewControllerClass = NSClassFromString(viewControllerClassString);
+        viewController = [viewControllerClass alloc];
+        if ([viewController respondsToSelector:@selector(initWithItem:)]) {
+            viewController = [viewController initWithItem:itemData];
+        }
+        if (viewController && [viewController respondsToSelector:@selector(setHierarchyController:)]) {
+            [viewController setHierarchyController:self];
+        }
+    }
+    if (!viewController) {
+        NSDictionary *itemDataDescription = [self.appdata objectForKey:@"itemData"];
+        if (itemDataDescription ) {
+            viewControllerClassString = [itemDataDescription objectForKey:@"defaultViewController"];
+        }
+        if (viewControllerClassString) {
+            viewControllerClass = NSClassFromString(viewControllerClassString);
+        }
+        viewController = [viewControllerClass alloc];
+        if ([viewController respondsToSelector:@selector(initWithItem:)]) {
+            viewController = [viewController initWithItem:itemData];
+        }
+        if (viewController && [viewController respondsToSelector:@selector(setHierarchyController:)]) {
+            [viewController setHierarchyController:self];
+        }
+    }
+    if (viewController) {
+        // Do nothing, we're ready
+    } else if ([itemData objectForKey:@"htmlfile"] || [itemData objectForKey:@"url"]) {
+        viewController = [[ItemWebViewController alloc] initWithItem:itemData];
         ((ItemWebViewController*)viewController).hierarchyController = self;
     } else {
-        viewController = [[[ItemDetailViewController alloc] initWithItem:itemData] autorelease];
+        viewController = [[ItemDetailViewController alloc] initWithItem:itemData];
         ((ItemDetailViewController*)viewController).hierarchyController = self;
     }
     currentItem = [itemData retain];
     [((UINavigationController*)tabBarController.selectedViewController) pushViewController:viewController animated:YES];
+    [viewController release];
     return YES;
 }
 

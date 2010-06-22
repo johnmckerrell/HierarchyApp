@@ -11,8 +11,6 @@
 
 @implementation ItemListViewController
 
-@synthesize hierarchyController;
-
 #pragma mark -
 #pragma mark Initialization
 
