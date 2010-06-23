@@ -422,7 +422,7 @@
     BOOL modifiedFilters = NO;
     // The number of navigation controllers will be less if we've ignored filters
     // so we need to add their count on here
-    categoryPathPosition = ([((UINavigationController*)tabBarController.selectedViewController).viewControllers count] - 1) + [ignoredFilters count];
+    categoryPathPosition = ([navigationController.viewControllers count] - 1) + [ignoredFilters count];
     
     // Need this to make sure the list row is deselected
     [viewController viewWillAppear:animated];
@@ -457,6 +457,10 @@
     }
     NSLog(@"currentFilters now %@", currentFilters);
     [self saveCurrentPosition];
+    
+    if (self.rightBarButtonItem && ! viewController.navigationItem.rightBarButtonItem) {
+        viewController.navigationItem.rightBarButtonItem = self.rightBarButtonItem;
+    }    
 }
 /*
  -(BOOL) navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item {
@@ -526,9 +530,6 @@
                                                    data:filteredData] autorelease];
         itemViewController.hierarchyController = self;
         viewController = itemViewController;
-    }
-    if (self.rightBarButtonItem && ! viewController.navigationItem.rightBarButtonItem) {
-        viewController.navigationItem.rightBarButtonItem = self.rightBarButtonItem;
     }
     [((UINavigationController*)tabBarController.selectedViewController) pushViewController:viewController animated:YES];
     return YES;
