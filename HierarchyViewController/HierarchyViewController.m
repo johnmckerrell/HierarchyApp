@@ -73,12 +73,12 @@
 
 -(void) setCurrentCategory:(NSString*)_category filters:(NSArray*) _filters item:(NSDictionary*)_itemData {
     // This is needed to prepare the headings correctly
-    [self setCategoryByName:self.startCategory];
+    [self setCategoryByName:_category];
     
-    NSLog(@"startFilters=%@", startFilters);
+    NSLog(@"startFilters=%@", _filters);
     NSArray *oneFilter;
     BOOL oneValidFilter = NO;
-    for (oneFilter in startFilters) {
+    for (oneFilter in _filters) {
         if (![self filterProperty:[oneFilter objectAtIndex:0] value:[oneFilter objectAtIndex:1] fromSave:YES]) {
             // If this filter is no longer valid then don't look at following ones.
             break;
@@ -86,9 +86,9 @@
         oneValidFilter = YES;
     }
     
-    NSLog(@"startItem=%@", startItem);
-    if (startItem) {
-        [self showItem:startItem fromSave:YES];
+    NSLog(@"startItem=%@", _itemData);
+    if (oneValidFilter && _itemData) {
+        [self showItem:_itemData fromSave:YES];
     }
     
 }
@@ -100,11 +100,13 @@
         [maindata release];
         maindata = [_data retain];
     }
-    // Need to do this or it won't update the data
-    // FIXME - this could be improved by not replacing stuff 
     NSString *oldCurrentCategory = currentCategory;
-    currentCategory = nil;
-    [self setCurrentCategory:oldCurrentCategory filters:currentFilters item:currentItem];
+    if (currentCategory) {
+        // Need to do this or it won't update the data
+        // FIXME - this could be improved by not replacing stuff 
+        currentCategory = nil;
+        [self setCurrentCategory:oldCurrentCategory filters:currentFilters item:currentItem];
+    }
 }
 
 -(void) startSelectMode {
@@ -240,6 +242,7 @@
     NSLog(@"viewController count = %i", [self.navigationController.viewControllers count]);
     if (self.extraViewControllers && [self.extraViewControllers indexOfObject:viewController] != NSNotFound) {
         // Don't want to set a category as this is nothing to do with the hierarchy controller.
+        currentCategory = nil;
         return;
     }
     [self setCategoryByName:viewController.tabBarItem.title];
