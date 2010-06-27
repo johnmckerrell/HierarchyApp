@@ -142,28 +142,37 @@
     
     static NSString *CellIdentifier = @"Cell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    NSDictionary *itemDesc = [self.hierarchyController.appdata objectForKey:@"itemData"];
+    
+    NSString *cellViewClassString = nil;
+    Class cellViewClass = nil;
+    if (!cellViewClass && [itemDesc objectForKey:@"defaultItemCellClass"]) {
+        cellViewClassString = [itemDesc objectForKey:@"defaultItemCellClass"];
+        cellViewClass = NSClassFromString(cellViewClassString);
+    }
+    if (!cellViewClass) {
+        cellViewClass = [ItemListTableViewCell class];
+    }
+    
+    ItemListTableViewCell *cell = (ItemListTableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[cellViewClass alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
     // Configure the cell...
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         NSDictionary *result = [[[filteredData objectAtIndex:[indexPath indexAtPosition:0]] objectForKey:@"results"] objectAtIndex:[indexPath indexAtPosition:1]];
-        cell.textLabel.text = [result objectForKey:@"title"];
+        cell.itemData = result;
     } else {
         NSDictionary *itemData = [tableData objectAtIndex:[indexPath indexAtPosition:1]];
-        cell.textLabel.text = [itemData objectForKey:@"title"];
+        cell.itemData = itemData;
         if (selecting) {
+            cell.checking = YES;
             if ([selectedCells indexOfObject:indexPath]!= NSNotFound) {
-                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                cell.checked = YES;
             } else {
-                cell.accessoryType = UITableViewCellAccessoryNone;
+                cell.checked = NO;
             }
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        } else {
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
 
     }
