@@ -620,7 +620,7 @@
         ((ItemDetailViewController*)viewController).hierarchyController = self;
     }
     currentItem = [itemData retain];
-    [((UINavigationController*)tabBarController.selectedViewController) pushViewController:viewController animated:YES];
+    [((UINavigationController*)tabBarController.selectedViewController) pushViewController:viewController animated:!fromSave];
     [viewController release];
     return YES;
 }
