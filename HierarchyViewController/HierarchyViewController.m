@@ -105,7 +105,9 @@
         // Need to do this or it won't update the data
         // FIXME - this could be improved by not replacing stuff 
         currentCategory = nil;
-        [self setCurrentCategory:oldCurrentCategory filters:currentFilters item:currentItem];
+        NSArray *filters = [currentFilters copy];
+        [self setCurrentCategory:oldCurrentCategory filters:filters item:currentItem];
+        [filters release];
     }
 }
 
@@ -534,7 +536,7 @@
         itemViewController.hierarchyController = self;
         viewController = itemViewController;
     }
-    [((UINavigationController*)tabBarController.selectedViewController) pushViewController:viewController animated:YES];
+    [((UINavigationController*)tabBarController.selectedViewController) pushViewController:viewController animated:!fromSave];
     return YES;
 }
 
