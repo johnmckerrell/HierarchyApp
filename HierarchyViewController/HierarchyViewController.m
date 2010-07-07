@@ -355,9 +355,8 @@
             ((ListViewController*)viewController).hierarchyController = self;
         } else {
             // Show a list of items
-            viewController = [[[ItemListViewController alloc] 
-                               initDisplaying:[appdata objectForKey:@"itemData"] 
-                               data:filteredData] autorelease];
+            viewController = [ItemListViewController viewControllerDisplaying:[appdata objectForKey:@"itemData"] data:filteredData];
+
             ((ItemListViewController*)viewController).hierarchyController = self;
         }
         if (self.leftMostItem) {
@@ -530,9 +529,7 @@
         viewController = listViewController;
     } else {
         // Show a list of items
-        ItemListViewController *itemViewController = [[[ItemListViewController alloc] 
-                                                   initDisplaying:[appdata objectForKey:@"itemData"] 
-                                                   data:filteredData] autorelease];
+        ItemListViewController *itemViewController = [ItemListViewController viewControllerDisplaying:[appdata objectForKey:@"itemData"] data:filteredData];
         itemViewController.hierarchyController = self;
         viewController = itemViewController;
     }

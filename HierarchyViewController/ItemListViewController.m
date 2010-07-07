@@ -14,6 +14,21 @@
 #pragma mark -
 #pragma mark Initialization
 
++(ItemListViewController*)viewControllerDisplaying:(NSDictionary*)itemDesc data:(NSArray*)data {
+    NSString *cellViewClassString = nil;
+    Class cellViewClass = nil;
+    if (!cellViewClass && [itemDesc objectForKey:@"listViewController"]) {
+        cellViewClassString = [itemDesc objectForKey:@"listViewController"];
+        cellViewClass = NSClassFromString(cellViewClassString);
+    }
+    if (!cellViewClass) {
+        cellViewClass = [ItemListViewController class];
+    }
+
+    ItemListViewController *viewController = [[cellViewClass alloc] initDisplaying:itemDesc data:data];
+    return [viewController autorelease];
+}
+
 -(id) initDisplaying:(NSDictionary*)_itemData data:(NSArray*)data {
     if ((self = [super initWithStyle:UITableViewStylePlain])) {
         self.title = [_itemData objectForKey:@"title"];
