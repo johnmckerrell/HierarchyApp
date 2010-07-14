@@ -183,7 +183,7 @@
                     continue;
                 } else if ([oldIgnored count] && [self filter:[oldIgnored objectAtIndex:0] isEqualTo:currentFilter]) {
                     // We must have ignored this last time but don't want to this time
-                    ListViewController *viewController = [[ListViewController alloc] initDisplaying:currentFilter data:headings];
+                    ListViewController *viewController = [ListViewController viewControllerDisplaying:currentFilter data:headings];
                     NSMutableArray *newControllers = [NSMutableArray arrayWithCapacity:([navController.viewControllers count]+1)];
                     NSUInteger ip1 = i+1, j = 0, jl = [navController.viewControllers count] + 1;
                     for (; j < jl; ++j) {
@@ -196,7 +196,6 @@
                         }
                     }
                     [navController setViewControllers:newControllers animated:NO];
-                    [viewController release];
                 } else {
                 // Otherwise update the data on the view controller
                     ListViewController *viewController = [navController.viewControllers objectAtIndex:(i+1)-[ignoredFilters count]];
@@ -517,7 +516,7 @@
         UIViewController *viewController;
         if (currentFilter) {
             NSArray *headings = [self filterHeadings:currentFilter];
-            viewController = [[[ListViewController alloc] initDisplaying:currentFilter data:headings] autorelease];
+            viewController = [ListViewController viewControllerDisplaying:currentFilter data:headings];
             ((ListViewController*)viewController).hierarchyController = self;
         } else {
             // Show a list of items
@@ -690,7 +689,7 @@
             // Skip onto the next filter
             return [self filterProperty:[currentFilter objectForKey:@"property"] value:[headings objectAtIndex:0] fromSave:NO];
         }
-        ListViewController *listViewController = [[[ListViewController alloc] initDisplaying:currentFilter data:headings] autorelease];
+        ListViewController *listViewController = [ListViewController viewControllerDisplaying:currentFilter data:headings];
         listViewController.hierarchyController = self;
         viewController = listViewController;
     } else {

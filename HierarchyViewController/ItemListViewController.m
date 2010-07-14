@@ -20,6 +20,7 @@
     if (!cellViewClass && [itemDesc objectForKey:@"listViewController"]) {
         cellViewClassString = [itemDesc objectForKey:@"listViewController"];
         cellViewClass = NSClassFromString(cellViewClassString);
+        [cellViewClass isKindOfClass:[ItemListViewController class]];
     }
     if (!cellViewClass) {
         cellViewClass = [ItemListViewController class];

@@ -24,6 +24,8 @@
 @property (nonatomic, retain) HierarchyViewController *hierarchyController;
 @property (nonatomic, retain) NSDictionary *displayFilter;
 
++(ListViewController*)viewControllerDisplaying:(NSDictionary*)_displayFilter data:(NSArray*)data;
+
 -(id) initDisplaying:(NSDictionary*)_displayFilter data:(NSArray*)data;
 - (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope;
 - (void)setSelecting:(BOOL)selecting;

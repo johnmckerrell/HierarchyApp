@@ -17,6 +17,22 @@
 #pragma mark -
 #pragma mark Initialization
 
++(ListViewController*)viewControllerDisplaying:(NSDictionary*)_displayFilter data:(NSArray*)data {
+    NSString *cellViewClassString = nil;
+    Class cellViewClass = nil;
+    if (!cellViewClass && [_displayFilter objectForKey:@"listViewController"]) {
+        cellViewClassString = [_displayFilter objectForKey:@"listViewController"];
+        cellViewClass = NSClassFromString(cellViewClassString);
+        [cellViewClass isKindOfClass:[ListViewController class]];
+    }
+    if (!cellViewClass) {
+        cellViewClass = [ListViewController class];
+    }
+    
+    ListViewController *viewController = [[cellViewClass alloc] initDisplaying:_displayFilter data:data];
+    return [viewController autorelease];
+}
+
 -(id) initDisplaying:(NSDictionary*)_displayFilter data:(NSArray*)data {
     if ((self = [super initWithStyle:UITableViewStylePlain])) {
         displayFilter = [_displayFilter retain];
