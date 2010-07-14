@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+#define MATCH_ALL @"com.7digital.MATCH_ALL"
 
 @interface HierarchyViewController : UIViewController <UINavigationControllerDelegate, UITabBarControllerDelegate> {
     UITabBarController *tabBarController;

@@ -416,6 +416,9 @@
 }
 
 -(BOOL)property:(id) property matchesValue:(NSString*) testString {
+    if (testString == MATCH_ALL) {
+        return YES;
+    }
     if ([property isKindOfClass:[NSArray class]]) {
         NSString *propertyValue;
         for (propertyValue in property) {
