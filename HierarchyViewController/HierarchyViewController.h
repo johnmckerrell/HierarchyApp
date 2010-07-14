@@ -67,7 +67,9 @@
 -(NSDictionary*) getCategoryDataByName:(NSString*) category;
 -(void) saveCurrentPosition;
 -(void)filterData;
+-(void)filterDataWhereProperty:(NSString*)property hasValue:(NSString*)value;
 -(NSArray*)filterHeadings:(NSDictionary*)filter;
+-(BOOL) filter:(NSDictionary*)aFilterData isEqualTo:(NSDictionary*)bFilterData;
 -(void) updateData:(NSArray*)_data;
 
 -(NSArray*)filterDataForSearchTerm:(NSString*)string usingFilters:(BOOL)useFilters;

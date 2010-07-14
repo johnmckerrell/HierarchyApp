@@ -93,6 +93,10 @@
     
 }
 
+-(BOOL) filter:(NSDictionary*)aFilterData isEqualTo:(NSDictionary*)bFilterData {
+    return [[aFilterData objectForKey:@"property"] isEqualToString:[bFilterData objectForKey:@"property"]];
+}
+
 -(void) updateData:(NSArray*)_data {
     if (_data == maindata) {
         // Do nothing, assume we just need to re-filter
@@ -102,12 +106,173 @@
     }
     NSString *oldCurrentCategory = currentCategory;
     if (currentCategory) {
+        UINavigationController *navController = ((UINavigationController*)tabBarController.selectedViewController);
         // Need to do this or it won't update the data
-        // FIXME - this could be improved by not replacing stuff 
+        
+        NSLog(@"Clearing out old data");
+        // Copy the initial filters
+        NSArray *oldFilters = [[currentFilters copy] autorelease];
+        NSMutableArray *oldIgnored = [[ignoredFilters mutableCopy] autorelease];
+        
+        // Empty the current filters
+        [currentFilters removeAllObjects];
+        [ignoredFilters removeAllObjects];
+        
+        // Filter the data (i.e. to be unfiltered)
+        [self filterData];
+        
+        NSDictionary *currentFilter = nil;
+        NSArray *headings = nil;
+        // Update the data on the first view controller
+        ListViewController *viewController = [navController.viewControllers objectAtIndex:0];
+        if ([viewController isKindOfClass:[ItemListViewController class]]) {
+            NSLog(@"showing all items");
+            [((ItemListViewController*) viewController) updateData:filteredData];
+        } else {
+            currentFilter = [self getCurrentFilterAtPosition:0];
+            NSLog(@"Showing first filter: %@", currentFilter);
+            if (currentFilter) {
+                headings = [self filterHeadings:currentFilter];
+                [viewController updateData:headings forFilter:currentFilter];
+            }
+        }
+
+        
+        // Go through the filters
+        NSUInteger i, count = [oldFilters count];
+        BOOL ignoredLast = NO;
+        for (i = 0; i < count; i++) {
+            NSArray * filter = [oldFilters objectAtIndex:i];
+                    
+            NSLog(@"filtering data with filter: %@", filter);
+            // Filter the data
+            [self filterDataWhereProperty:[filter objectAtIndex:0] hasValue:[filter objectAtIndex:1]];
+        
+            if ([filteredData count] == 0) {
+                --i;
+                // Filter again without the last filter
+                [self filterData];
+                NSLog(@"breaking because there was no match");
+                break;
+            }
+            // Set the filter
+            [currentFilters addObject:filter];
+
+            currentFilter = [self getCurrentFilterAtPosition:i+1];
+            
+            NSLog(@"filter for %i is %@ ", i, currentFilter);
+            
+            if (currentFilter) {
+                // Retrieve the headings
+                headings = [self filterHeadings:currentFilter];
+            
+                // If there's only one, ignore this filter
+                if ( [headings count] == 1
+                    && [@"YES" isEqualToString:[currentFilter objectForKey:@"skipSingleEntry"] ]) {
+                    if ([oldIgnored count] && [self filter:[oldIgnored objectAtIndex:0] isEqualTo:currentFilter]) {
+                        [oldIgnored removeObjectAtIndex:0];
+                    } else {
+                        NSMutableArray *newControllers = [navController.viewControllers mutableCopy];
+                        [newControllers removeObjectAtIndex:(i+1)-[ignoredFilters count]];
+                        [navController setViewControllers:newControllers animated:NO];
+                        [newControllers release];
+                    }
+
+                    [ignoredFilters addObject:currentFilter];
+                    ignoredLast = YES;
+                    continue;
+                } else if ([oldIgnored count] && [self filter:[oldIgnored objectAtIndex:0] isEqualTo:currentFilter]) {
+                    // We must have ignored this last time but don't want to this time
+                    ListViewController *viewController = [[ListViewController alloc] initDisplaying:currentFilter data:headings];
+                    NSMutableArray *newControllers = [NSMutableArray arrayWithCapacity:([navController.viewControllers count]+1)];
+                    NSUInteger ip1 = i+1, j = 0, jl = [navController.viewControllers count] + 1;
+                    for (; j < jl; ++j) {
+                        if (j < ip1) {
+                            [newControllers addObject:[navController.viewControllers objectAtIndex:j]];
+                        } else if (j > ip1) {
+                            [newControllers addObject:[navController.viewControllers objectAtIndex:j-1]];
+                        } else {
+                            [newControllers addObject:viewController];
+                        }
+                    }
+                    [navController setViewControllers:newControllers animated:NO];
+                    [viewController release];
+                } else {
+                // Otherwise update the data on the view controller
+                    ListViewController *viewController = [navController.viewControllers objectAtIndex:(i+1)-[ignoredFilters count]];
+                    if ([viewController isKindOfClass:[ItemListViewController class]]) {
+                        NSLog(@"breaking because got an itemlist when expecting normal list: %@", viewController);
+                        break;
+                    }
+                    if (![viewController updateData:headings forFilter:currentFilter]) {
+                        NSLog(@"update failed");
+                        break;
+                    }
+                }
+            } else if (i == ([currentFilters count] - 1)) {
+                // Should be showing an item list
+                id viewController = [navController.viewControllers objectAtIndex:(i+1)-[ignoredFilters count]];
+                if (![viewController isKindOfClass:[ItemListViewController class]]) {
+                    NSLog(@"breaking because didn't get an item list when expecting one: %@", viewController);
+                    break;
+                }
+                [((ItemListViewController*) viewController) updateData:filteredData];
+            } else if (i == ([currentFilters count]) && currentItem) {
+                // Check that the currently selected item is still valid?
+                NSDictionary *itemData;
+                BOOL match = NO;
+                for (itemData in filteredData) {
+                    if ([[itemData objectForKey:@"id"] isEqualToString:[currentItem objectForKey:@"id"]]) {
+                        match = YES;
+                        break;
+                    }
+                }
+                if (!match) {
+                    NSLog(@"breaking because current item is no longer valid: %@", currentItem);
+                    break;
+                }
+            } else {
+                NSLog(@"breaking because we're at the end of the filters and there's no current item");
+                break;
+            }
+
+            ignoredLast = NO;
+        }
+        
+        // Get rid of any other view controllers
+        NSLog(@"i=%i", i);
+        NSLog(@"ignored=%i", [ignoredFilters count]);
+        NSLog(@"count=%i", [navController.viewControllers count]);
+        NSUInteger numFilters = (i+1) - [ignoredFilters count];
+        if (numFilters < 1) {
+            numFilters = 1;
+        }
+        while ([navController.viewControllers count] > numFilters) {
+            NSLog(@"popping a view controller");
+            NSLog(@"count=%i", [navController.viewControllers count]);
+            [navController popViewControllerAnimated:NO];
+        }
+        
+        if (ignoredLast) {
+            [self filterProperty:[currentFilter objectForKey:@"property"] value:[headings objectAtIndex:0] fromSave:NO];
+        }
+                          
+                          
+                          /*
         currentCategory = nil;
+        NSArray *scrollPositions = [NSMutableArray arrayWithCapacity:[self.navigationController.viewControllers count]];
+        UIViewController *viewController;
+        for (viewController in self.navigationController.viewControllers) {
+            if (![viewController isKindOfClass:[ListViewController class]]) {
+                break;
+            }
+            
+        }
+        
         NSArray *filters = [currentFilters copy];
         [self setCurrentCategory:oldCurrentCategory filters:filters item:currentItem];
         [filters release];
+         */
     }
 }
 
@@ -340,6 +505,7 @@
     
     categoryPathPosition = 0;
     [currentFilters removeAllObjects];
+    [ignoredFilters removeAllObjects];
     [self filterData];
     if ([currentCategory isEqualToString:[categoryData objectForKey:@"title"]]) {
         [((UINavigationController*)tabBarController.selectedViewController) popToRootViewControllerAnimated:YES];

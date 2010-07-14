@@ -28,5 +28,6 @@
 - (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope;
 - (void)setSelecting:(BOOL)selecting;
 -(NSArray*) selectedData;
+-(BOOL)updateData:(NSArray*)data forFilter:(NSDictionary*)_displayFilter;
 
 @end

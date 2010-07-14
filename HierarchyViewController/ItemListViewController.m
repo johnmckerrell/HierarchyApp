@@ -44,6 +44,14 @@
     return self;    
 }
 
+-(BOOL)updateData:(NSArray*)data {
+    [tableData release];
+    tableData = [[data sortedArrayUsingDescriptors:
+                  [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"self.title" ascending:YES] autorelease]]
+                  ] retain];
+    [self.tableView reloadData];
+}
+
 /*
 - (id)initWithStyle:(UITableViewStyle)style {
     // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.

@@ -19,4 +19,6 @@
 
 -(id) initDisplaying:(NSDictionary*)_itemData data:(NSArray*)data;
 
+-(BOOL)updateData:(NSArray*)data;
+
 @end

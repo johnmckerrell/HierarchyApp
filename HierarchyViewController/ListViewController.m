@@ -39,6 +39,18 @@
 }
 */
 
+-(BOOL)updateData:(NSArray*)data forFilter:(NSDictionary*)_displayFilter {
+    // Make sure we're displaying the same filter, if not just give up
+    if (![[displayFilter objectForKey:@"title"] isEqualToString:[_displayFilter objectForKey:@"title"]]) {
+        return NO;
+    }
+    [data retain];
+    [tableData release];
+    tableData = data;
+    [self.tableView reloadData];
+    return YES;
+}
+
 #pragma mark -
 #pragma mark View lifecycle
 
