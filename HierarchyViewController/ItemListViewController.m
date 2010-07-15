@@ -51,6 +51,7 @@
                   [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"self.title" ascending:YES] autorelease]]
                   ] retain];
     [self.tableView reloadData];
+    return YES;
 }
 
 /*

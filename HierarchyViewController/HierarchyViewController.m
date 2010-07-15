@@ -104,7 +104,7 @@
         [maindata release];
         maindata = [_data retain];
     }
-    NSString *oldCurrentCategory = currentCategory;
+    //NSString *oldCurrentCategory = currentCategory;
     if (currentCategory) {
         UINavigationController *navController = ((UINavigationController*)tabBarController.selectedViewController);
         // Need to do this or it won't update the data
@@ -334,6 +334,7 @@
     UIImage *icon;
     UINavigationController *navController;
     UITabBarItem *tabBarItem;
+    BOOL doneMainItem = NO;
     NSUInteger selected = 0, i = 0, l = [categories count];
     for (;i < l; ++i) {
         categoryData = [categories objectAtIndex:i];
@@ -353,10 +354,13 @@
         if ([initialCategory isEqualToString:[categoryData objectForKey:@"title"]]) {
             selected = i;
         }
+        if ([@"YES" isEqualToString:[categoryData objectForKey:@"mainItem"]]) {
+            doneMainItem = YES;
+        }
     }
     
     NSDictionary *itemDescription = [appdata objectForKey:@"itemData"];
-    if ([@"YES" isEqualToString:[itemDescription objectForKey:@"canAppearAsCategory"]]) {
+    if (!doneMainItem && [@"YES" isEqualToString:[itemDescription objectForKey:@"canAppearAsCategory"]]) {
         iconFile = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: [itemDescription objectForKey:@"categoryIcon"]];
         icon = [UIImage imageWithContentsOfFile:iconFile];
         NSLog(@"icon %@ gave %@", iconFile, icon );

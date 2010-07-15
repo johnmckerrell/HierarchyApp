@@ -40,7 +40,7 @@
     
     statusIndicator.layer.cornerRadius = 10.0;
     
-    NSURL *requestURL;
+    NSURL *requestURL = nil;
     if ([itemData objectForKey:@"url"]) {
         requestURL = [NSURL URLWithString:[itemData objectForKey:@"url"]];
     } else if ([itemData objectForKey:@"htmlfile"]) {
