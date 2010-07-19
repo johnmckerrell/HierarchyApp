@@ -11,7 +11,7 @@
 
 @implementation ListViewController
 
-@synthesize hierarchyController, displayFilter;
+@synthesize hierarchyController, displayFilter, ignoreRightButton;
 
 
 #pragma mark -

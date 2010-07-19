@@ -19,10 +19,12 @@
     
     NSMutableArray *selectedCells;
     BOOL selecting;
+    BOOL ignoreRightButton;
 }
 
 @property (nonatomic, retain) HierarchyViewController *hierarchyController;
 @property (nonatomic, retain) NSDictionary *displayFilter;
+@property () BOOL ignoreRightButton;
 
 +(ListViewController*)viewControllerDisplaying:(NSDictionary*)_displayFilter data:(NSArray*)data;
 

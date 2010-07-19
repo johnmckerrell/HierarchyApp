@@ -136,6 +136,7 @@
                 [viewController updateData:headings forFilter:currentFilter];
             }
         }
+        viewController.navigationItem.rightBarButtonItem = self.rightBarButtonItem;
 
         
         // Go through the filters
@@ -195,6 +196,7 @@
                             [newControllers addObject:viewController];
                         }
                     }
+                    viewController.navigationItem.rightBarButtonItem = self.rightBarButtonItem;
                     [navController setViewControllers:newControllers animated:NO];
                 } else {
                 // Otherwise update the data on the view controller
@@ -207,6 +209,8 @@
                         NSLog(@"update failed");
                         break;
                     }
+                    viewController.navigationItem.rightBarButtonItem = self.rightBarButtonItem;
+
                 }
             } else if (i == ([currentFilters count] - 1)) {
                 // Should be showing an item list
@@ -216,6 +220,8 @@
                     break;
                 }
                 [((ItemListViewController*) viewController) updateData:filteredData];
+                ((ItemListViewController*) viewController).navigationItem.rightBarButtonItem = self.rightBarButtonItem;
+
             } else if (i == ([currentFilters count]) && currentItem) {
                 // Check that the currently selected item is still valid?
                 NSDictionary *itemData;
@@ -629,8 +635,11 @@
     NSLog(@"currentFilters now %@", currentFilters);
     [self saveCurrentPosition];
     
-    if (self.rightBarButtonItem && ! viewController.navigationItem.rightBarButtonItem) {
-        viewController.navigationItem.rightBarButtonItem = self.rightBarButtonItem;
+    if ([viewController isKindOfClass:[ListViewController class]]|| !viewController.navigationItem.rightBarButtonItem) {
+        if (!((ListViewController*)viewController).ignoreRightButton) {
+            viewController.navigationItem.rightBarButtonItem = self.rightBarButtonItem;
+            NSLog(@"set right button");
+        }
     }    
 }
 /*
