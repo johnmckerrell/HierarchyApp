@@ -330,7 +330,6 @@
     NSArray *categories = [filtersdata objectForKey:@"categories"];
     NSMutableArray *viewControllers = [NSMutableArray arrayWithCapacity:([categories count]+1)];
     NSDictionary *categoryData;
-    NSString *iconFile;
     UIImage *icon;
     UINavigationController *navController;
     UITabBarItem *tabBarItem;
@@ -338,9 +337,7 @@
     NSUInteger selected = 0, i = 0, l = [categories count];
     for (;i < l; ++i) {
         categoryData = [categories objectAtIndex:i];
-        iconFile = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: [categoryData objectForKey:@"icon"]];
-        icon = [UIImage imageWithContentsOfFile:iconFile];
-        NSLog(@"icon %@ gave %@", iconFile, icon );
+        icon = [UIImage imageNamed:[categoryData objectForKey:@"icon"]];
         
         navController = [[[UINavigationController alloc] init] autorelease];
         navController.delegate = self;
@@ -361,9 +358,7 @@
     
     NSDictionary *itemDescription = [appdata objectForKey:@"itemData"];
     if (!doneMainItem && [@"YES" isEqualToString:[itemDescription objectForKey:@"canAppearAsCategory"]]) {
-        iconFile = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: [itemDescription objectForKey:@"categoryIcon"]];
-        icon = [UIImage imageWithContentsOfFile:iconFile];
-        NSLog(@"icon %@ gave %@", iconFile, icon );
+        icon = [UIImage imageNamed:[itemDescription objectForKey:@"categoryIcon"]];
         
         navController = [[[UINavigationController alloc] init] autorelease];
         navController.delegate = self;
