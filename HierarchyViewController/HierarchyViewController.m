@@ -97,6 +97,20 @@
     return [[aFilterData objectForKey:@"property"] isEqualToString:[bFilterData objectForKey:@"property"]];
 }
 
+-(void)reloadData {
+    UINavigationController *navController = ((UINavigationController*)tabBarController.selectedViewController);
+    id viewController;
+    ListViewController *listViewController;
+    for (viewController in navController.viewControllers) {
+        if ([viewController isKindOfClass:[ListViewController class]]) {
+            listViewController = viewController;
+            if (listViewController.tableView) {
+                [listViewController.tableView reloadData];
+            }
+        }
+    }
+}
+
 -(void) updateData:(NSArray*)_data {
     if (_data == maindata) {
         // Do nothing, assume we just need to re-filter
