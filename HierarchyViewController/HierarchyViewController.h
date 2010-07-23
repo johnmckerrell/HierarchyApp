@@ -35,7 +35,7 @@
     UINavigationItem *selectModeNavigationItem;
 }
 
-@property (nonatomic, readonly) NSArray *filteredData;
+@property (nonatomic, readonly) NSMutableArray *filteredData;
 @property (nonatomic, retain) NSArray *extraViewControllers;
 @property (nonatomic, retain) UIBarButtonItem *leftMostItem;
 @property (nonatomic, retain) UIBarButtonItem *rightBarButtonItem;

@@ -73,14 +73,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    UISearchBar *searchBar = [[[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)] autorelease];
-    searchBar.scopeButtonTitles = [NSArray arrayWithObjects:@"Using filters", @"All entries", nil];
-    self.tableView.tableHeaderView = searchBar;
-    
-    searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
-    searchDisplayController.delegate = self;
-    searchDisplayController.searchResultsDelegate = self;
-    searchDisplayController.searchResultsDataSource = self;
+    NSDictionary *appFeatures = [self.hierarchyController.appdata objectForKey:@"features"];
+    if (appFeatures && [[appFeatures objectForKey:@"searchSupported"] isEqualToString:@"YES"] ) {
+        UISearchBar *searchBar = [[[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)] autorelease];
+        searchBar.scopeButtonTitles = [NSArray arrayWithObjects:@"Using filters", @"All entries", nil];
+        self.tableView.tableHeaderView = searchBar;
+        
+        searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
+        searchDisplayController.delegate = self;
+        searchDisplayController.searchResultsDelegate = self;
+        searchDisplayController.searchResultsDataSource = self;
+    }
     // Uncomment the following line to preserve selection between presentations.
     //self.clearsSelectionOnViewWillAppear = NO;
     
@@ -174,7 +177,7 @@
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         if (filteredData) {
             NSLog(@"For section %i returning %i rows", section, [[[filteredData objectAtIndex:section] objectForKey:@"results"] count]);
-            NSLog(@"Section %i has this data: %@", section, [filteredData objectAtIndex:section]);
+            //NSLog(@"Section %i has this data: %@", section, [filteredData objectAtIndex:section]);
             return [[[filteredData objectAtIndex:section] objectForKey:@"results"] count];
         } else {
             return 0;

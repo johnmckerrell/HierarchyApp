@@ -596,7 +596,7 @@
     }
     //[results addObjectsFromArray:[filterResults allValues]];
     
-    NSLog(@"returning results=%@", results);
+    //NSLog(@"returning results=%@", results);
     return results;
 }
 
