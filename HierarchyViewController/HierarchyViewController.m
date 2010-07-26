@@ -649,10 +649,11 @@
     NSLog(@"currentFilters now %@", currentFilters);
     [self saveCurrentPosition];
     
-    if (([viewController isKindOfClass:[ListViewController class]] && !((ListViewController*)viewController).ignoreRightButton)
-        || !viewController.navigationItem.rightBarButtonItem) {
-        viewController.navigationItem.rightBarButtonItem = self.rightBarButtonItem;
-        NSLog(@"set right button");
+    if ([viewController isKindOfClass:[ListViewController class]] || !viewController.navigationItem.rightBarButtonItem) {
+        if (!([viewController isKindOfClass:[ListViewController class]] && ((ListViewController*)viewController).ignoreRightButton)) {
+            viewController.navigationItem.rightBarButtonItem = self.rightBarButtonItem;
+            NSLog(@"set right button");
+        }
     }    
 }
 /*
