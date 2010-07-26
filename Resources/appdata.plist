@@ -1,4 +1,7 @@
 {
+	features = {
+		searchSupported = YES;
+	};
 	appearance = {
 		navigationBarTint = "0.62,0.13,0.20,1";
 	};

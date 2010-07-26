@@ -20,6 +20,7 @@
     NSMutableArray *selectedCells;
     BOOL selecting;
     BOOL ignoreRightButton;
+    BOOL viewLoaded;
 }
 
 @property (nonatomic, retain) HierarchyViewController *hierarchyController;

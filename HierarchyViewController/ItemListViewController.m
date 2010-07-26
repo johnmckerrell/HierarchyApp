@@ -36,20 +36,36 @@
         NSLog(@"Set title to %@", [_itemData objectForKey:@"title"] );
         NSLog(@"itemData = %@", _itemData);
         
-        tableData = [[data sortedArrayUsingDescriptors:
-                      [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"self.title" ascending:YES] autorelease]]
-                      ] retain];
         filteredData = nil;
         selectedCells = [[NSMutableArray arrayWithCapacity:[data count]] retain];
+        [self updateData:data];
     }
     return self;    
 }
 
 -(BOOL)updateData:(NSArray*)data {
     [tableData release];
-    tableData = [[data sortedArrayUsingDescriptors:
-                  [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"self.title" ascending:YES] autorelease]]
-                  ] retain];
+    NSArray *sortedData = [data sortedArrayUsingDescriptors:
+                  [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES] autorelease]]
+                  ];
+        
+    UILocalizedIndexedCollation *theCollation = [UILocalizedIndexedCollation currentCollation];
+    NSMutableArray *collationData = [NSMutableArray arrayWithCapacity:30];
+    
+    NSString *itemName;
+    NSUInteger section;
+    
+    NSMutableDictionary *itemData;
+    for (itemData in sortedData) {
+        itemName = [itemData objectForKey:@"title"];
+        section = [theCollation sectionForObject:itemName collationStringSelector:@selector(uppercaseString)];
+        while ([collationData count] <= section) {
+            [collationData addObject:[NSMutableArray arrayWithCapacity:1]];
+        }
+        [[collationData objectAtIndex:section] addObject:itemData];
+    }
+    tableData = [collationData retain];
+    
     [self.tableView reloadData];
     return YES;
 }
@@ -189,7 +205,7 @@
         NSDictionary *result = [[[filteredData objectAtIndex:[indexPath indexAtPosition:0]] objectForKey:@"results"] objectAtIndex:[indexPath indexAtPosition:1]];
         cell.itemData = result;
     } else {
-        NSDictionary *itemData = [tableData objectAtIndex:[indexPath indexAtPosition:1]];
+        NSDictionary *itemData = [[tableData objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
         cell.itemData = itemData;
         if (selecting) {
             cell.checking = YES;
@@ -306,7 +322,7 @@
         }
         [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];       
     } else {
-        NSDictionary *itemData = [tableData objectAtIndex:[indexPath indexAtPosition:1]];
+        NSDictionary *itemData = [[tableData objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
         [hierarchyController showItem:itemData fromSave:NO];
     }
 	/*

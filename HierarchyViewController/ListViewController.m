@@ -40,9 +40,9 @@
         NSLog(@"Set title to %@", [displayFilter objectForKey:@"title"] );
         //tableData = [[NSMutableArray alloc] initWithCapacity:[data count]];
         
-        tableData = [data retain];
         selectedCells = [[NSMutableArray arrayWithCapacity:[data count]] retain];
         filteredData = nil;
+        [self updateData:data forFilter:_displayFilter];
     }
     return self;    
 }
@@ -60,10 +60,25 @@
     if (![[displayFilter objectForKey:@"title"] isEqualToString:[_displayFilter objectForKey:@"title"]]) {
         return NO;
     }
-    [data retain];
     [tableData release];
-    tableData = data;
-    [self.tableView reloadData];
+    
+    UILocalizedIndexedCollation *theCollation = [UILocalizedIndexedCollation currentCollation];
+    NSMutableArray *collationData = [NSMutableArray arrayWithCapacity:30];
+
+    NSString *headerName;
+    NSUInteger section;
+    
+    for (headerName in data) {
+        section = [theCollation sectionForObject:headerName collationStringSelector:@selector(uppercaseString)];
+        while ([collationData count] <= section) {
+            [collationData addObject:[NSMutableArray arrayWithCapacity:1]];
+        }
+        [[collationData objectAtIndex:section] addObject:headerName];
+    }
+    tableData = [collationData retain];
+    if (viewLoaded) {
+        [self.tableView reloadData];
+    }
     return YES;
 }
 
@@ -73,6 +88,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    viewLoaded = YES;
     NSDictionary *appFeatures = [self.hierarchyController.appdata objectForKey:@"features"];
     if (appFeatures && [[appFeatures objectForKey:@"searchSupported"] isEqualToString:@"YES"] ) {
         UISearchBar *searchBar = [[[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)] autorelease];
@@ -167,7 +183,7 @@
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         return [filteredData count];
     } else {
-        return 1;
+        return [tableData count];
     }
 }
 
@@ -183,9 +199,16 @@
             return 0;
         }
     } else {
-        return [tableData count];        
+        return [[tableData objectAtIndex:section] count];        
     }
 
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+    if (tableView == self.tableView) {
+        return [[UILocalizedIndexedCollation currentCollation] sectionIndexTitles];
+    }
+    return nil;
 }
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -196,8 +219,19 @@
             return nil;
         }
     } else {
-        return nil;
+        if ([[tableData objectAtIndex:section] count] > 0) {
+            return [[[UILocalizedIndexedCollation currentCollation] sectionTitles] objectAtIndex:section];
+        }
+        return nil;    
     }
+}
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+{
+    if (tableView == self.tableView) {
+        return [[UILocalizedIndexedCollation currentCollation] sectionForSectionIndexTitleAtIndex:index];
+    }
+    return 0;
 }
 
 // Customize the appearance of table view cells.
@@ -215,7 +249,7 @@
         NSDictionary *result = [[[filteredData objectAtIndex:[indexPath indexAtPosition:0]] objectForKey:@"results"] objectAtIndex:[indexPath indexAtPosition:1]];
         cell.textLabel.text = [result objectForKey:@"title"];
     } else {
-        cell.textLabel.text = [tableData objectAtIndex:[indexPath indexAtPosition:1]];
+        cell.textLabel.text = [[tableData objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
         if (selecting) {
             if ([selectedCells indexOfObject:indexPath]!= NSNotFound) {
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -338,7 +372,7 @@
         }
         [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     } else {
-        [hierarchyController filterProperty:[displayFilter objectForKey:@"property"] value:[tableData objectAtIndex:[indexPath indexAtPosition:1]] fromSave:NO];
+        [hierarchyController filterProperty:[displayFilter objectForKey:@"property"] value:[[tableData objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] fromSave:NO];
     }
 }
 
@@ -355,6 +389,7 @@
 - (void)viewDidUnload {
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
+    viewLoaded = NO;
 }
 
 
