@@ -167,4 +167,14 @@
 			genre = Fiction;
 		};
 	},
+    {
+        id = 17;
+        title = "2001: A Space Odyssey";
+        properties = {
+            publisher = "New American Library";
+            author = "Arthur C. Clarke";
+            published = 1968;
+            genre = "Science fiction";
+        };
+    },
 )
