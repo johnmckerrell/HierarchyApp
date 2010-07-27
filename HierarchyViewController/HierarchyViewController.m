@@ -547,6 +547,10 @@
                 NSArray *headings = [self filterHeadings:currentFilter];
                 [((ListViewController*)oldViewController) updateData:headings forFilter:currentFilter];
             }
+            if (self.leftMostItem) {
+                ((ListViewController*) oldViewController).navigationItem.leftBarButtonItem = nil;
+                ((ListViewController*) oldViewController).navigationItem.leftBarButtonItem = self.leftMostItem;
+            }
         }
         if (!oldViewController) {
             ListViewController *viewController;
