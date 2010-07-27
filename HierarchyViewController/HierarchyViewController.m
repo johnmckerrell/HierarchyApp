@@ -553,7 +553,8 @@
             viewController.navigationItem.rightBarButtonItem = self.rightBarButtonItem;
         }
         
-        [((UINavigationController*)tabBarController.selectedViewController) setViewControllers:[NSArray arrayWithObject:viewController]];        
+        //[((UINavigationController*)tabBarController.selectedViewController) setViewControllers:[NSArray arrayWithObject:viewController]];        
+        [((UINavigationController*)tabBarController.selectedViewController) setViewControllers:[NSArray arrayWithObject:viewController] animated:NO];        
     }
 }
 
