@@ -63,6 +63,7 @@
 }
 
 - (void)dealloc {
+    self.itemData = nil;
     [super dealloc];
 }
 

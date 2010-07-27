@@ -225,6 +225,8 @@
 
 
 - (void)dealloc {
+    [itemData release], itemData = nil;
+    self.hierarchyController = nil;
     [super dealloc];
 }
 

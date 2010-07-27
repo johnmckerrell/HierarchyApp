@@ -64,6 +64,7 @@
     
     UILocalizedIndexedCollation *theCollation = [UILocalizedIndexedCollation currentCollation];
     NSMutableArray *collationData = [NSMutableArray arrayWithCapacity:30];
+    totalRowCount = [data count];
 
     NSString *headerName;
     NSUInteger section;
@@ -205,7 +206,7 @@
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-    if (tableView == self.tableView) {
+    if (tableView == self.tableView && totalRowCount > self.tableView.sectionIndexMinimumDisplayRowCount) {
         return [[UILocalizedIndexedCollation currentCollation] sectionIndexTitles];
     }
     return nil;
@@ -228,7 +229,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
 {
-    if (tableView == self.tableView) {
+    if (tableView == self.tableView && [tableData count] > self.tableView.sectionIndexMinimumDisplayRowCount) {
         return [[UILocalizedIndexedCollation currentCollation] sectionForSectionIndexTitleAtIndex:index];
     }
     return 0;
@@ -258,7 +259,9 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         } else {
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            if (totalRowCount > self.tableView.sectionIndexMinimumDisplayRowCount) {
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            }
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
 
@@ -394,6 +397,12 @@
 
 
 - (void)dealloc {
+    [displayFilter release], displayFilter = nil;
+    [tableData release], tableData = nil;
+    [filteredData release], filteredData = nil;
+    [searchDisplayController release], searchDisplayController = nil;
+    self.hierarchyController = nil;
+    [selectedCells release], selectedCells = nil;
     [super dealloc];
 }
 

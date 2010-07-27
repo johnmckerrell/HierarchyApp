@@ -111,6 +111,9 @@
 
 - (void)dealloc {
     [itemData release], itemData = nil;
+    [webView release], webView = nil;
+    [statusIndicator release], statusIndicator = nil;
+    self.hierarchyController = nil;
     [super dealloc];
 }
 

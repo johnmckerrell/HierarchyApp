@@ -18,6 +18,7 @@
     HierarchyViewController *hierarchyController;
     
     NSMutableArray *selectedCells;
+    NSUInteger totalRowCount;
     BOOL selecting;
     BOOL ignoreRightButton;
     BOOL viewLoaded;

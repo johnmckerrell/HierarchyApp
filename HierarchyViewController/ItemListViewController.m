@@ -54,6 +54,7 @@
     
     NSString *itemName;
     NSUInteger section;
+    totalRowCount = [sortedData count];
     
     NSMutableDictionary *itemData;
     for (itemData in sortedData) {
