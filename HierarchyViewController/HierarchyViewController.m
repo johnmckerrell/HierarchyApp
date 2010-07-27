@@ -528,33 +528,47 @@
     [currentFilters removeAllObjects];
     [ignoredFilters removeAllObjects];
     [self filterData];
+    
+    UINavigationController *navController = ((UINavigationController*)tabBarController.selectedViewController);
     if ([currentCategory isEqualToString:[categoryData objectForKey:@"title"]]) {
-        [((UINavigationController*)tabBarController.selectedViewController) popToRootViewControllerAnimated:YES];
+        [navController popToRootViewControllerAnimated:YES];
     } else {
         [currentCategory release];
         currentCategory = [[categoryData objectForKey:@"title"] retain];
         NSDictionary *currentFilter = [self getCurrentFilterAtPosition:categoryPathPosition];
         
-        UIViewController *viewController;
-        if (currentFilter) {
-            NSArray *headings = [self filterHeadings:currentFilter];
-            viewController = [ListViewController viewControllerDisplaying:currentFilter data:headings];
-            ((ListViewController*)viewController).hierarchyController = self;
-        } else {
-            // Show a list of items
-            viewController = [ItemListViewController viewControllerDisplaying:[appdata objectForKey:@"itemData"] data:filteredData];
+        id oldViewController = nil;
+        if ([navController.viewControllers count]) {
+            [navController popToRootViewControllerAnimated:NO];
+            oldViewController = [navController.viewControllers objectAtIndex:0];
+            if ([oldViewController isKindOfClass:[ItemListViewController class]]) {
+                [((ItemListViewController*)oldViewController) updateData:filteredData];
+            } else if ([oldViewController isKindOfClass:[ListViewController class]]) {
+                NSArray *headings = [self filterHeadings:currentFilter];
+                [((ListViewController*)oldViewController) updateData:headings forFilter:currentFilter];
+            }
+        }
+        if (!oldViewController) {
+            ListViewController *viewController;
+            if (currentFilter) {
+                NSArray *headings = [self filterHeadings:currentFilter];
+                viewController = [ListViewController viewControllerDisplaying:currentFilter data:headings];
+                viewController.hierarchyController = self;
+            } else {
+                // Show a list of items
+                viewController = [ItemListViewController viewControllerDisplaying:[appdata objectForKey:@"itemData"] data:filteredData];
 
-            ((ItemListViewController*)viewController).hierarchyController = self;
-        }
-        if (self.leftMostItem) {
-            viewController.navigationItem.leftBarButtonItem = self.leftMostItem;
-        }
-        if (self.rightBarButtonItem && ! viewController.navigationItem.rightBarButtonItem) {
-            viewController.navigationItem.rightBarButtonItem = self.rightBarButtonItem;
+                viewController.hierarchyController = self;
+            }
+            if (self.leftMostItem) {
+                viewController.navigationItem.leftBarButtonItem = self.leftMostItem;
+            }
+            if (self.rightBarButtonItem && ! viewController.navigationItem.rightBarButtonItem) {
+                viewController.navigationItem.rightBarButtonItem = self.rightBarButtonItem;
+            }
+             [navController setViewControllers:[NSArray arrayWithObject:viewController] animated:NO];
         }
         
-        //[((UINavigationController*)tabBarController.selectedViewController) setViewControllers:[NSArray arrayWithObject:viewController]];        
-        [((UINavigationController*)tabBarController.selectedViewController) setViewControllers:[NSArray arrayWithObject:viewController] animated:NO];        
     }
 }
 
