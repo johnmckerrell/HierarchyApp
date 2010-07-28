@@ -44,7 +44,6 @@
 }
 
 -(BOOL)updateData:(NSArray*)data {
-    [tableData release];
     NSArray *sortedData = [data sortedArrayUsingDescriptors:
                   [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES] autorelease]]
                   ];
@@ -65,7 +64,10 @@
         }
         [[collationData objectAtIndex:section] addObject:itemData];
     }
-    tableData = [collationData retain];
+    @synchronized(tableData) {
+        [tableData release];
+        tableData = [collationData retain];
+    }
     
     [self.tableView reloadData];
     return YES;

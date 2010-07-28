@@ -60,7 +60,6 @@
     if (![[displayFilter objectForKey:@"title"] isEqualToString:[_displayFilter objectForKey:@"title"]]) {
         return NO;
     }
-    [tableData release];
     
     UILocalizedIndexedCollation *theCollation = [UILocalizedIndexedCollation currentCollation];
     NSMutableArray *collationData = [NSMutableArray arrayWithCapacity:30];
@@ -76,7 +75,10 @@
         }
         [[collationData objectAtIndex:section] addObject:headerName];
     }
-    tableData = [collationData retain];
+    @synchronized(tableData) {
+        [tableData release];
+        tableData = [collationData retain];
+    }
     if (viewLoaded) {
         [self.tableView reloadData];
     }
