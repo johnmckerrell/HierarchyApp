@@ -202,9 +202,11 @@
             return 0;
         }
     } else {
-        return [[tableData objectAtIndex:section] count];        
+        if (section < [tableData count]) {
+            return [[tableData objectAtIndex:section] count];        
+        }
     }
-
+    return 0;
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
@@ -222,7 +224,7 @@
             return nil;
         }
     } else {
-        if ([[tableData objectAtIndex:section] count] > 0) {
+        if (section < [tableData count] && [[tableData objectAtIndex:section] count] > 0) {
             return [[[UILocalizedIndexedCollation currentCollation] sectionTitles] objectAtIndex:section];
         }
         return nil;    
@@ -252,7 +254,15 @@
         NSDictionary *result = [[[filteredData objectAtIndex:[indexPath indexAtPosition:0]] objectForKey:@"results"] objectAtIndex:[indexPath indexAtPosition:1]];
         cell.textLabel.text = [result objectForKey:@"title"];
     } else {
-        cell.textLabel.text = [[tableData objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+        NSString *itemValue = nil;
+        NSArray *sectionData = nil;
+        if (indexPath.section < [tableData count]) {
+            sectionData = [tableData objectAtIndex:indexPath.section];
+        }
+        if (sectionData && indexPath.row < [sectionData count]) {
+            itemValue = [sectionData objectAtIndex:indexPath.row];
+        }
+        cell.textLabel.text = itemValue;
         if (selecting) {
             if ([selectedCells indexOfObject:indexPath]!= NSNotFound) {
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -377,7 +387,17 @@
         }
         [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     } else {
-        [hierarchyController filterProperty:[displayFilter objectForKey:@"property"] value:[[tableData objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] fromSave:NO];
+        NSString *itemValue = nil;
+        NSArray *sectionData = nil;
+        if (indexPath.section < [tableData count]) {
+            sectionData = [tableData objectAtIndex:indexPath.section];
+        }
+        if (sectionData && indexPath.row < [sectionData count]) {
+            itemValue = [sectionData objectAtIndex:indexPath.row];
+        }
+        if (itemValue) {
+            [hierarchyController filterProperty:[displayFilter objectForKey:@"property"] value:itemValue fromSave:NO];
+        }
     }
 }
 

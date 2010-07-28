@@ -208,7 +208,14 @@
         NSDictionary *result = [[[filteredData objectAtIndex:[indexPath indexAtPosition:0]] objectForKey:@"results"] objectAtIndex:[indexPath indexAtPosition:1]];
         cell.itemData = result;
     } else {
-        NSDictionary *itemData = [[tableData objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+        NSDictionary *itemData = nil;
+        NSArray *sectionData = nil;
+        if (indexPath.section < [tableData count]) {
+            sectionData = [tableData objectAtIndex:indexPath.section];
+        }
+        if (indexPath.row < [sectionData count]) {
+            itemData = [sectionData objectAtIndex:indexPath.row];
+        }
         cell.itemData = itemData;
         if (selecting) {
             cell.checking = YES;
@@ -325,8 +332,17 @@
         }
         [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];       
     } else {
-        NSDictionary *itemData = [[tableData objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-        [hierarchyController showItem:itemData fromSave:NO];
+        NSDictionary *itemData = nil;
+        NSArray *sectionData = nil;
+        if (indexPath.section < [tableData count]) {
+            sectionData = [tableData objectAtIndex:indexPath.section];
+        }
+        if (indexPath.row < [sectionData count]) {
+            itemData = [sectionData objectAtIndex:indexPath.row];
+        }
+        if (itemData) {
+            [hierarchyController showItem:itemData fromSave:NO];
+        }
     }
 	/*
 	 <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
