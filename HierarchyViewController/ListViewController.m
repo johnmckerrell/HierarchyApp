@@ -36,7 +36,7 @@
 -(id) initDisplaying:(NSDictionary*)_displayFilter data:(NSArray*)data {
     if ((self = [super initWithStyle:UITableViewStylePlain])) {
         displayFilter = [_displayFilter retain];
-        self.title = [displayFilter objectForKey:@"title"];
+        self.title = NSLocalizedString([displayFilter objectForKey:@"title"],@"");
         NSLog(@"Set title to %@", [displayFilter objectForKey:@"title"] );
         //tableData = [[NSMutableArray alloc] initWithCapacity:[data count]];
         
@@ -153,7 +153,7 @@
         self.tableView.tableHeaderView = nil;
         [selectedCells removeAllObjects];
     } else {
-        self.navigationItem.title = [displayFilter objectForKey:@"title"];
+        self.navigationItem.title = NSLocalizedString([displayFilter objectForKey:@"title"],@"");
         self.navigationItem.leftBarButtonItem = oldLeftBarButtonItem;
         self.navigationItem.rightBarButtonItem = oldRightBarButtonItem;
         self.tableView.tableHeaderView = self.searchDisplayController.searchBar;

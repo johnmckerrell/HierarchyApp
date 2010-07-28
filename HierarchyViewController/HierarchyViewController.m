@@ -364,7 +364,7 @@
         if (self.tintColor) {
             navController.navigationBar.tintColor = tintColor;
         }
-        tabBarItem = [[[UITabBarItem alloc] initWithTitle:[categoryData objectForKey:@"title"] image:icon tag:i] autorelease];
+        tabBarItem = [[[UITabBarItem alloc] initWithTitle:NSLocalizedString([categoryData objectForKey:@"title"],@"") image:icon tag:i] autorelease];
         navController.tabBarItem = tabBarItem;
         [viewControllers addObject:navController];
         
