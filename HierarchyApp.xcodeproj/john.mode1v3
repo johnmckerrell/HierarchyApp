@@ -216,7 +216,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>5229304911FDCFA20041FB9F</string>
+						<string>522931A711FDEC8C0041FB9F</string>
 						<key>history</key>
 						<array>
 							<string>5255DA0111C79B6D003B9FE2</string>
@@ -271,6 +271,8 @@
 			<key>Layout</key>
 			<array>
 				<dict>
+					<key>BecomeActive</key>
+					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -358,8 +360,6 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -377,7 +377,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>5229304811FDCFA20041FB9F</string>
+										<string>522931A611FDEC8C0041FB9F</string>
 										<key>history</key>
 										<array>
 											<string>52D7F87611AC14940018EB4F</string>
@@ -403,8 +403,8 @@
 											<string>5229300C11FDCD5D0041FB9F</string>
 											<string>5229300D11FDCD5D0041FB9F</string>
 											<string>5229301E11FDCDFA0041FB9F</string>
-											<string>5229302511FDCE600041FB9F</string>
-											<string>5229302611FDCE600041FB9F</string>
+											<string>522931A411FDEC8C0041FB9F</string>
+											<string>522931A511FDEC8C0041FB9F</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -606,8 +606,8 @@
 		<string>52292FD111FDC8320041FB9F</string>
 		<string>1CD10A99069EF8BA00B06720</string>
 		<string>52D7F84011ABED6D0018EB4F</string>
-		<string>5255D9C311C79685003B9FE2</string>
 		<string>1C78EAAD065D492600B07095</string>
+		<string>5255D9C311C79685003B9FE2</string>
 		<string>/Users/john/Coding/iPhone/HierarchyApp/HierarchyApp.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
