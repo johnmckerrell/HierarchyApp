@@ -75,7 +75,6 @@
     // This is needed to prepare the headings correctly
     [self setCategoryByName:_category];
     
-    NSLog(@"startFilters=%@", _filters);
     NSArray *oneFilter;
     BOOL oneValidFilter = NO;
     for (oneFilter in _filters) {
@@ -86,7 +85,6 @@
         oneValidFilter = YES;
     }
     
-    NSLog(@"startItem=%@", _itemData);
     if (oneValidFilter && _itemData) {
         [self showItem:_itemData fromSave:YES];
     }
@@ -123,7 +121,6 @@
         UINavigationController *navController = ((UINavigationController*)tabBarController.selectedViewController);
         // Need to do this or it won't update the data
         
-        NSLog(@"Clearing out old data");
         // Copy the initial filters
         NSArray *oldFilters = [[currentFilters copy] autorelease];
         NSMutableArray *oldIgnored = [[ignoredFilters mutableCopy] autorelease];
@@ -140,11 +137,9 @@
         // Update the data on the first view controller
         ListViewController *viewController = [navController.viewControllers objectAtIndex:0];
         if ([viewController isKindOfClass:[ItemListViewController class]]) {
-            NSLog(@"showing all items");
             [((ItemListViewController*) viewController) updateData:filteredData];
         } else {
             currentFilter = [self getCurrentFilterAtPosition:0];
-            NSLog(@"Showing first filter: %@", currentFilter);
             if (currentFilter) {
                 headings = [self filterHeadings:currentFilter];
                 [viewController updateData:headings forFilter:currentFilter];
@@ -159,7 +154,6 @@
         for (i = 0; i < count; i++) {
             NSArray * filter = [oldFilters objectAtIndex:i];
                     
-            NSLog(@"filtering data with filter: %@", filter);
             // Filter the data
             [self filterDataWhereProperty:[filter objectAtIndex:0] hasValue:[filter objectAtIndex:1]];
         
@@ -167,7 +161,6 @@
                 --i;
                 // Filter again without the last filter
                 [self filterData];
-                NSLog(@"breaking because there was no match");
                 break;
             }
             // Set the filter
@@ -175,7 +168,6 @@
 
             currentFilter = [self getCurrentFilterAtPosition:i+1];
             
-            NSLog(@"filter for %i is %@ ", i, currentFilter);
             
             if (currentFilter) {
                 // Retrieve the headings
@@ -216,11 +208,9 @@
                 // Otherwise update the data on the view controller
                     ListViewController *viewController = [navController.viewControllers objectAtIndex:(i+1)-[ignoredFilters count]];
                     if ([viewController isKindOfClass:[ItemListViewController class]]) {
-                        NSLog(@"breaking because got an itemlist when expecting normal list: %@", viewController);
                         break;
                     }
                     if (![viewController updateData:headings forFilter:currentFilter]) {
-                        NSLog(@"update failed");
                         break;
                     }
                     viewController.navigationItem.rightBarButtonItem = self.rightBarButtonItem;
@@ -230,7 +220,6 @@
                 // Should be showing an item list
                 id viewController = [navController.viewControllers objectAtIndex:(i+1)-[ignoredFilters count]];
                 if (![viewController isKindOfClass:[ItemListViewController class]]) {
-                    NSLog(@"breaking because didn't get an item list when expecting one: %@", viewController);
                     break;
                 }
                 [((ItemListViewController*) viewController) updateData:filteredData];
@@ -247,11 +236,9 @@
                     }
                 }
                 if (!match) {
-                    NSLog(@"breaking because current item is no longer valid: %@", currentItem);
                     break;
                 }
             } else {
-                NSLog(@"breaking because we're at the end of the filters and there's no current item");
                 break;
             }
 
@@ -259,16 +246,11 @@
         }
         
         // Get rid of any other view controllers
-        NSLog(@"i=%i", i);
-        NSLog(@"ignored=%i", [ignoredFilters count]);
-        NSLog(@"count=%i", [navController.viewControllers count]);
         NSUInteger numFilters = (i+1) - [ignoredFilters count];
         if (numFilters < 1) {
             numFilters = 1;
         }
         while ([navController.viewControllers count] > numFilters) {
-            NSLog(@"popping a view controller");
-            NSLog(@"count=%i", [navController.viewControllers count]);
             [navController popViewControllerAnimated:NO];
         }
         
@@ -296,7 +278,6 @@
 }
 
 -(void) startSelectMode {
-    NSLog(@"Editing");
     ListViewController *visibleController = [((UINavigationController*)tabBarController.selectedViewController).viewControllers lastObject];
     [visibleController setSelecting:YES];
 }
@@ -422,16 +403,12 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
     //self.navigationController = (UINavigationController*)viewController;
-    NSLog(@"selected %@", viewController);
-    NSLog(@"viewController.tag = %i", viewController.tabBarItem.tag);
-    NSLog(@"viewController count = %i", [self.navigationController.viewControllers count]);
     if (self.extraViewControllers && [self.extraViewControllers indexOfObject:viewController] != NSNotFound) {
         // Don't want to set a category as this is nothing to do with the hierarchy controller.
         currentCategory = nil;
         return;
     }
     [self setCategoryByName:viewController.tabBarItem.title];
-    NSLog(@"viewController count = %i", [self.navigationController.viewControllers count]);
 }
 
 -(BOOL)property:(id) property matchesValue:(NSString*) testString {
@@ -520,7 +497,6 @@
     NSDictionary *categoryData = [self getCategoryDataByName:category];
     if (!categoryData) {
         // Bad data, do nothing
-        NSLog(@"Incorrect category requested: %@", category);
         return;
     }
     
@@ -593,9 +569,7 @@
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(self contains[cd] %@)", string];
     for (itemData in searchData) {
         NSString *title = [itemData objectForKey:@"title"];
-        NSLog(@"Checking %@", title);
         if ([predicate evaluateWithObject:title]) {
-            NSLog(@"MATCH - %@", title);
             [itemResults addObject:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:title, itemData, nil]
                                                                forKeys:[NSArray arrayWithObjects:@"title", @"itemData", nil]]
              ];
@@ -615,7 +589,6 @@
     }
     //[results addObjectsFromArray:[filterResults allValues]];
     
-    //NSLog(@"returning results=%@", results);
     return results;
 }
 
@@ -645,9 +618,7 @@
         // Now check if the filter we just removed was one that we were ignoring anyway, if it
         // was then we'll need to remove the next one too.
         NSString *removedFilterProperty = [removingFilter objectAtIndex:0];
-        NSLog(@"removedFilterProperty=%@:lastIgnoredFilter=%@", removedFilterProperty, [lastIgnoredFilter objectForKey:@"property"] );
         if ([removedFilterProperty isEqualToString:[lastIgnoredFilter objectForKey:@"property"]]) {
-            NSLog(@"IGNORED FILTER");
             [ignoredFilters removeLastObject];
             --categoryPathPosition;
         }
@@ -659,26 +630,20 @@
         [self filterData];
     }
     
-    NSLog(@"[currentFilters count] = %i", [currentFilters count] );
-    NSLog(@"categoryPathPosition = %i", categoryPathPosition );
-    
     if (currentItem && [currentFilters count] == categoryPathPosition) {
         [currentItem release], currentItem = nil;
     }
-    NSLog(@"currentFilters now %@", currentFilters);
     [self saveCurrentPosition];
     
     if ([viewController isKindOfClass:[ListViewController class]] || !viewController.navigationItem.rightBarButtonItem) {
         if (!([viewController isKindOfClass:[ListViewController class]] && ((ListViewController*)viewController).ignoreRightButton)) {
             viewController.navigationItem.rightBarButtonItem = self.rightBarButtonItem;
-            NSLog(@"set right button");
         }
     }    
 }
 /*
  -(BOOL) navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item {
  [currentFilters removeLastObject];
- NSLog(@"currentFilters now %@", currentFilters);
  return YES;
  }
  */
@@ -687,10 +652,8 @@
     // FIXME - this should really be handled by a delegate
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     
-    NSLog(@"saving currentFilters as %@", currentFilters);
     [userDefaults setObject:currentFilters forKey:@"startFilters"];
     [userDefaults setObject:currentCategory forKey:@"startCategory"];
-    NSLog(@"currentItem = %@", currentItem);
     [userDefaults setObject:currentItem forKey:@"startItem"];
 }
 
@@ -710,7 +673,6 @@
             return NO;
         }
     }
-    NSLog(@"Should filter items with %@ = %@", name, value );
     [currentFilters addObject:[NSArray arrayWithObjects:name, value, nil]];
     [self filterDataWhereProperty:name hasValue:value];
     
@@ -723,7 +685,6 @@
         NSArray *headings = [self filterHeadings:currentFilter];
         if ( [headings count] == 1
             && [@"YES" isEqualToString:[currentFilter objectForKey:@"skipSingleEntry"] ]) {
-            NSLog(@"skipping %@ because everything has the value %@", [currentFilter objectForKey:@"property"], [headings objectAtIndex:0] );
             [ignoredFilters addObject:currentFilter];
             // If we're restoring from a saved position then we will have already saved the skip and doing it here
             // will result in a duplicated filter
@@ -835,7 +796,6 @@
     WebBrowserViewController *viewController;
     viewController = [[[WebBrowserViewController alloc] initWithRequest:request] autorelease];
     [((UINavigationController*)tabBarController.selectedViewController) pushViewController:viewController animated:YES];
-    NSLog(@"toolbar=%@", viewController.toolbar);
     viewController.toolbar.tintColor = tintColor;
 }
 

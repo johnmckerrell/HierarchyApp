@@ -43,9 +43,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"1:statusURL.text=%@", statusURL.text);
     statusURL.text = [[request URL] absoluteString];
-    NSLog(@"2:statusURL.text=%@", statusURL.text);
     webView.scalesPageToFit = YES;
     [webView loadRequest:request];
     
@@ -64,13 +62,10 @@
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)_webView {
-    NSLog(@"web browser Did start load.");
-    NSLog(@"3:statusURL.text=%@", statusURL.text);
     NSString *url = [[webView.request URL] absoluteString];
     if (url && ! [url isEqualToString:@""]) {
         statusURL.text = url;
     }
-    NSLog(@"4:statusURL.text=%@", statusURL.text);
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.5];
     statusView.alpha = 1.0;
@@ -105,18 +100,15 @@
     if (buttonIndex == 0) {
         [[UIApplication sharedApplication] openURL:[[webView request] URL]];
     }
-    NSLog(@"buttonIndex=%i", buttonIndex);
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)_webView {
-    NSLog(@"web browser Did finish load.");
     [self requestStopped];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     if ([error code] != NSURLErrorCancelled) {
     }
-    NSLog(@"web browser Did fail load with error: %@", error);
     [self requestStopped];
 }
 

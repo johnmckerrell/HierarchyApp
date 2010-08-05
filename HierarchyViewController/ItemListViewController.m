@@ -33,8 +33,6 @@
 -(id) initDisplaying:(NSDictionary*)_itemData data:(NSArray*)data {
     if ((self = [super initWithStyle:UITableViewStylePlain])) {
         self.title = [_itemData objectForKey:@"title"];
-        NSLog(@"Set title to %@", [_itemData objectForKey:@"title"] );
-        NSLog(@"itemData = %@", _itemData);
         
         filteredData = nil;
         selectedCells = [[NSMutableArray arrayWithCapacity:[data count]] retain];
@@ -157,8 +155,6 @@
     // Return the number of rows in the section.
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         if (filteredData) {
-            NSLog(@"For section %i returning %i rows", section, [[[filteredData objectAtIndex:section] objectForKey:@"results"] count]);
-            NSLog(@"Section %i has this data: %@", section, [filteredData objectAtIndex:section]);
             return [[[filteredData objectAtIndex:section] objectForKey:@"results"] count];
         } else {
             return 0;
@@ -324,10 +320,8 @@
     } else if (selecting) {
         NSUInteger index = [selectedCells indexOfObject:indexPath];
         if (index!=NSNotFound) {
-            NSLog(@"deselecting");
             [selectedCells removeObjectAtIndex:index];
         } else {
-            NSLog(@"selecting");
             [selectedCells addObject:indexPath];
         }
         [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];       

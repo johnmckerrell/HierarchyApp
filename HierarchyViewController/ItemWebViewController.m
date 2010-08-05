@@ -19,7 +19,6 @@
         itemData = [_itemData retain];
         self.title = [itemData objectForKey:@"title"];
         self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Detail" style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
-        NSLog(@"webView=%@", webView);
     }
     return self;
 }
@@ -53,7 +52,6 @@
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    NSLog(@"shouldStartLoad? %i", navigationType);
     if (initialLoadPerformed) {
         [hierarchyController loadURLRequestInLocalBrowser:request];
         return NO;
@@ -64,16 +62,13 @@
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-    NSLog(@"Did start load.");
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    NSLog(@"Did finish load.");
     [self setStatusTimer];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    NSLog(@"Did fail load with error: %@", error);
     [self setStatusTimer];
 }
 
