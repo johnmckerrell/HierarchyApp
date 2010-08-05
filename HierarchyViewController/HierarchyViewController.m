@@ -514,22 +514,27 @@
         NSDictionary *currentFilter = [self getCurrentFilterAtPosition:categoryPathPosition];
         
         id oldViewController = nil;
+        ListViewController *viewController = nil;
         if ([navController.viewControllers count]) {
             [navController popToRootViewControllerAnimated:NO];
             oldViewController = [navController.viewControllers objectAtIndex:0];
             if ([oldViewController isKindOfClass:[ItemListViewController class]]) {
+                viewController = oldViewController;
                 [((ItemListViewController*)oldViewController) updateData:filteredData];
             } else if ([oldViewController isKindOfClass:[ListViewController class]]) {
                 NSArray *headings = [self filterHeadings:currentFilter];
+                viewController = oldViewController;
                 [((ListViewController*)oldViewController) updateData:headings forFilter:currentFilter];
             }
             if (self.leftMostItem) {
-                ((ListViewController*) oldViewController).navigationItem.leftBarButtonItem = nil;
-                ((ListViewController*) oldViewController).navigationItem.leftBarButtonItem = self.leftMostItem;
+                viewController.navigationItem.leftBarButtonItem = nil;
+                viewController.navigationItem.leftBarButtonItem = self.leftMostItem;
+            }
+            if (! viewController.ignoreRightButton) {
+                viewController.navigationItem.rightBarButtonItem = self.rightBarButtonItem;
             }
         }
         if (!oldViewController) {
-            ListViewController *viewController;
             if (currentFilter) {
                 NSArray *headings = [self filterHeadings:currentFilter];
                 viewController = [ListViewController viewControllerDisplaying:currentFilter data:headings];
@@ -543,10 +548,10 @@
             if (self.leftMostItem) {
                 viewController.navigationItem.leftBarButtonItem = self.leftMostItem;
             }
-            if (self.rightBarButtonItem && ! viewController.navigationItem.rightBarButtonItem) {
+            if (! viewController.ignoreRightButton) {
                 viewController.navigationItem.rightBarButtonItem = self.rightBarButtonItem;
             }
-             [navController setViewControllers:[NSArray arrayWithObject:viewController] animated:NO];
+            [navController setViewControllers:[NSArray arrayWithObject:viewController] animated:NO];
         }
         
     }
