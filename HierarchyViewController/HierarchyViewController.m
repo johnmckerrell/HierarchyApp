@@ -330,6 +330,7 @@
     tabBarController.delegate = self;
     NSArray *categories = [filtersdata objectForKey:@"categories"];
     NSMutableArray *viewControllers = [NSMutableArray arrayWithCapacity:([categories count]+1)];
+    NSMutableDictionary *categoriesMap = [NSMutableDictionary dictionaryWithCapacity:([categories count]+1)];
     NSDictionary *categoryData;
     UIImage *icon;
     UINavigationController *navController;
@@ -345,11 +346,12 @@
         if (self.tintColor) {
             navController.navigationBar.tintColor = tintColor;
         }
+        [categoriesMap setObject:[categoryData objectForKey:@"title"] forKey:NSLocalizedString([categoryData objectForKey:@"title"],@"")];
         tabBarItem = [[[UITabBarItem alloc] initWithTitle:NSLocalizedString([categoryData objectForKey:@"title"],@"") image:icon tag:i] autorelease];
         navController.tabBarItem = tabBarItem;
         [viewControllers addObject:navController];
         
-        if ([initialCategory isEqualToString:[categoryData objectForKey:@"title"]]) {
+        if ([initialCategory isEqualToString:NSLocalizedString([categoryData objectForKey:@"title"],@"")]) {
             selected = i;
         }
         if ([@"YES" isEqualToString:[categoryData objectForKey:@"mainItem"]]) {
@@ -366,11 +368,12 @@
         if (self.tintColor) {
             navController.navigationBar.tintColor = tintColor;
         }        
+        [categoriesMap setObject:[itemDescription objectForKey:@"title"] forKey:NSLocalizedString([itemDescription objectForKey:@"title"],@"")];
         tabBarItem = [[[UITabBarItem alloc] initWithTitle:[itemDescription objectForKey:@"title"] image:icon tag:i] autorelease];
         navController.tabBarItem = tabBarItem;
         [viewControllers addObject:navController];        
         
-        if ([initialCategory isEqualToString:[itemDescription objectForKey:@"title"]]) {
+        if ([initialCategory isEqualToString:NSLocalizedString([itemDescription objectForKey:@"title"],@"")]) {
             selected = i;
         }
     }
@@ -378,6 +381,8 @@
     if (self.extraViewControllers) {
         [viewControllers addObjectsFromArray:self.extraViewControllers];
     }
+    
+    localizedCategoriesMap = [[NSDictionary dictionaryWithDictionary:categoriesMap] retain];
     
     [tabBarController setViewControllers:viewControllers];
     tabBarController.selectedIndex = selected;
@@ -408,7 +413,7 @@
         currentCategory = nil;
         return;
     }
-    [self setCategoryByName:viewController.tabBarItem.title];
+    [self setCategoryByName:[localizedCategoriesMap objectForKey:viewController.tabBarItem.title]];
 }
 
 -(BOOL)property:(id) property matchesValue:(NSString*) testString {
@@ -837,6 +842,7 @@
 
 - (void)dealloc {
     [extraFilters release], extraFilters = nil;
+    [localizedCategoriesMap release], localizedCategoriesMap = nil;
     
     [super dealloc];
 }

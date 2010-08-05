@@ -22,6 +22,7 @@
     NSDictionary *currentItem;
     NSMutableArray *filteredData;
     NSMutableArray *ignoredFilters;
+    NSDictionary *localizedCategoriesMap;
     UIColor *tintColor;
 
     NSString *startCategory;
