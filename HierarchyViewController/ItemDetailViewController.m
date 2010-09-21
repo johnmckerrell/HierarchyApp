@@ -144,6 +144,8 @@
                     }
 
                 }
+            } else if (![propertyValue isKindOfClass:[NSString class]]) {
+                stringPropertyValue = [NSString stringWithFormat:@"%@", propertyValue];
             } else {
                 stringPropertyValue = propertyValue;
             }
