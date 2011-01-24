@@ -12,7 +12,9 @@
 
 @implementation AppDelegate_Phone
 
-@synthesize window;
+@synthesize window = _window;
+@synthesize splashView = _splashView;
+@synthesize hierarchyController = _hierarchyController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
 	
@@ -29,13 +31,13 @@
     
     BOOL usingRecentSettings = NO;
  
-    hierarchyController = [[HierarchyViewController alloc] initWithAppData:appdata filtersData:filtersdata mainData:maindata];
+    self.hierarchyController = [[[HierarchyViewController alloc] initWithAppData:appdata filtersData:filtersdata mainData:maindata] autorelease];
 
     if (lastRun && [lastRun timeIntervalSinceNow] > -300) {
         // Restore
-        hierarchyController.startCategory = [userDefaults objectForKey:@"startCategory"];
-        hierarchyController.startFilters = [userDefaults objectForKey:@"startFilters"];
-        hierarchyController.startItem = [userDefaults objectForKey:@"startItem"];
+        self.hierarchyController.startCategory = [userDefaults objectForKey:@"startCategory"];
+        self.hierarchyController.startFilters = [userDefaults objectForKey:@"startFilters"];
+        self.hierarchyController.startItem = [userDefaults objectForKey:@"startItem"];
         usingRecentSettings = YES;
 
     }
@@ -61,11 +63,11 @@
             splashImage = [UIImage imageWithContentsOfFile:defaultFile];
         }
 
-        splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 20, splashImage.size.width, splashImage.size.height)];
-        splashView.image = splashImage;
+        self.splashView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 20, splashImage.size.width, splashImage.size.height)] autorelease];
+        self.splashView.image = splashImage;
         
         NSLog(@"Loading the splash screen");
-        [window addSubview:splashView];
+        [self.window addSubview:self.splashView];
         if (splashFile && ! usingRecentSettings) {
             [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(slideSplashScreenOut) userInfo:nil repeats:NO];
         } else {
@@ -75,10 +77,10 @@
     } else {
         // Add the navigation view to the window
         NSLog(@"Loading the navigation view");
-        [window addSubview:hierarchyController.view];
+        [self.window addSubview:self.hierarchyController.view];
     }    
     
-    [window makeKeyAndVisible];
+    [self.window makeKeyAndVisible];
 	
 	return YES;
 }
@@ -90,8 +92,8 @@
 }
 
 -(void)slideSplashScreenOut {
-    [splashView removeFromSuperview];
-    [window addSubview:hierarchyController.view];
+    [self.splashView removeFromSuperview];
+    [self.window addSubview:self.hierarchyController.view];
     
     // set up an animation for the transition between the views
 	CATransition *animation = [CATransition animation];
@@ -100,7 +102,7 @@
 	[animation setSubtype:kCATransitionFromRight];
 	[animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
 	
-	[[window layer] addAnimation:animation forKey:@"SwitchToNavView"];
+	[[self.window layer] addAnimation:animation forKey:@"SwitchToNavView"];
     
     
     /*
@@ -115,7 +117,10 @@
 }
 
 - (void)dealloc {
-    [window release];
+    self.window = nil;
+    self.splashView = nil;
+    self.hierarchyController = nil;
+    
     [super dealloc];
 }
 
