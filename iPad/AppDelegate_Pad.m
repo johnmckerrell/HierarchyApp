@@ -10,21 +10,21 @@
 
 @implementation AppDelegate_Pad
 
-@synthesize window;
+@synthesize window = _window;
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
 	
     // Override point for customization after application launch
 	
-    [window makeKeyAndVisible];
+    [self.window makeKeyAndVisible];
 	
 	return YES;
 }
 
 
 - (void)dealloc {
-    [window release];
+    self.window = nil;
     [super dealloc];
 }
 
