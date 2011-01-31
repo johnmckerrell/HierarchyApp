@@ -30,12 +30,11 @@
     return [viewController autorelease];
 }
 
--(id) initDisplaying:(NSDictionary*)_itemData data:(NSArray*)data {
+-(id) initDisplaying:(NSDictionary*)itemData data:(NSArray*)data {
     if ((self = [super initWithStyle:UITableViewStylePlain])) {
-        self.title = [_itemData objectForKey:@"title"];
+        self.title = [itemData objectForKey:@"title"];
         
-        filteredData = nil;
-        selectedCells = [[NSMutableArray arrayWithCapacity:[data count]] retain];
+        self.selectedCells = [[NSMutableArray arrayWithCapacity:[data count]] retain];
         [self updateData:data];
     }
     return self;    
@@ -51,7 +50,7 @@
     
     NSString *itemName;
     NSUInteger section;
-    totalRowCount = [sortedData count];
+    self.totalRowCount = [sortedData count];
     
     NSMutableDictionary *itemData;
     for (itemData in sortedData) {
@@ -62,9 +61,8 @@
         }
         [[collationData objectAtIndex:section] addObject:itemData];
     }
-    @synchronized(tableData) {
-        [tableData release];
-        tableData = [collationData retain];
+    @synchronized(self.tableData) {
+        self.tableData = collationData;
     }
     
     [self.tableView reloadData];
@@ -201,21 +199,21 @@
     
     // Configure the cell...
     if (tableView == self.searchDisplayController.searchResultsTableView) {
-        NSDictionary *result = [[[filteredData objectAtIndex:[indexPath indexAtPosition:0]] objectForKey:@"results"] objectAtIndex:[indexPath indexAtPosition:1]];
+        NSDictionary *result = [[[self.filteredData objectAtIndex:[indexPath indexAtPosition:0]] objectForKey:@"results"] objectAtIndex:[indexPath indexAtPosition:1]];
         cell.itemData = result;
     } else {
         NSDictionary *itemData = nil;
         NSArray *sectionData = nil;
-        if (indexPath.section < [tableData count]) {
-            sectionData = [tableData objectAtIndex:indexPath.section];
+        if (indexPath.section < [self.tableData count]) {
+            sectionData = [self.tableData objectAtIndex:indexPath.section];
         }
         if (indexPath.row < [sectionData count]) {
             itemData = [sectionData objectAtIndex:indexPath.row];
         }
         cell.itemData = itemData;
-        if (selecting) {
+        if (self.selecting) {
             cell.checking = YES;
-            if ([selectedCells indexOfObject:indexPath]!= NSNotFound) {
+            if ([self.selectedCells indexOfObject:indexPath]!= NSNotFound) {
                 cell.checked = YES;
             } else {
                 cell.checked = NO;
@@ -311,31 +309,31 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Navigation logic may go here. Create and push another view controller.
     if (tableView == self.searchDisplayController.searchResultsTableView) {
-        NSDictionary *result = [[[filteredData objectAtIndex:[indexPath indexAtPosition:0]] objectForKey:@"results"] objectAtIndex:[indexPath indexAtPosition:1]];
+        NSDictionary *result = [[[self.filteredData objectAtIndex:[indexPath indexAtPosition:0]] objectForKey:@"results"] objectAtIndex:[indexPath indexAtPosition:1]];
         if ([result objectForKey:@"itemData"]) {
-            [hierarchyController showItem:[result objectForKey:@"itemData"] fromSave:NO];
+            [self.hierarchyController showItem:[result objectForKey:@"itemData"] fromSave:NO];
         } else {
             // Load a filter
         }
-    } else if (selecting) {
-        NSUInteger index = [selectedCells indexOfObject:indexPath];
+    } else if (self.selecting) {
+        NSUInteger index = [self.selectedCells indexOfObject:indexPath];
         if (index!=NSNotFound) {
-            [selectedCells removeObjectAtIndex:index];
+            [self.selectedCells removeObjectAtIndex:index];
         } else {
-            [selectedCells addObject:indexPath];
+            [self.selectedCells addObject:indexPath];
         }
         [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];       
     } else {
         NSDictionary *itemData = nil;
         NSArray *sectionData = nil;
-        if (indexPath.section < [tableData count]) {
-            sectionData = [tableData objectAtIndex:indexPath.section];
+        if (indexPath.section < [self.tableData count]) {
+            sectionData = [self.tableData objectAtIndex:indexPath.section];
         }
         if (indexPath.row < [sectionData count]) {
             itemData = [sectionData objectAtIndex:indexPath.row];
         }
         if (itemData) {
-            [hierarchyController showItem:itemData fromSave:NO];
+            [self.hierarchyController showItem:itemData fromSave:NO];
         }
     }
 	/*
