@@ -37,15 +37,16 @@
 */
 
 -(IBAction) closeWebBrowser:(id)sender {
+    [self viewWillDisappear:YES];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-    statusURL.text = [[request URL] absoluteString];
-    webView.scalesPageToFit = YES;
-    [webView loadRequest:request];
+    self.statusURL.text = [[self.request URL] absoluteString];
+    self.webView.scalesPageToFit = YES;
+    [self.webView loadRequest:self.request];
     
 }
 
