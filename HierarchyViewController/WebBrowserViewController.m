@@ -11,11 +11,22 @@
 
 @implementation WebBrowserViewController
 
-@synthesize toolbar;
+@synthesize webView = _webView;
+@synthesize statusView = _statusView;
+@synthesize statusURL = _statusURL;
+@synthesize backButton = _backButton;
+@synthesize forwardButton = _forwardButton;
+@synthesize spacerButton = _spacerButton;
+@synthesize actionButton = _actionButton;
+@synthesize stopButton = _stopButton;
+@synthesize refreshButton = _refreshButton;
+@synthesize doneButton = _doneButton;
+@synthesize request = _request;
+@synthesize toolbar = _toolbar;
 
--(id) initWithRequest:(NSURLRequest*)_request {
+-(id) initWithRequest:(NSURLRequest*)request {
     if ((self = [super init])) {
-        request = [_request retain];
+        self.request = request;
         // Don't need to do stuff with these if we're hiding the
         // navigation bar, which we do in viewWillAppear
         //self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(closeWebBrowser:)] autorelease];
@@ -62,34 +73,34 @@
     return YES;
 }
 
-- (void)webViewDidStartLoad:(UIWebView *)_webView {
+- (void)webViewDidStartLoad:(UIWebView *)webView {
     NSString *url = [[webView.request URL] absoluteString];
     if (url && ! [url isEqualToString:@""]) {
-        statusURL.text = url;
+        self.statusURL.text = url;
     }
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.5];
-    statusView.alpha = 1.0;
+    self.statusView.alpha = 1.0;
     [UIView commitAnimations];
-    [toolbar setItems:[NSArray arrayWithObjects:backButton, forwardButton, actionButton, spacerButton, stopButton, doneButton, nil] animated:NO];
-    backButton.enabled = webView.canGoBack;
-    forwardButton.enabled = webView.canGoForward;
+    [self.toolbar setItems:[NSArray arrayWithObjects:self.backButton, self.forwardButton, self.actionButton, self.spacerButton, self.stopButton, self.doneButton, nil] animated:NO];
+    self.backButton.enabled = self.webView.canGoBack;
+    self.forwardButton.enabled = self.webView.canGoForward;
 }
 
 - (void)goBack:(id)sender {
-    [webView goBack];
+    [self.webView goBack];
 }
 
 - (void)goForward:(id)sender {
-    [webView goForward];
+    [self.webView goForward];
 }
 
 - (void)stopRequest:(id)sender {
-    [webView stopLoading];
+    [self.webView stopLoading];
 }
 
 - (void)refreshPage:(id)sender {
-    [webView reload];
+    [self.webView reload];
 }
 
 - (void)showActions:(id)sender {
@@ -99,16 +110,21 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
-        [[UIApplication sharedApplication] openURL:[[webView request] URL]];
+        [[UIApplication sharedApplication] openURL:[[self.webView request] URL]];
     }
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)_webView {
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
     [self requestStopped];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     if ([error code] != NSURLErrorCancelled) {
+        [[[[UIAlertView alloc] initWithTitle:@"Error"
+                                     message:@"Failed to load the page, please make sure you're connected to the internet."
+                                    delegate:nil
+                           cancelButtonTitle:@"Close"
+                           otherButtonTitles:nil] autorelease] show];
     }
     [self requestStopped];
 }
@@ -116,11 +132,11 @@
 - (void)requestStopped {
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.5];
-    statusView.alpha = 0.0;
+    self.statusView.alpha = 0.0;
     [UIView commitAnimations];
-    [toolbar setItems:[NSArray arrayWithObjects:backButton, forwardButton, actionButton, spacerButton, refreshButton, doneButton, nil] animated:NO];
-    backButton.enabled = webView.canGoBack;
-    forwardButton.enabled = webView.canGoForward;
+    [self.toolbar setItems:[NSArray arrayWithObjects:self.backButton, self.forwardButton, self.actionButton, self.spacerButton, self.refreshButton, self.doneButton, nil] animated:NO];
+    self.backButton.enabled = self.webView.canGoBack;
+    self.forwardButton.enabled = self.webView.canGoForward;
 }
 
 
@@ -142,11 +158,34 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    self.webView = nil;
+    self.statusView = nil;
+    self.statusURL = nil;
+    self.backButton = nil;
+    self.forwardButton = nil;
+    self.spacerButton = nil;
+    self.actionButton = nil;
+    self.stopButton = nil;
+    self.refreshButton = nil;
+    self.doneButton = nil;
+    self.toolbar = nil;
 }
 
 
 - (void)dealloc {
-    [request release], request = nil;
+    self.webView = nil;
+    self.statusView = nil;
+    self.statusURL = nil;
+    self.backButton = nil;
+    self.forwardButton = nil;
+    self.spacerButton = nil;
+    self.actionButton = nil;
+    self.stopButton = nil;
+    self.refreshButton = nil;
+    self.doneButton = nil;
+    self.toolbar = nil;
+    self.request = nil;
+    
     [super dealloc];
 }
 
