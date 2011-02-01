@@ -152,6 +152,7 @@
             cell.detailTextLabel.text = stringPropertyValue;
         }
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
     
     return cell;
