@@ -821,7 +821,10 @@
         viewController = [viewControllerClass alloc];
         if ([viewController respondsToSelector:@selector(initWithItem:)]) {
             viewController = [viewController initWithItem:itemData];
+        } else {
+            viewController = [viewController init];
         }
+
         if (viewController && [viewController respondsToSelector:@selector(setHierarchyController:)]) {
             [viewController setHierarchyController:self];
         }
@@ -837,7 +840,10 @@
         viewController = [viewControllerClass alloc];
         if ([viewController respondsToSelector:@selector(initWithItem:)]) {
             viewController = [viewController initWithItem:itemData];
+        } else {
+            viewController = [viewController init];
         }
+
         if (viewController && [viewController respondsToSelector:@selector(setHierarchyController:)]) {
             [viewController setHierarchyController:self];
         }
