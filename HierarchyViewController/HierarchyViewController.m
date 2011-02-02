@@ -51,13 +51,14 @@
 @synthesize ignoredFilters = _ignoredFilters;
 @synthesize categoryPathPosition = _categoryPathPosition;
 @synthesize localizedCategoriesMap = _localizedCategoriesMap;
+@synthesize sectionIndexMinimumDisplayRowCount = _sectionIndexMinimumDisplayRowCount;
 
 
 - (id)initWithAppData:(NSDictionary*)appdata filtersData:(NSDictionary*)filtersdata mainData:(NSArray*)maindata {
     if ((self == [super init])) {
-        self.appdata = [appdata retain];
-        self.filtersdata = [filtersdata retain];
-        self.maindata = [maindata retain];
+        self.appdata = appdata;
+        self.filtersdata = filtersdata;
+        self.maindata = maindata;
         
         // Retrieve the tint color for nav bars if we have one
         NSDictionary *appearance = [appdata objectForKey:@"appearance"];
@@ -68,8 +69,15 @@
                 [s setCharactersToBeSkipped:
                  [NSCharacterSet characterSetWithCharactersInString:@"\n, "]];
                 if ([s scanFloat:&red] && [s scanFloat:&green] && [s scanFloat:&blue] && [s scanFloat:&alpha] ) {
-                    self.tintColor = [[UIColor colorWithRed:red green:green blue:blue alpha:alpha] retain];
+                    self.tintColor = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
                 }
+            }
+            
+            NSNumber *sectionIndexMinimumDisplayRowCount = [appearance objectForKey:@"sectionIndexMinimumDisplayRowCount"];
+            if (sectionIndexMinimumDisplayRowCount) {
+                self.sectionIndexMinimumDisplayRowCount = [sectionIndexMinimumDisplayRowCount integerValue];
+            } else {
+                self.sectionIndexMinimumDisplayRowCount = NSIntegerMax;
             }
         }
         

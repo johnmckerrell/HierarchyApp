@@ -34,6 +34,8 @@
     UIBarButtonItem *_leftMostItem;
     UIBarButtonItem *_rightBarButtonItem;
     UINavigationItem *_selectModeNavigationItem;
+    
+    NSInteger _sectionIndexMinimumDisplayRowCount;
 }
 
 @property (nonatomic, retain) NSArray *extraViewControllers;
@@ -56,6 +58,7 @@
 @property (nonatomic, retain, readonly) NSMutableArray *currentFilters;
 @property (nonatomic, retain, readonly) NSDictionary *currentItem;
 @property (nonatomic, retain, readonly) NSDictionary *localizedCategoriesMap;
+@property (nonatomic) NSInteger sectionIndexMinimumDisplayRowCount;
 
 - (id)initWithAppData:(NSDictionary*)appdata filtersData:(NSDictionary*)filtersdata mainData:(NSArray*)maindata;
 

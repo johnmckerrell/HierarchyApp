@@ -96,6 +96,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.tableView.sectionIndexMinimumDisplayRowCount = self.hierarchyController.sectionIndexMinimumDisplayRowCount;
     self.viewLoaded = YES;
     NSDictionary *appFeatures = [self.hierarchyController.appdata objectForKey:@"features"];
     if (appFeatures && [[appFeatures objectForKey:@"searchSupported"] isEqualToString:@"YES"] ) {
@@ -235,12 +236,13 @@
         } else {
             return nil;
         }
-    } else {
+    } else if (tableView == self.tableView && self.totalRowCount > self.tableView.sectionIndexMinimumDisplayRowCount) {
         if (section < [self.tableData count] && [[self.tableData objectAtIndex:section] count] > 0) {
             return [[[UILocalizedIndexedCollation currentCollation] sectionTitles] objectAtIndex:section];
         }
         return nil;    
     }
+    return nil;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
