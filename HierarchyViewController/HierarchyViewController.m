@@ -45,6 +45,7 @@
 @synthesize currentFilters = _currentFilters;
 @synthesize currentItem = _currentItem;
 @synthesize tintColor = _tintColor;
+@synthesize barStyle = _barStyle;
 @synthesize appdata = _appdata;
 @synthesize filtersdata = _filtersdata;
 @synthesize maindata = _maindata;
@@ -72,6 +73,14 @@
                     self.tintColor = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
                 }
             }
+            
+            NSString *barStyle = [appearance objectForKey:@"navigationBarStyle"];
+            if (barStyle && ! [@"UIBarStyleDefault" isEqualToString:barStyle] ) {
+                self.barStyle = UIBarStyleBlack;
+            } else {
+                self.barStyle = UIBarStyleDefault;
+            }
+
             
             NSNumber *sectionIndexMinimumDisplayRowCount = [appearance objectForKey:@"sectionIndexMinimumDisplayRowCount"];
             if (sectionIndexMinimumDisplayRowCount) {
@@ -387,6 +396,9 @@
         if (self.tintColor) {
             navController.navigationBar.tintColor = self.tintColor;
         }
+        if (self.barStyle != UIBarStyleDefault) {
+            navController.navigationBar.barStyle = self.barStyle;
+        }
         [categoriesMap setObject:[categoryData objectForKey:@"title"] forKey:NSLocalizedString([categoryData objectForKey:@"title"],@"")];
         tabBarItem = [[[UITabBarItem alloc] initWithTitle:NSLocalizedString([categoryData objectForKey:@"title"],@"") image:icon tag:i] autorelease];
         navController.tabBarItem = tabBarItem;
@@ -408,6 +420,9 @@
         navController.delegate = self;
         if (self.tintColor) {
             navController.navigationBar.tintColor = self.tintColor;
+        }   
+        if (self.barStyle != UIBarStyleDefault) {
+            navController.navigationBar.barStyle = self.barStyle;
         }        
         [categoriesMap setObject:[itemDescription objectForKey:@"title"] forKey:NSLocalizedString([itemDescription objectForKey:@"title"],@"")];
         tabBarItem = [[[UITabBarItem alloc] initWithTitle:[itemDescription objectForKey:@"title"] image:icon tag:i] autorelease];
@@ -846,7 +861,12 @@
     WebBrowserViewController *viewController;
     viewController = [[[WebBrowserViewController alloc] initWithRequest:request] autorelease];
     [((UINavigationController*)self.tabBarController.selectedViewController) pushViewController:viewController animated:YES];
-    viewController.toolbar.tintColor = self.tintColor;
+    if (self.tintColor) {
+        viewController.toolbar.tintColor = self.tintColor;
+    }
+    if (self.barStyle != UIBarStyleDefault) {
+        viewController.toolbar.barStyle = self.barStyle;
+    }
 }
 
 -(NSDictionary*) getCurrentFilterAtPosition:(NSUInteger)position {

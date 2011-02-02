@@ -24,6 +24,7 @@
     NSMutableArray *_ignoredFilters;
     NSDictionary *_localizedCategoriesMap;
     UIColor *_tintColor;
+    UIBarStyle _barStyle;
 
     NSString *_startCategory;
     NSArray *_startFilters;
@@ -47,6 +48,7 @@
 @property (nonatomic, retain) NSDictionary *startItem;
 @property (nonatomic, retain) NSArray *extraFilters;
 @property (nonatomic, retain) UIColor *tintColor;
+@property (nonatomic, assign) UIBarStyle barStyle;
 @property (nonatomic, retain) UITabBarController *tabBarController;
 @property (nonatomic, readonly) NSUInteger categoryPathPosition;
 @property (nonatomic, retain, readonly) NSMutableArray *ignoredFilters;
