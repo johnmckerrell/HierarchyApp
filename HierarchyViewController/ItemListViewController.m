@@ -65,7 +65,9 @@
         self.tableData = collationData;
     }
     
-    [self.tableView reloadData];
+    if ([self viewLoaded]) {
+        [self.tableView reloadData];
+    }
     return YES;
 }
 
