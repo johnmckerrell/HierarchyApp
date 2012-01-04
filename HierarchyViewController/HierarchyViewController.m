@@ -20,7 +20,8 @@
 @synthesize appdata, filtersdata, maindata;
 
 - (id)initWithAppData:(NSDictionary*)_appdata filtersData:(NSDictionary*)_filtersdata mainData:(NSArray*)_maindata {
-    if ((self == [super init])) {
+    self = [super init];
+    if (self) {
         appdata = [_appdata retain];
         filtersdata = [_filtersdata retain];
         maindata = [_maindata retain];
@@ -68,7 +69,8 @@
     // Create the tab bar showing the right category
     [self setupTabBarWithInitialCategory:self.startCategory];
     [self setCurrentCategory:self.startCategory filters:self.startFilters item:self.startItem];
-    self.view = tabBarController.view;
+    self.view = [[[UIView alloc] initWithFrame:tabBarController.view.frame] autorelease];
+    [self.view addSubview:tabBarController.view];
 }
 
 -(void) setCurrentCategory:(NSString*)_category filters:(NSArray*) _filters item:(NSDictionary*)_itemData {
