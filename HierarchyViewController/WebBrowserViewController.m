@@ -119,7 +119,7 @@
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    if ([error code] != NSURLErrorCancelled) {
+    if ([error code] != NSURLErrorCancelled && [error code] != 204) {
         [[[[UIAlertView alloc] initWithTitle:@"Error"
                                      message:@"Failed to load the page, please make sure you're connected to the internet."
                                     delegate:nil

@@ -11,7 +11,7 @@
 
 @implementation ItemDetailViewController
 
-@synthesize hierarchyController;
+@synthesize hierarchyController = _hierarchyController;
 @synthesize itemData = _itemData;
 
 #pragma mark -

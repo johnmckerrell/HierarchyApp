@@ -4,6 +4,7 @@
 	};
 	appearance = {
 		navigationBarTint = "0.62,0.13,0.20,1";
+		navigationBarStyle = UIBarStyleDefault;
 	};
 	itemData = {
 		title = Books;

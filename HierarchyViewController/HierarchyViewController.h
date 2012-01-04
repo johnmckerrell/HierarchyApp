@@ -24,6 +24,7 @@
     NSMutableArray *_ignoredFilters;
     NSDictionary *_localizedCategoriesMap;
     UIColor *_tintColor;
+    UIBarStyle _barStyle;
 
     NSString *_startCategory;
     NSArray *_startFilters;
@@ -34,6 +35,8 @@
     UIBarButtonItem *_leftMostItem;
     UIBarButtonItem *_rightBarButtonItem;
     UINavigationItem *_selectModeNavigationItem;
+    
+    NSInteger _sectionIndexMinimumDisplayRowCount;
 }
 
 @property (nonatomic, retain) NSArray *extraViewControllers;
@@ -45,6 +48,7 @@
 @property (nonatomic, retain) NSDictionary *startItem;
 @property (nonatomic, retain) NSArray *extraFilters;
 @property (nonatomic, retain) UIColor *tintColor;
+@property (nonatomic, assign) UIBarStyle barStyle;
 @property (nonatomic, retain) UITabBarController *tabBarController;
 @property (nonatomic, readonly) NSUInteger categoryPathPosition;
 @property (nonatomic, retain, readonly) NSMutableArray *ignoredFilters;
@@ -56,6 +60,7 @@
 @property (nonatomic, retain, readonly) NSMutableArray *currentFilters;
 @property (nonatomic, retain, readonly) NSDictionary *currentItem;
 @property (nonatomic, retain, readonly) NSDictionary *localizedCategoriesMap;
+@property (nonatomic) NSInteger sectionIndexMinimumDisplayRowCount;
 
 - (id)initWithAppData:(NSDictionary*)appdata filtersData:(NSDictionary*)filtersdata mainData:(NSArray*)maindata;
 
