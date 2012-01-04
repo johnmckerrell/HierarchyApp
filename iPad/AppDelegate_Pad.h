@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface AppDelegate_Pad : NSObject <UIApplicationDelegate> {
-    UIWindow *window;
+    UIWindow *_window;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;

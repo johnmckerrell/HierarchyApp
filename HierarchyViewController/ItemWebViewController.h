@@ -12,16 +12,20 @@
 
 
 @interface ItemWebViewController : UIViewController <UIWebViewDelegate> {
-    NSDictionary *itemData;
-    IBOutlet UIWebView *webView;
-    BOOL initialLoadPerformed;
-    IBOutlet UIView *statusIndicator;
-    HierarchyViewController *hierarchyController;
+    NSDictionary *_itemData;
+    UIWebView *_webView;
+    BOOL _initialLoadPerformed;
+    UIView *_statusIndicator;
+    HierarchyViewController *_hierarchyController;
 }
 
 @property (nonatomic, retain) HierarchyViewController *hierarchyController;
+@property (nonatomic, retain) NSDictionary *itemData;
+@property (nonatomic, retain) IBOutlet UIWebView *webView;
+@property (nonatomic, assign) BOOL initialLoadPerformed;
+@property (nonatomic, retain) IBOutlet UIView *statusIndicator;
 
--(id) initWithItem:(NSDictionary*)_itemData;
+-(id) initWithItem:(NSDictionary*)itemData;
 -(void) setStatusTimer;
 -(void) hideStatusIndicator;
 

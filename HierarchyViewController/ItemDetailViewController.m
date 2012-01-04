@@ -12,15 +12,15 @@
 @implementation ItemDetailViewController
 
 @synthesize hierarchyController;
-
+@synthesize itemData = _itemData;
 
 #pragma mark -
 #pragma mark Initialization
 
--(id) initWithItem:(NSDictionary*)_itemData {
+-(id) initWithItem:(NSDictionary*)itemData {
     if ((self = [super initWithStyle:UITableViewStylePlain])) {
-        itemData = [_itemData retain];
-        self.title = [itemData objectForKey:@"title"];
+        self.itemData = [itemData retain];
+        self.title = [self.itemData objectForKey:@"title"];
     }
     return self;
 }
@@ -91,7 +91,7 @@
     if (section == 0) {
         return 1;
     }
-    NSDictionary *properties = [itemData objectForKey:@"properties"];
+    NSDictionary *properties = [self.itemData objectForKey:@"properties"];
     return [properties count];
 }
 
@@ -125,9 +125,9 @@
     
     // Configure the cell...
     if ([indexPath indexAtPosition:0] == 0) {
-        cell.textLabel.text = [itemData objectForKey:@"title"];
+        cell.textLabel.text = [self.itemData objectForKey:@"title"];
     } else {
-        NSDictionary *properties = [itemData objectForKey:@"properties"];
+        NSDictionary *properties = [self.itemData objectForKey:@"properties"];
         NSArray *keys = [properties allKeys];
         id propertyValue = nil;
         if ([keys objectAtIndex:indexPath.row]) {
@@ -144,12 +144,15 @@
                     }
 
                 }
+            } else if (![propertyValue isKindOfClass:[NSString class]]) {
+                stringPropertyValue = [NSString stringWithFormat:@"%@", propertyValue];
             } else {
                 stringPropertyValue = propertyValue;
             }
             cell.detailTextLabel.text = stringPropertyValue;
         }
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
     
     return cell;
@@ -228,7 +231,7 @@
 
 
 - (void)dealloc {
-    [itemData release], itemData = nil;
+    self.itemData = nil;
     self.hierarchyController = nil;
     [super dealloc];
 }

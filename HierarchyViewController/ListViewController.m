@@ -11,17 +11,25 @@
 
 @implementation ListViewController
 
-@synthesize hierarchyController, displayFilter, ignoreRightButton;
+@synthesize tableData = _tableData;
+@synthesize filteredData = _filteredData;
+@synthesize selectedCells = _selectedCells;
+@synthesize totalRowCount = _totalRowCount;
+@synthesize viewLoaded = _viewLoaded;
+@synthesize hierarchyController = _hierarchyController;
+@synthesize displayFilter = _displayFilter;
+@synthesize ignoreRightButton = _ignoreRightButton;
+@synthesize searchController = _searchController;
 
 
 #pragma mark -
 #pragma mark Initialization
 
-+(ListViewController*)viewControllerDisplaying:(NSDictionary*)_displayFilter data:(NSArray*)data {
++(ListViewController*)viewControllerDisplaying:(NSDictionary*)displayFilter data:(NSArray*)data {
     NSString *cellViewClassString = nil;
     Class cellViewClass = nil;
-    if (!cellViewClass && [_displayFilter objectForKey:@"listViewController"]) {
-        cellViewClassString = [_displayFilter objectForKey:@"listViewController"];
+    if (!cellViewClass && [displayFilter objectForKey:@"listViewController"]) {
+        cellViewClassString = [displayFilter objectForKey:@"listViewController"];
         cellViewClass = NSClassFromString(cellViewClassString);
         [cellViewClass isKindOfClass:[ListViewController class]];
     }
@@ -29,19 +37,18 @@
         cellViewClass = [ListViewController class];
     }
     
-    ListViewController *viewController = [[cellViewClass alloc] initDisplaying:_displayFilter data:data];
+    ListViewController *viewController = [[cellViewClass alloc] initDisplaying:displayFilter data:data];
     return [viewController autorelease];
 }
 
--(id) initDisplaying:(NSDictionary*)_displayFilter data:(NSArray*)data {
+-(id) initDisplaying:(NSDictionary*)displayFilter data:(NSArray*)data {
     if ((self = [super initWithStyle:UITableViewStylePlain])) {
-        displayFilter = [_displayFilter retain];
+        self.displayFilter = displayFilter;
         self.title = NSLocalizedString([displayFilter objectForKey:@"title"],@"");
         //tableData = [[NSMutableArray alloc] initWithCapacity:[data count]];
         
-        selectedCells = [[NSMutableArray arrayWithCapacity:[data count]] retain];
-        filteredData = nil;
-        [self updateData:data forFilter:_displayFilter];
+        self.selectedCells = [[NSMutableArray arrayWithCapacity:[data count]] retain];
+        [self updateData:data forFilter:self.displayFilter];
     }
     return self;    
 }
@@ -56,13 +63,13 @@
 
 -(BOOL)updateData:(NSArray*)data forFilter:(NSDictionary*)_displayFilter {
     // Make sure we're displaying the same filter, if not just give up
-    if (![[displayFilter objectForKey:@"title"] isEqualToString:[_displayFilter objectForKey:@"title"]]) {
+    if (![[self.displayFilter objectForKey:@"title"] isEqualToString:[self.displayFilter objectForKey:@"title"]]) {
         return NO;
     }
     
     UILocalizedIndexedCollation *theCollation = [UILocalizedIndexedCollation currentCollation];
     NSMutableArray *collationData = [NSMutableArray arrayWithCapacity:30];
-    totalRowCount = [data count];
+    self.totalRowCount = [data count];
 
     NSString *headerName;
     NSUInteger section;
@@ -74,11 +81,10 @@
         }
         [[collationData objectAtIndex:section] addObject:headerName];
     }
-    @synchronized(tableData) {
-        [tableData release];
-        tableData = [collationData retain];
+    @synchronized(self.tableData) {
+        self.tableData = collationData;
     }
-    if (viewLoaded) {
+    if (self.viewLoaded) {
         [self.tableView reloadData];
     }
     return YES;
@@ -90,17 +96,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    viewLoaded = YES;
+    self.viewLoaded = YES;
     NSDictionary *appFeatures = [self.hierarchyController.appdata objectForKey:@"features"];
     if (appFeatures && [[appFeatures objectForKey:@"searchSupported"] isEqualToString:@"YES"] ) {
         UISearchBar *searchBar = [[[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)] autorelease];
         searchBar.scopeButtonTitles = [NSArray arrayWithObjects:@"Using filters", @"All entries", nil];
         self.tableView.tableHeaderView = searchBar;
         
-        searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
+        UISearchDisplayController *searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
+        if (searchDisplayController == self.searchDisplayController) {
+            NSLog(@"YES");
+        }
         searchDisplayController.delegate = self;
         searchDisplayController.searchResultsDelegate = self;
         searchDisplayController.searchResultsDataSource = self;
+        self.searchController = searchDisplayController;
+        [searchDisplayController release]; searchDisplayController = nil;
     }
     // Uncomment the following line to preserve selection between presentations.
     //self.clearsSelectionOnViewWillAppear = NO;
@@ -132,11 +143,11 @@
 }
 */
 
-- (void)setSelecting:(BOOL)_selecting {
+- (void)setSelecting:(BOOL)selecting {
     static UIBarButtonItem *oldRightBarButtonItem = nil;
     static UIBarButtonItem *oldLeftBarButtonItem = nil;
-    selecting = _selecting;
-    if (selecting) {
+    _selecting = selecting;
+    if (self.selecting) {
         UINavigationItem *item = self.hierarchyController.selectModeNavigationItem;
         if (item.title) {
             self.navigationItem.title = item.title;
@@ -150,9 +161,9 @@
             self.navigationItem.rightBarButtonItem = item.rightBarButtonItem;
         }
         self.tableView.tableHeaderView = nil;
-        [selectedCells removeAllObjects];
+        [self.selectedCells removeAllObjects];
     } else {
-        self.navigationItem.title = NSLocalizedString([displayFilter objectForKey:@"title"],@"");
+        self.navigationItem.title = NSLocalizedString([self.displayFilter objectForKey:@"title"],@"");
         self.navigationItem.leftBarButtonItem = oldLeftBarButtonItem;
         self.navigationItem.rightBarButtonItem = oldRightBarButtonItem;
         self.tableView.tableHeaderView = self.searchDisplayController.searchBar;
@@ -161,12 +172,16 @@
 
 }
 
+-(BOOL) selecting {
+    return _selecting;
+}
+
 -(NSArray*) selectedData {
-    NSUInteger i, count = [selectedCells count];
+    NSUInteger i, count = [self.selectedCells count];
     NSMutableArray *selections = [NSMutableArray arrayWithCapacity:count];
     for (i = 0; i < count; i++) {
-        NSIndexPath * selection = [selectedCells objectAtIndex:i];
-        [selections addObject:[tableData objectAtIndex:[selection indexAtPosition:1]]];
+        NSIndexPath * selection = [self.selectedCells objectAtIndex:i];
+        [selections addObject:[self.tableData objectAtIndex:[selection indexAtPosition:1]]];
     }
     return selections;
 }
@@ -183,9 +198,9 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
     if (tableView == self.searchDisplayController.searchResultsTableView) {
-        return [filteredData count];
+        return [self.filteredData count];
     } else {
-        return [tableData count];
+        return [self.tableData count];
     }
 }
 
@@ -193,21 +208,21 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
     if (tableView == self.searchDisplayController.searchResultsTableView) {
-        if (filteredData) {
-            return [[[filteredData objectAtIndex:section] objectForKey:@"results"] count];
+        if (self.filteredData) {
+            return [[[self.filteredData objectAtIndex:section] objectForKey:@"results"] count];
         } else {
             return 0;
         }
     } else {
-        if (section < [tableData count]) {
-            return [[tableData objectAtIndex:section] count];        
+        if (section < [self.tableData count]) {
+            return [[self.tableData objectAtIndex:section] count];        
         }
     }
     return 0;
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-    if (tableView == self.tableView && totalRowCount > self.tableView.sectionIndexMinimumDisplayRowCount) {
+    if (tableView == self.tableView && self.totalRowCount > self.tableView.sectionIndexMinimumDisplayRowCount) {
         return [[UILocalizedIndexedCollation currentCollation] sectionIndexTitles];
     }
     return nil;
@@ -215,13 +230,13 @@
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if (tableView == self.searchDisplayController.searchResultsTableView) {
-        if (filteredData) {
-            return [[filteredData objectAtIndex:section] objectForKey:@"type"];
+        if (self.filteredData) {
+            return [[self.filteredData objectAtIndex:section] objectForKey:@"type"];
         } else {
             return nil;
         }
     } else {
-        if (section < [tableData count] && [[tableData objectAtIndex:section] count] > 0) {
+        if (section < [self.tableData count] && [[self.tableData objectAtIndex:section] count] > 0) {
             return [[[UILocalizedIndexedCollation currentCollation] sectionTitles] objectAtIndex:section];
         }
         return nil;    
@@ -230,7 +245,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
 {
-    if (tableView == self.tableView && [tableData count] > self.tableView.sectionIndexMinimumDisplayRowCount) {
+    if (tableView == self.tableView && [self.tableData count] > self.tableView.sectionIndexMinimumDisplayRowCount) {
         return [[UILocalizedIndexedCollation currentCollation] sectionForSectionIndexTitleAtIndex:index];
     }
     return 0;
@@ -248,27 +263,27 @@
     
     // Configure the cell...
     if (tableView == self.searchDisplayController.searchResultsTableView) {
-        NSDictionary *result = [[[filteredData objectAtIndex:[indexPath indexAtPosition:0]] objectForKey:@"results"] objectAtIndex:[indexPath indexAtPosition:1]];
+        NSDictionary *result = [[[self.filteredData objectAtIndex:[indexPath indexAtPosition:0]] objectForKey:@"results"] objectAtIndex:[indexPath indexAtPosition:1]];
         cell.textLabel.text = [result objectForKey:@"title"];
     } else {
         NSString *itemValue = nil;
         NSArray *sectionData = nil;
-        if (indexPath.section < [tableData count]) {
-            sectionData = [tableData objectAtIndex:indexPath.section];
+        if (indexPath.section < [self.tableData count]) {
+            sectionData = [self.tableData objectAtIndex:indexPath.section];
         }
         if (sectionData && indexPath.row < [sectionData count]) {
             itemValue = [sectionData objectAtIndex:indexPath.row];
         }
         cell.textLabel.text = itemValue;
-        if (selecting) {
-            if ([selectedCells indexOfObject:indexPath]!= NSNotFound) {
+        if (self.selecting) {
+            if ([self.selectedCells indexOfObject:indexPath]!= NSNotFound) {
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
             } else {
                 cell.accessoryType = UITableViewCellAccessoryNone;
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         } else {
-            if (totalRowCount > self.tableView.sectionIndexMinimumDisplayRowCount) {
+            if (self.totalRowCount > self.tableView.sectionIndexMinimumDisplayRowCount) {
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
@@ -330,9 +345,7 @@
 	/*
 	 Update the filtered array based on the search text and scope.
 	 */
-    [filteredData release];
-    filteredData = [hierarchyController filterDataForSearchTerm:searchText usingFilters:[scope isEqualToString:@"Using filters"]];
-    [filteredData retain];
+    self.filteredData = [self.hierarchyController filterDataForSearchTerm:searchText usingFilters:[scope isEqualToString:@"Using filters"]];
 }
 
 
@@ -366,32 +379,32 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Navigation logic may go here. Create and push another view controller.
     if (tableView == self.searchDisplayController.searchResultsTableView) {
-        NSDictionary *result = [[[filteredData objectAtIndex:[indexPath indexAtPosition:0]] objectForKey:@"results"] objectAtIndex:[indexPath indexAtPosition:1]];
+        NSDictionary *result = [[[self.filteredData objectAtIndex:[indexPath indexAtPosition:0]] objectForKey:@"results"] objectAtIndex:[indexPath indexAtPosition:1]];
         if ([result objectForKey:@"itemData"]) {
-            [hierarchyController showItem:[result objectForKey:@"itemData"] fromSave:NO];
+            [self.hierarchyController showItem:[result objectForKey:@"itemData"] fromSave:NO];
         } else {
             // Load a filter
         }
 
-    } else if (selecting) {
-        NSUInteger index = [selectedCells indexOfObject:indexPath];
+    } else if (self.selecting) {
+        NSUInteger index = [self.selectedCells indexOfObject:indexPath];
         if (index!=NSNotFound) {
-            [selectedCells removeObjectAtIndex:index];
+            [self.selectedCells removeObjectAtIndex:index];
         } else {
-            [selectedCells addObject:indexPath];
+            [self.selectedCells addObject:indexPath];
         }
         [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     } else {
         NSString *itemValue = nil;
         NSArray *sectionData = nil;
-        if (indexPath.section < [tableData count]) {
-            sectionData = [tableData objectAtIndex:indexPath.section];
+        if (indexPath.section < [self.tableData count]) {
+            sectionData = [self.tableData objectAtIndex:indexPath.section];
         }
         if (sectionData && indexPath.row < [sectionData count]) {
             itemValue = [sectionData objectAtIndex:indexPath.row];
         }
         if (itemValue) {
-            [hierarchyController filterProperty:[displayFilter objectForKey:@"property"] value:itemValue fromSave:NO];
+            [self.hierarchyController filterProperty:[self.displayFilter objectForKey:@"property"] value:itemValue fromSave:NO];
         }
     }
 }
@@ -409,17 +422,19 @@
 - (void)viewDidUnload {
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
-    viewLoaded = NO;
+    self.viewLoaded = NO;
+    self.searchController = nil;
 }
 
 
 - (void)dealloc {
-    [displayFilter release], displayFilter = nil;
-    [tableData release], tableData = nil;
-    [filteredData release], filteredData = nil;
-    [searchDisplayController release], searchDisplayController = nil;
+    self.tableData = nil;
+    self.filteredData = nil;
+    self.selectedCells = nil;
     self.hierarchyController = nil;
-    [selectedCells release], selectedCells = nil;
+    self.displayFilter = nil;
+    self.searchController = nil;
+
     [super dealloc];
 }
 

@@ -10,12 +10,14 @@
 #import "HierarchyViewController.h"
 
 @interface AppDelegate_Phone : NSObject <UIApplicationDelegate> {
-    UIWindow *window;
-    UIImageView *splashView;
-    HierarchyViewController *hierarchyController;
+    UIWindow *_window;
+    UIImageView *_splashView;
+    HierarchyViewController *_hierarchyController;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
+@property (nonatomic, retain) UIImageView *splashView;
+@property (nonatomic, retain) HierarchyViewController *hierarchyController;
 
 -(void)slideSplashScreenOut;
 

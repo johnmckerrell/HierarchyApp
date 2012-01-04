@@ -12,12 +12,16 @@
 
 @implementation ItemWebViewController
 
-@synthesize hierarchyController;
+@synthesize hierarchyController = _hierarchyController;
+@synthesize itemData = _itemData;
+@synthesize webView = _webView;
+@synthesize initialLoadPerformed = _initialLoadPerformed;
+@synthesize statusIndicator = _statusIndicator;
 
--(id) initWithItem:(NSDictionary*)_itemData {
+-(id) initWithItem:(NSDictionary*)itemData {
     if ((self = [super init])) {
-        itemData = [_itemData retain];
-        self.title = [itemData objectForKey:@"title"];
+        self.itemData = itemData;
+        self.title = [self.itemData objectForKey:@"title"];
         self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Detail" style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
     }
     return self;
@@ -37,26 +41,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    statusIndicator.layer.cornerRadius = 10.0;
+    self.statusIndicator.layer.cornerRadius = 10.0;
     
     NSURL *requestURL = nil;
-    if ([itemData objectForKey:@"url"]) {
-        requestURL = [NSURL URLWithString:[itemData objectForKey:@"url"]];
-    } else if ([itemData objectForKey:@"htmlfile"]) {
-        NSString *path = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:[itemData objectForKey:@"htmlfile"]];
+    if ([self.itemData objectForKey:@"url"]) {
+        requestURL = [NSURL URLWithString:[self.itemData objectForKey:@"url"]];
+    } else if ([self.itemData objectForKey:@"htmlfile"]) {
+        NSString *path = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:[self.itemData objectForKey:@"htmlfile"]];
         requestURL = [NSURL fileURLWithPath:path];
     }
     
-    [webView loadRequest:[NSURLRequest requestWithURL:requestURL]];
+    [self.webView loadRequest:[NSURLRequest requestWithURL:requestURL]];
     
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    if (initialLoadPerformed) {
-        [hierarchyController loadURLRequestInLocalBrowser:request];
+    if (self.initialLoadPerformed) {
+        [self.hierarchyController loadURLRequestInLocalBrowser:request];
         return NO;
     } else {
-        initialLoadPerformed = YES;
+        self.initialLoadPerformed = YES;
         return YES;
     }
 }
@@ -79,7 +83,7 @@
 -(void) hideStatusIndicator {
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.5];
-    statusIndicator.alpha = 0;
+    self.statusIndicator.alpha = 0;
     [UIView commitAnimations];
 }
 
@@ -101,14 +105,17 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    self.webView = nil;
+    self.statusIndicator = nil;
 }
 
 
 - (void)dealloc {
-    [itemData release], itemData = nil;
-    [webView release], webView = nil;
-    [statusIndicator release], statusIndicator = nil;
+    self.itemData = nil;
+    self.webView = nil;
+    self.statusIndicator = nil;
     self.hierarchyController = nil;
+    
     [super dealloc];
 }
 

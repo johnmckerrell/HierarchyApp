@@ -11,26 +11,32 @@
 @class HierarchyViewController;
 
 @interface ListViewController : UITableViewController <UISearchDisplayDelegate> {
-    NSDictionary *displayFilter;
-    NSArray *tableData;
-    NSArray *filteredData;
-    UISearchDisplayController *searchDisplayController;
-    HierarchyViewController *hierarchyController;
-    
-    NSMutableArray *selectedCells;
-    NSUInteger totalRowCount;
-    BOOL selecting;
-    BOOL ignoreRightButton;
-    BOOL viewLoaded;
+    NSDictionary *_displayFilter;
+    NSArray *_tableData;
+    NSArray *_filteredData;
+    HierarchyViewController *_hierarchyController;
+    UISearchDisplayController *_searchController;
+    NSMutableArray *_selectedCells;
+    NSUInteger _totalRowCount;
+    BOOL _selecting;
+    BOOL _ignoreRightButton;
+    BOOL _viewLoaded;
 }
 
+@property (nonatomic, retain) NSArray *tableData;
+@property (nonatomic, retain) NSArray *filteredData;
+@property (nonatomic, retain) UISearchDisplayController *searchController;
+@property (nonatomic, retain) NSMutableArray *selectedCells;
+@property (nonatomic, assign) NSUInteger totalRowCount;
+@property (nonatomic, assign) BOOL selecting;
+@property (nonatomic, assign) BOOL viewLoaded;
 @property (nonatomic, retain) HierarchyViewController *hierarchyController;
 @property (nonatomic, retain) NSDictionary *displayFilter;
-@property () BOOL ignoreRightButton;
+@property (nonatomic, assign) BOOL ignoreRightButton;
 
-+(ListViewController*)viewControllerDisplaying:(NSDictionary*)_displayFilter data:(NSArray*)data;
++(ListViewController*)viewControllerDisplaying:(NSDictionary*)displayFilter data:(NSArray*)data;
 
--(id) initDisplaying:(NSDictionary*)_displayFilter data:(NSArray*)data;
+-(id) initDisplaying:(NSDictionary*)displayFilter data:(NSArray*)data;
 - (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope;
 - (void)setSelecting:(BOOL)selecting;
 -(NSArray*) selectedData;

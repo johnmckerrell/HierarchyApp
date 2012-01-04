@@ -15,9 +15,9 @@
 @interface ItemListViewController : ListViewController {
 }
 
-+(ItemListViewController*)viewControllerDisplaying:(NSDictionary*)_itemData data:(NSArray*)data;
++(ItemListViewController*)viewControllerDisplaying:(NSDictionary*)itemData data:(NSArray*)data;
 
--(id) initDisplaying:(NSDictionary*)_itemData data:(NSArray*)data;
+-(id) initDisplaying:(NSDictionary*)itemData data:(NSArray*)data;
 
 -(BOOL)updateData:(NSArray*)data;
 

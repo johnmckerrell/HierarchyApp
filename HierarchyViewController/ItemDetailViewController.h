@@ -12,12 +12,13 @@
 
 
 @interface ItemDetailViewController : UITableViewController {
-    NSDictionary *itemData;
-    HierarchyViewController *hierarchyController;
+    NSDictionary *_itemData;
+    HierarchyViewController *_hierarchyController;
 }
 
+@property (nonatomic, retain) NSDictionary *itemData;
 @property (nonatomic, retain) HierarchyViewController *hierarchyController;
 
--(id) initWithItem:(NSDictionary*)_itemData;
+-(id) initWithItem:(NSDictionary*)itemData;
 
 @end

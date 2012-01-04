@@ -1,11 +1,11 @@
 (
 	{
 		id = 1;
-		title = "Anthem - Rand Ayn";
+		title = "Anthem - Ayn Rand";
 		htmlfile = "anthem.html";
 		properties = {
 			publisher = "Standard Publications";
-			author = "Rand Ayn";
+			author = "Ayn Rand";
 			published = 2007;
 			genre = (
 				"Dystopian Fiction",
@@ -167,14 +167,14 @@
 			genre = Fiction;
 		};
 	},
-    {
-        id = 17;
-        title = "2001: A Space Odyssey";
-        properties = {
-            publisher = "New American Library";
-            author = "Arthur C. Clarke";
-            published = 1968;
-            genre = "Science fiction";
-        };
-    },
+	{
+		id = 17;
+		title = "2001: A Space Odyssey";
+		properties = {
+			publisher = "New American Library";
+			author = "Arthur C. Clarke";
+			published = 1968;
+			genre = "Science fiction";
+		};
+	},
 )
