@@ -793,7 +793,7 @@
         }
     }
     return [[tableHash allKeys] sortedArrayUsingDescriptors:
-            [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"self" ascending:YES] autorelease]]
+            [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"self" ascending:YES selector:@selector(caseInsensitiveCompare:)] autorelease]]
             ];
 }
 

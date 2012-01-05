@@ -42,7 +42,7 @@
 
 -(BOOL)updateData:(NSArray*)data {
     NSArray *sortedData = [data sortedArrayUsingDescriptors:
-                  [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES] autorelease]]
+                  [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES selector:@selector(caseInsensitiveCompare:)] autorelease]]
                   ];
         
     UILocalizedIndexedCollation *theCollation = [UILocalizedIndexedCollation currentCollation];
