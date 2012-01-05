@@ -120,8 +120,8 @@
     // Create the tab bar showing the right category
     [self setupTabBarWithInitialCategory:self.startCategory];
     [self setCurrentCategory:self.startCategory filters:self.startFilters item:self.startItem];
-    self.view = [[[UIView alloc] initWithFrame:tabBarController.view.frame] autorelease];
-    [self.view addSubview:tabBarController.view];
+    self.view = [[[UIView alloc] initWithFrame:self.tabBarController.view.frame] autorelease];
+    [self.view addSubview:self.tabBarController.view];
 }
 
 -(void) setCurrentCategory:(NSString*)category filters:(NSArray*) filters item:(NSDictionary*)itemData {
