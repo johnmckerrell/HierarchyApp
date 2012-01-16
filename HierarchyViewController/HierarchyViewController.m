@@ -777,24 +777,38 @@
 -(NSArray*) filterHeadings:(NSDictionary *)filter {
     NSMutableDictionary *tableHash = [NSMutableDictionary dictionaryWithCapacity:[self.filteredData count]];
     NSDictionary *itemData, *itemProperties;
-    id propertyValue;
-    NSString *itemName;
+    id propertyValue, propertySortValue, hashTableValue;
+    NSString *itemName, *filterProperty, *filterSortProperty;
+    filterProperty = [filter objectForKey:@"property"];
+    filterSortProperty = [filter objectForKey:@"sortProperty"];
     for (itemData in self.filteredData) {
         itemProperties = [itemData objectForKey:@"properties"];
-        propertyValue = [itemProperties objectForKey:[filter objectForKey:@"property"]];
+        propertyValue = [itemProperties objectForKey:filterProperty];
+        propertySortValue = nil;
+        if (filterSortProperty) {
+            propertySortValue = [itemProperties objectForKey:filterSortProperty];
+        }
         if ([propertyValue isKindOfClass:[NSArray class]]) {
-            for (itemName in propertyValue) {
+            // Property sort value must be an array or it's useless
+            if (![propertySortValue isKindOfClass:[NSArray class]]) {
+                propertySortValue = nil;
+            }
+            for (NSUInteger i = 0, l = [propertyValue count]; i < l ; ++i) {
+                itemName = [propertyValue objectAtIndex:i];
                 if (![tableHash objectForKey:itemName]) {
-                    [tableHash setObject:itemName forKey:itemName];
+                    hashTableValue = propertySortValue && i < [propertySortValue count] ? [propertySortValue objectAtIndex:i] : itemName;
+                    [tableHash setObject:[NSDictionary dictionaryWithObjectsAndKeys:hashTableValue, @"sortValue", itemName, @"value", nil] forKey:itemName];
                 }
             }
         } else if (![tableHash objectForKey:propertyValue]) {
-            [tableHash setObject:propertyValue forKey:propertyValue];
+            hashTableValue = propertySortValue ? propertySortValue : propertyValue;
+            [tableHash setObject:[NSDictionary dictionaryWithObjectsAndKeys:hashTableValue, @"sortValue", propertyValue, @"value", nil] forKey:propertyValue];
         }
     }
-    return [[tableHash allKeys] sortedArrayUsingDescriptors:
-            [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"self" ascending:YES selector:@selector(caseInsensitiveCompare:)] autorelease]]
-            ];
+    NSArray *result = [[[tableHash allValues] sortedArrayUsingDescriptors:
+            [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"sortValue" ascending:YES selector:@selector(caseInsensitiveCompare:)] autorelease]]
+            ] valueForKey:@"value"];
+    return result;
 }
 
 -(BOOL) showItem:(NSDictionary*)itemData fromSave:(BOOL) fromSave {

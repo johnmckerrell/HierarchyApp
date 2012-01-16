@@ -74,8 +74,15 @@
     NSString *headerName;
     NSUInteger section;
     
+    NSString *collationSelectorName = [self.displayFilter objectForKey:@"collationSelector"];
+    SEL collationSelector;
+    if (collationSelectorName) {
+        collationSelector = NSSelectorFromString(collationSelectorName);
+    } else {
+        collationSelector = @selector(uppercaseString);
+    }
     for (headerName in data) {
-        section = [theCollation sectionForObject:headerName collationStringSelector:@selector(uppercaseString)];
+        section = [theCollation sectionForObject:headerName collationStringSelector:collationSelector];
         while ([collationData count] <= section) {
             [collationData addObject:[NSMutableArray arrayWithCapacity:1]];
         }
