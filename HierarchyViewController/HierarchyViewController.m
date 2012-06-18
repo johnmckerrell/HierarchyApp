@@ -440,7 +440,7 @@
         [viewControllers addObjectsFromArray:self.extraViewControllers];
     }
     
-    self.localizedCategoriesMap = [[NSDictionary dictionaryWithDictionary:categoriesMap] retain];
+    self.localizedCategoriesMap = [NSDictionary dictionaryWithDictionary:categoriesMap];
     
     [self.tabBarController setViewControllers:viewControllers];
     self.tabBarController.selectedIndex = selected;

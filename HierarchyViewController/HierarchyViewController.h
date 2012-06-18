@@ -11,6 +11,8 @@
 #define MATCH_ALL @"com.7digital.MATCH_ALL"
 
 @interface HierarchyViewController : UIViewController <UINavigationControllerDelegate, UITabBarControllerDelegate> {
+    
+    @protected
     UITabBarController *_tabBarController;
     NSArray *_maindata;
     NSDictionary *_filtersdata;

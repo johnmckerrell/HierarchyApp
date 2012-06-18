@@ -47,7 +47,7 @@
         self.title = NSLocalizedString([displayFilter objectForKey:@"title"],@"");
         //tableData = [[NSMutableArray alloc] initWithCapacity:[data count]];
         
-        self.selectedCells = [[NSMutableArray arrayWithCapacity:[data count]] retain];
+        self.selectedCells = [NSMutableArray arrayWithCapacity:[data count]];
         [self updateData:data forFilter:self.displayFilter];
     }
     return self;    

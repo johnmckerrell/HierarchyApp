@@ -34,7 +34,7 @@
     if ((self = [super initWithStyle:UITableViewStylePlain])) {
         self.title = [itemData objectForKey:@"title"];
         
-        self.selectedCells = [[NSMutableArray arrayWithCapacity:[data count]] retain];
+        self.selectedCells = [NSMutableArray arrayWithCapacity:[data count]];
         [self updateData:data];
     }
     return self;    
