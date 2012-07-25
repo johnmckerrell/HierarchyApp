@@ -704,6 +704,9 @@
     
     if ([viewController isKindOfClass:[ListViewController class]] || !viewController.navigationItem.rightBarButtonItem) {
         if (!([viewController isKindOfClass:[ListViewController class]] && ((ListViewController*)viewController).ignoreRightButton)) {
+            // If this bar button as already been assigned then the VC might think it's already showing it when it has actually
+            // been assigned to a different VC and is visible there, setting to nil makes sure it adds it to itself
+            viewController.navigationItem.rightBarButtonItem = nil;
             viewController.navigationItem.rightBarButtonItem = self.rightBarButtonItem;
         }
     }    
